@@ -20,20 +20,20 @@ By enabling users to program the badge with ESPHome, this project aims to:
 ## Features (Planned/In Development)
 
 Hardware Definition
-*   [x] Tactile Buttons (GPIO19, GPIO18, GPIO10, GPIO09)
-*   [x] LED strip (GPIO08)
-*   [x] IR receiver (GPIO03)
-*   [x] IR transmitter (GPIO02)
+*   [x] [Tactile Buttons](https://esphome.io/components/binary_sensor/) (GPIO19, GPIO18, GPIO10, GPIO09)
+*   [x] [LED strip](https://esphome.io/components/light/esp32_rmt_led_strip) (GPIO08)
+*   [x] [IR receiver](https://esphome.io/components/remote_receiver.html) (GPIO03)
+*   [x] [IR transmitter](https://esphome.io/components/remote_transmitter.html) (GPIO02)
 *   [ ] Vibration motor (GPIO13/SPIWP)
-*   [ ] LED (GPIO12/SPIHD)
+*   [ ] [LED](https://esphome.io/components/light/monochromatic) (GPIO12/SPIHD)
 *   [ ] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C)
 *   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C)
 *   [ ] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C)
 
 Remote Access
-*   [ ] Wifi provisioning
-*   [ ] WebServer control
-*   [ ] OTA support
+*   [ ] [Wifi provisioning](https://esphome.io/components/wifi.html)
+*   [ ] [Web Server](https://esphome.io/components/web_server.html) controller
+*   [ ] [OTA update](https://esphome.io/components/ota/) support
 
 Application
 *   [ ] LED control and effects
