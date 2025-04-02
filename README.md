@@ -23,7 +23,7 @@ Hardware Definition
 *   [x] Tactile Buttons
 *   [x] LED strip
 *   [x] IR receiver
-*   [ ] IR transmitter
+*   [x] IR transmitter
 *   [ ] Vibration
 
 Application

@@ -61,6 +61,10 @@ binary_sensor:
                   id: led_strip
                   brightness: 20%
                   transition_length: 0s
+        - remote_transmitter.transmit_nec:
+            transmitter_id: ir_transmitter
+            address: 0xD880
+            command: 0xDD22
               
 remote_receiver:
   - id: !extend ir_receiver
