@@ -45,6 +45,35 @@ Application
         esphome run deployment.yaml
         ```
 
+### Known Flashing Issue
+
+The badge has these conflicts between the tectile buttons and the USB data pins:
+- Button 1 (SW3/TACT_C) uses GPIO19, which is shared with USB_D+
+- Button 2 (SW4/TACT_D) uses GPIO18, which is shared with USB_D-
+
+The buttons require setting the pin for input, with a pull-down resistor. That breaks the USB connection. As a result, the computer won't even detect the device, preventing flashing and log monitoring.
+
+To successfully flash, you must put it in flash mode:
+1. Turn off the device
+1. Hold Button 4 (SW2/TACT_B). This uses GPIO09, the BOOT pin
+1. Turn on the device
+1. Release the Button
+
+This will enter flashing mode and prevent the firmware from running and breaking the USB connection.
+
+Once flashing is complete, you won't see any logs, because as soon as the firmware starts, it breaks USB.
+
+Furthermore, the firmware also doesn't run correctly somehow. You need to reset it (turn it off and back on).
+
+If you don't disconenct the USB cable, you will se that buttons 1 and 2 will not work. You must disconnect the cable.
+
+This is the full recipe for successfully flashing:
+1. Turn off the badge
+1. Connect the badge via USB
+1. Turn it on in flash mode
+1. Flash
+1. Disconnect from USB
+1. Turn it off and back on
 
 ## Contributing
 

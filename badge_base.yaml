@@ -36,7 +36,7 @@ esp32:
     type: esp-idf
 
 
-# INPUT
+# INPUTS
 
 binary_sensor:
   - id: button_3
@@ -59,23 +59,27 @@ binary_sensor:
         input: true
         pullup: true
 
-  # See https://github.com/micropython/micropython/issues/12479
-#   - id: button_1
-#     platform: gpio
-#     name: Button 1 (SW3)
-#     pin:
-#       number: GPIO19  # USB_D+
-#       inverted: true
-#       mode:
-#         input: true
-#         # pullup: true
+  # Buttons 1 and 2 conflict with USB, which requires special handling to flash.
+  # See the README.
+  - id: button_1
+    platform: gpio
+    name: Button 1 (SW3)
+    pin:
+      number: GPIO19  # USB_D+
+      inverted: true
+      mode:
+        input: true
+        pullup: true
 
-#   - id: button_2
-#     platform: gpio
-#     name: Button 2 (SW4)
-#     pin:
-#       number: GPIO18  # USB_D-
-#       inverted: true
+  - id: button_2
+    platform: gpio
+    name: Button 2 (SW4)
+    pin:
+      number: GPIO18  # USB_D-
+      inverted: true
+      mode:
+        input: true
+        pullup: true
 
 remote_receiver:
   - id: ir_receiver
@@ -87,7 +91,8 @@ remote_receiver:
         pullup: true
     rmt_symbols: 86
 
-# OUTPUT
+
+# OUTPUTS
 
 light:
   - id: led_strip

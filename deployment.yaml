@@ -28,23 +28,6 @@ logger:
   level: DEBUG
 
 binary_sensor:
-  - id: !extend button_3
-    on_click: 
-      then:
-        - if:
-            condition:
-              lambda: 'return id(led_strip).remote_values.get_brightness() <= 0.201f;'
-            then:
-              light.turn_off:
-                id: led_strip
-                transition_length: 0s
-            else:
-              light.dim_relative:
-                id: led_strip
-                relative_brightness: -10%
-                transition_length: 0s
-
-          
   - id: !extend button_4
     on_click: 
       then:
@@ -64,8 +47,57 @@ binary_sensor:
         - remote_transmitter.transmit_nec:
             transmitter_id: ir_transmitter
             address: 0xD880
-            command: 0xDD22
-              
+            command: 0xDD22 
+
+  - id: !extend button_3
+    on_click: 
+      then:
+        - if:
+            condition:
+              lambda: 'return id(led_strip).remote_values.get_brightness() <= 0.201f;'
+            then:
+              light.turn_off:
+                id: led_strip
+                transition_length: 0s
+            else:
+              light.dim_relative:
+                id: led_strip
+                relative_brightness: -10%
+                transition_length: 0s
+          
+  - id: !extend button_2
+    on_click: 
+      then:
+        - if:
+            condition:
+              light.is_on: led_strip
+            then:
+              - light.dim_relative:
+                  id: led_strip
+                  relative_brightness: 10%
+                  transition_length: 0s
+            else:
+              - light.turn_on:
+                  id: led_strip
+                  brightness: 20%
+                  transition_length: 0s
+
+  - id: !extend button_1
+    on_click: 
+      then:
+        - if:
+            condition:
+              lambda: 'return id(led_strip).remote_values.get_brightness() <= 0.201f;'
+            then:
+              light.turn_off:
+                id: led_strip
+                transition_length: 0s
+            else:
+              light.dim_relative:
+                id: led_strip
+                relative_brightness: -10%
+                transition_length: 0s
+       
 remote_receiver:
   - id: !extend ir_receiver
     on_nec:
