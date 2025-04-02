@@ -19,6 +19,14 @@ By enabling users to program the badge with ESPHome, this project aims to:
 
 ## Features (Planned/In Development)
 
+Hardware Definition
+*   [x] Configure buttons
+*   [x] Configure LED strip
+*   [ ] Configure IR transmitter
+*   [ ] Configure IR receiver
+*   [ ] Configure vibration
+
+Application
 *   [ ] LED control and effects
 *   [ ] IR Transmitter/Receiver
 
@@ -46,6 +54,7 @@ Contributions are welcome! If you have ideas, bug fixes, or new features, please
 
 *   [HOPE XV Electronic Badge Wiki](https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge)
 *   [HOPE XV Electronic Badge User Manual](https://web.archive.org/web/20240806210845/https://wiki.hope.net/images/6/6b/HOPE_XV_Electronic_Badge_User_Manual.pdf)
+*   [HOPE XV Badge Schematics](./docs/hopebadgeschema-0.8.19.pdf)
 *   [Blinkenlights Pinout](https://gitlab.com/tidklaas/hip-badge/-/blob/master/firmware/blinkenlights/main/Kconfig.projbuild)
 *   [Blinkenlights Firmware](https://gitlab.com/tidklaas/hip-badge/-/blob/master/firmware/blinkenlights/main/blinken.c?ref_type=heads)
 * Infrared trigger:
