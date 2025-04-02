@@ -30,6 +30,11 @@ Hardware Definition
 *   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C)
 *   [ ] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C)
 
+Remote Access
+*   [ ] Wifi provisioning
+*   [ ] WebServer control
+*   [ ] OTA support
+
 Application
 *   [ ] LED control and effects
 *   [ ] IR Transmitter/Receiver
