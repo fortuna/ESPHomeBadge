@@ -36,9 +36,9 @@ Application
     *   A HOPE XV Electronic Badge.
     *   A computer with ESPHome installed. (See the [ESPHome Getting Started Guide](https://esphome.io/guides/getting_started_command_line.html))
     *   USB cable to connect the badge to your computer.
-3. **Customize (optional):**
+2.  **Customization (Optional):**
     * Customize the badge to your liking by editing the deployment.yaml configuration file.
-2.  **Flashing:**
+3.  **Flashing:**
     *   Connect the HOPE Badge to your computer.
     *   Use the ESPHome command-line tool to compile and upload your configuration to the badge:
         ```bash
@@ -47,7 +47,7 @@ Application
 
 ### Known Flashing Issue
 
-The badge has these conflicts between the tectile buttons and the USB data pins:
+The badge has these conflicts between the tactile buttons and the USB data pins:
 - Button 1 (SW3/TACT_C) uses GPIO19, which is shared with USB_D+
 - Button 2 (SW4/TACT_D) uses GPIO18, which is shared with USB_D-
 
@@ -63,9 +63,9 @@ This will enter flashing mode and prevent the firmware from running and breaking
 
 Once flashing is complete, you won't see any logs, because as soon as the firmware starts, it breaks USB.
 
-Furthermore, the firmware also doesn't run correctly somehow. You need to reset it (turn it off and back on).
+Also, the firmware won't run correctly somehow. You need to reset it (turn it off and back on).
 
-If you don't disconenct the USB cable, you will se that buttons 1 and 2 will not work. You must disconnect the cable.
+If you don't disconnect the USB cable, you will see that buttons 1 and 2 will not work. You must disconnect the cable.
 
 This is the full recipe for successfully flashing:
 1. Turn off the badge
