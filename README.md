@@ -20,11 +20,15 @@ By enabling users to program the badge with ESPHome, this project aims to:
 ## Features (Planned/In Development)
 
 Hardware Definition
-*   [x] Tactile Buttons
-*   [x] LED strip
-*   [x] IR receiver
-*   [x] IR transmitter
-*   [ ] Vibration
+*   [x] Tactile Buttons (GPIO19, GPIO18, GPIO10, GPIO09)
+*   [x] LED strip (GPIO08)
+*   [x] IR receiver (GPIO03)
+*   [x] IR transmitter (GPIO02)
+*   [ ] Vibration motor (GPIO13/SPIWP)
+*   [ ] LED (GPIO12/SPIHD)
+*   [ ] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C)
+*   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C)
+*   [ ] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C)
 
 Application
 *   [ ] LED control and effects
