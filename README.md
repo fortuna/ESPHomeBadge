@@ -20,11 +20,11 @@ By enabling users to program the badge with ESPHome, this project aims to:
 ## Features (Planned/In Development)
 
 Hardware Definition
-*   [x] Configure buttons
-*   [x] Configure LED strip
-*   [ ] Configure IR transmitter
-*   [ ] Configure IR receiver
-*   [ ] Configure vibration
+*   [x] Tactile Buttons
+*   [x] LED strip
+*   [x] IR receiver
+*   [ ] IR transmitter
+*   [ ] Vibration
 
 Application
 *   [ ] LED control and effects

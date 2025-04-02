@@ -62,3 +62,9 @@ binary_sensor:
                   brightness: 20%
                   transition_length: 0s
               
+remote_receiver:
+  - id: !extend ir_receiver
+    on_nec:
+        then:
+        - lambda: |-
+            ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);

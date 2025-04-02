@@ -73,3 +73,12 @@ light:
     pin: GPIO8  # Strapping Pin
     num_leds: 16
     chipset: ws2812
+
+remote_receiver:
+  - id: ir_receiver
+    pin:
+      number: GPIO03
+      inverted: true
+      mode:
+        input: true
+        pullup: true
