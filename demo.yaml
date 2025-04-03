@@ -27,6 +27,36 @@ esphome:
 logger:
   level: DEBUG
 
+
+# Enables Wi-Fi connectivity.
+wifi:
+  # Fixes Auth Expired issue on ESP32-C3, as per
+  # https://community.home-assistant.io/t/unable-to-connect-to-wifi-auth-expired-and-association-expired/678570/2?u=vinifortuna
+  # and https://github.com/espressif/arduino-esp32/issues/2144#issuecomment-1212591202
+  output_power: 8.5db
+  # Enable 802.11v BSS Transition Management for better roaming.
+  enable_btm: true
+  # Enable 802.11k Radio Resource Management support.  
+  enable_rrm: true
+
+  # Configures a local access point, in case no wifi is available.
+  ap:
+    password: fortunaatgithub
+
+# To allow for configuring the wifi on a new device.
+captive_portal:
+
+# Sets up a local web server for remote control.
+web_server:
+  local: true
+  version: 3
+
+# Over-the-Air provisioning.
+# Don't use it in an untrusted network, since password goes unencrypted.
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
 binary_sensor:
   - id: !extend button_1
     on_click: 

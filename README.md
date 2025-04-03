@@ -31,9 +31,9 @@ Hardware Definition
 *   [ ] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C)
 
 Remote Access
-*   [ ] [Wifi provisioning](https://esphome.io/components/wifi.html)
-*   [ ] [Web Server](https://esphome.io/components/web_server.html) controller
-*   [ ] [OTA update](https://esphome.io/components/ota/) support
+*   [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
+*   [x] [Web Server](https://esphome.io/components/web_server.html) controller
+*   [x] [OTA update](https://esphome.io/components/ota/) support
 
 Application
 *   [ ] LED control and effects
