@@ -25,10 +25,9 @@ Hardware Definition
 *   [x] [IR receiver](https://esphome.io/components/remote_receiver.html) (GPIO03)
 *   [x] [IR transmitter](https://esphome.io/components/remote_transmitter.html) (GPIO02)
 *   [ ] Vibration motor (GPIO13/SPIWP)
-*   [ ] [LED](https://esphome.io/components/light/monochromatic) (GPIO12/SPIHD)
-*   [ ] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C)
-*   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C)
-*   [ ] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C)
+*   [x] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C, U7)
+*   [x] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C, U4)
+*   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C, U9)
 
 Remote Access
 *   [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
