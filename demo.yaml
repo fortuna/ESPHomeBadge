@@ -21,8 +21,8 @@ esphome:
   name: hope-badge
   friendly_name: HOPE Badge
   on_boot: 
-    then:
-      logger.log: Hello World
+    - then:
+        logger.log: Hello World
 
 logger:
   level: DEBUG
@@ -88,6 +88,14 @@ remote_receiver:
         then:
         - lambda: |-
             ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);
+        - if:
+            condition: {lambda: return x.address == 0xD880 && x.command == 0xDD22;}
+            then:
+              - light.turn_on: {id: led_strip, transition_length: 0s}
+              - switch.turn_on: vibration_motor
+              - light.turn_off: {id: led_strip, transition_length: 1s}
+              - delay: 500ms
+              - switch.turn_off: vibration_motor
 
 script:
   - id: dim_up

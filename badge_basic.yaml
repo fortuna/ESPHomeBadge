@@ -28,6 +28,13 @@
 # - remote_receiver: 86
 
 esphome:
+  includes:
+    # Special code to make the vibration code work.
+    - vibration.h
+  on_boot: 
+    - then:
+        # Need to explicitly set up the vibration GPIO pin.
+        - lambda: badge::setup_vibration_motor();
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -115,3 +122,20 @@ remote_transmitter:
     # Infrared remotes use a 50% carrier signal.
     carrier_duty_percent: 50%
     rmt_symbols: 48
+
+switch:
+  - platform: template
+    id: vibration_motor
+    name: Vibration Motor
+    restore_mode: ALWAYS_OFF
+    turn_on_action:
+      - lambda: |-
+          ESP_LOGD("vibration", "turning vibration on");
+          gpio_set_level(badge::VIBRATION_GPIO, 1);
+          id(vibration_motor).publish_state(true);
+    turn_off_action:
+      - lambda: |-
+          ESP_LOGD("vibration", "turning vibration off");
+          gpio_set_level(badge::VIBRATION_GPIO, 0);
+          id(vibration_motor).publish_state(false);
+

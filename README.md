@@ -24,7 +24,7 @@ Hardware Definition
 *   [x] [LED strip](https://esphome.io/components/light/esp32_rmt_led_strip) (GPIO08)
 *   [x] [IR receiver](https://esphome.io/components/remote_receiver.html) (GPIO03)
 *   [x] [IR transmitter](https://esphome.io/components/remote_transmitter.html) (GPIO02)
-*   [ ] Vibration motor (GPIO13/SPIWP)
+*   [x] Vibration motor (GPIO13/SPIWP)
 *   [x] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C, U7)
 *   [x] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C, U4)
 *   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C, U9)
