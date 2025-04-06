@@ -15,7 +15,7 @@
 # This is the file where you can customize the behavior of your badge.
 
 packages:
-  base: !include ./badge_base.yaml
+  base: !include ./badge_basic.yaml
 
 esphome:
   name: hope-badge

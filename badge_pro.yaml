@@ -1,0 +1,36 @@
+# Copyright 2025 Vinicius Fortuna
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This file defines the hardware of the Pro version of the badge.
+
+packages:
+  # Inherit from the basic model
+  base: !include ./badge_basic.yaml
+
+sensor:
+  - platform: max17043  # U4
+    id: battery_sensor
+    i2c_id: badge_i2c
+    battery_voltage:
+      name: Battery Voltage
+    battery_level:
+      name: Battery Level
+  
+  - platform: sgp30  # U7
+    id: air_sensor
+    i2c_id: badge_i2c
+    eco2:
+      name: "CO₂eq"
+    tvoc:
+      name: "TVOC"

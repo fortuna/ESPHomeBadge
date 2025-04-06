@@ -95,25 +95,6 @@ remote_receiver:
         pullup: true
     rmt_symbols: 86
 
-sensor:
-  - platform: max17043  # U4
-    id: battery_sensor
-    i2c_id: badge_i2c
-    battery_voltage:
-      name: Battery Voltage
-    battery_level:
-      name: Battery Level
-  
-  - platform: sgp30  # U7
-    id: air_sensor
-    i2c_id: badge_i2c
-    eco2:
-      name: "CO₂eq"
-      # accuracy_decimals: 1
-    tvoc:
-      name: "TVOC"
-      # accuracy_decimals: 1
-
 
 # OUTPUTS
 
