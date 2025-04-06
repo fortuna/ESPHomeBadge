@@ -87,7 +87,6 @@ This is the full recipe for successfully flashing:
 
 Contributions are welcome! If you have ideas, bug fixes, or new features, please open an issue or submit a pull request.
 
-## Pinout
 
 ## ESP32-C3 Pin Usage on Hope Badge
 
