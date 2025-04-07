@@ -77,10 +77,10 @@ binary_sensor:
     on_click: 
       then:
         - script.execute: dim_up
-        - remote_transmitter.transmit_nec:
-            transmitter_id: ir_transmitter
-            address: 0xD880
-            command: 0xDD22 
+        # - remote_transmitter.transmit_nec:
+        #     transmitter_id: ir_transmitter
+        #     address: 0xD880
+        #     command: 0xDD22 
 
 remote_receiver:
   - id: !extend ir_receiver
@@ -96,6 +96,22 @@ remote_receiver:
               - light.turn_off: {id: led_strip, transition_length: 1s}
               - delay: 500ms
               - switch.turn_off: vibration_motor
+
+light:
+  - id: !extend led_strip
+    effects:
+      - pulse:
+          transition_length: 2s
+      - flicker:
+      - strobe: 
+      - addressable_rainbow:
+      - addressable_color_wipe:
+      - addressable_scan:
+      - addressable_twinkle:
+      - addressable_random_twinkle:
+      - addressable_fireworks:
+      - addressable_flicker:  
+          intensity: 40%
 
 script:
   - id: dim_up
