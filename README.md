@@ -179,6 +179,25 @@ If you want to control WLED with an IR remote:
 
 Now you're all set to control the badge's LED effects using the web UI, buttons, or an IR remote!
 
+### Configure 2D LED Mapping
+
+If you want to use 2D effects, you should map the LEDs so the effects show up correctly.
+
+Follow the [official mapping documention'](https://kno.wled.ge/advanced/mapping/) on how to create the `ledmap.json` file, which should have the content below:
+
+```json
+{
+  "map": [
+    14, 15,  0,  1, 2, 
+    13, -1, -1, -1, 3,
+    12, -1, -1, -1, 4,
+    11, -1, -1, -1, 5,
+    10,  9,  8,  7, 6
+  ],
+  "width":  5,
+  "height": 5
+}
+```
 
 ## References
 
