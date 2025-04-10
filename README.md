@@ -181,6 +181,7 @@ Now you're all set to control the badge's LED effects using the web UI, buttons,
 
 ### Configure 2D LED Mapping
 
+<img src=https://github.com/user-attachments/assets/20c955c5-9e6a-46d4-998e-e81c119c059b align=right width=250>
 If you want to use 2D effects, you should map the LEDs so the effects show up correctly.
 
 Follow the [official mapping documention'](https://kno.wled.ge/advanced/mapping/) on how to create the `ledmap.json` file, which should have the content below:
