@@ -20,7 +20,7 @@ packages:
 esphome:
   name: hope-badge
   friendly_name: HOPE Badge
-  on_boot: 
+  on_boot:
     - then:
         logger.log: Hello World
 
@@ -36,7 +36,7 @@ wifi:
   output_power: 8.5db
   # Enable 802.11v BSS Transition Management for better roaming.
   enable_btm: true
-  # Enable 802.11k Radio Resource Management support.  
+  # Enable 802.11k Radio Resource Management support.
   enable_rrm: true
 
   # Configures a local access point, in case no wifi is available.
@@ -58,22 +58,22 @@ ota:
 
 binary_sensor:
   - id: !extend button_1
-    on_click: 
+    on_click:
       then:
-        - script.execute: next_effect
+        - script.execute: next_color
 
   - id: !extend button_2
-    on_click: 
+    on_click:
       then:
         - script.execute: dim_down
 
   - id: !extend button_3
-    on_click: 
+    on_click:
       then:
         - script.execute: dim_up
 
   - id: !extend button_4
-    on_click: 
+    on_click:
       then:
         - script.execute: ir_blast
 
@@ -95,14 +95,14 @@ light:
       - pulse:
           transition_length: 2s
       - flicker:
-      - strobe: 
+      - strobe:
       - addressable_rainbow:
       - addressable_color_wipe:
       - addressable_scan:
       - addressable_twinkle:
       - addressable_random_twinkle:
       - addressable_fireworks:
-      - addressable_flicker:  
+      - addressable_flicker:
           intensity: 40%
 
 script:
@@ -144,12 +144,18 @@ script:
       - remote_transmitter.transmit_nec:
           transmitter_id: ir_transmitter
           address: 0xD880
-          command: 0xDD22 
+          command: 0xDD22
 
-  - id: next_effect
-    mode: queued
+  - id: next_color
+    mode: single
     then:
-      - logger.log: "TODO: Next effect"
+      - lambda: |-
+          static int color = 0;
+          color = (color + 1) % 7;
+          float red = color & 1 ? 1 : 0;
+          float green = color & 2 ? 1 : 0;
+          float blue = color & 4 ? 1 : 0;
+          id(led_strip).turn_on().set_transition_length(0).set_rgb(red, green, blue).perform();
 
   - id: run_blast_effect
     mode: single
