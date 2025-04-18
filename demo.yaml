@@ -151,7 +151,11 @@ script:
     then:
       - lambda: |-
           static int color = 0;
-          color = (color + 1) % 7;
+          color = (color + 1) % 8;
+          if (color == 0) {
+            id(led_strip).turn_off().set_transition_length(0).perform();
+            return;
+          }
           float red = color & 1 ? 1 : 0;
           float green = color & 2 ? 1 : 0;
           float blue = color & 4 ? 1 : 0;
