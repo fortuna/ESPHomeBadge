@@ -27,10 +27,18 @@
 # - remote_transmitter: 48
 # - remote_receiver: 86
 
+# The badge is a custom board, not explicitly supported by PlatformIO.
+# We choose esp32-c3-devkitm-1 as the base board, which is similar enough to work here.
+# However, that board uses flash mode QIO, while the badge uses DIO, so it can free up
+# SPIHD/GPIO12 and SPIWD/GPIO13 for use as GPIO pins. For that reason we override the flash mode in the
+# board definition.
+# Definition for esp32-c3-devkitm-1: https://github.com/platformio/platform-espressif32/blob/master/boards/esp32-c3-devkitm-1.json
+# ESP32 flash modes: https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/spi-flash-modes.html
 esphome:
+  platformio_options:
+    board_build.flash_mode: dio
 
 esp32:
-  # The badge is a custom board, but the esp32-c3-devkitm-1 is similar enough to work here.
   board: esp32-c3-devkitm-1
   variant: esp32c3
   framework:
@@ -100,6 +108,13 @@ remote_receiver:
 # OUTPUTS
 
 light:
+  - id: board_led
+    name: Board LED
+    platform: monochromatic
+    output: board_led_output
+    initial_state:
+      state: OFF
+
   - id: led_strip
     name: LED Strip
     # restore_mode: RESTORE_DEFAULT_ON
@@ -117,13 +132,20 @@ remote_transmitter:
     carrier_duty_percent: 50%
     rmt_symbols: 48
 
+output:
+  - id: board_led_output
+    platform: ledc
+    pin:
+      number: GPIO13
+      ignore_pin_validation_error: true
+
 switch:
   - id: vibration_motor
+    name: Vibration Motor
     platform: gpio
     pin:
       # The badge uses DIO flash mode instead of QIO, making the SPI pins GPIO12 and GPIO13 free to use.
       # See https://github.com/esphome/issues/issues/3744.
       number: GPIO12
       ignore_pin_validation_error: true
-    name: Vibration Motor
     restore_mode: ALWAYS_OFF

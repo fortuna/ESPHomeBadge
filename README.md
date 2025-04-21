@@ -21,7 +21,8 @@ By enabling users to program the badge with ESPHome, this project aims to:
 
 Hardware Definition
 *   [x] [Tactile Buttons](https://esphome.io/components/binary_sensor/) (GPIO19, GPIO18, GPIO10, GPIO09)
-*   [x] [LED strip](https://esphome.io/components/light/esp32_rmt_led_strip) (GPIO08)
+*   [x] [Green LED](https://esphome.io/components/output/ledc.html) (GPIO13)
+*   [x] [RGB LED strip](https://esphome.io/components/light/esp32_rmt_led_strip) (GPIO08)
 *   [x] [IR receiver](https://esphome.io/components/remote_receiver.html) (GPIO03)
 *   [x] [IR transmitter](https://esphome.io/components/remote_transmitter.html) (GPIO02)
 *   [x] Vibration motor (GPIO13/SPIWP)
