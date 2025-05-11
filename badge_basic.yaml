@@ -45,9 +45,10 @@ esp32:
     type: esp-idf
 
 i2c:
-  sda: GPIO21
-  scl: GPIO20
+  sda: GPIO20
+  scl: GPIO21
   id: badge_i2c
+  frequency: 400kHz  # Fast mode.
 
 # INPUTS
 
