@@ -19,25 +19,52 @@ By enabling users to program the badge with ESPHome, this project aims to:
 
 ## Features (Planned/In Development)
 
-Hardware Definition
-*   [x] [Tactile Buttons](https://esphome.io/components/binary_sensor/) (GPIO19, GPIO18, GPIO10, GPIO09)
-*   [x] [Green LED](https://esphome.io/components/output/ledc.html) (GPIO13)
-*   [x] [RGB LED strip](https://esphome.io/components/light/esp32_rmt_led_strip) (GPIO08)
-*   [x] [IR receiver](https://esphome.io/components/remote_receiver.html) (GPIO03)
-*   [x] [IR transmitter](https://esphome.io/components/remote_transmitter.html) (GPIO02)
-*   [x] Vibration motor (GPIO13/SPIWP)
-*   [x] [SGP30 Air Quality Sensor](https://esphome.io/components/sensor/sgp30.html) (I2C, U7)
-*   [x] [MAX17048 Fuel Gauge](https://esphome.io/components/sensor/max17043.html) (I2C, U4)
-*   [ ] [PCF8574 GPIO Expander](https://esphome.io/components/pcf8574.html) (I2C, U9)
+GPIO Components
+* [x] Tactile Buttons (SW3/SW4/SW1/SW2, GPIO19/GPIO18/GPIO10/GPIO09, [ESPHome](https://esphome.io/components/binary_sensor.html))
+* [x] Green LED (D28, GPIO13, [ESPHome](https://esphome.io/components/output/ledc.html))
+* [x] [WS2812B] RGB LED strip (D1-D16, GPIO08, [ESPHome](https://esphome.io/components/light/esp32_rmt_led_strip))
+* [x] [IRM-H638] IR receiver (IC1, GPIO03, [ESPhome](https://esphome.io/components/remote_receiver.html))
+* [x] [VSMY1850] IR transmitter (D23, GPIO02, [ESPHome](https://esphome.io/components/remote_transmitter.html))
+* [x] Vibration motor (GPIO13/SPIWP)
 
-Remote Access
-*   [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
-*   [x] [Web Server](https://esphome.io/components/web_server.html) controller
-*   [x] [OTA update](https://esphome.io/components/ota/) support
+[WS2812B]: https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf
+[IRM-H638]: https://www.everlight.com/wp-content/plugins/ItemRelationship/product_files/pdf/DMO-0000004-IRM-H6XX-TR2_Series_Datasheet_V4.pdf
+[VSMY1850]: https://www.vishay.com/docs/83397/vsmy1850.pdf
+
+I2C Components
+* [x] [MAX17048] Battery Sensor (U4, address 0x36, [ESPHome](https://esphome.io/components/sensor/max17043.html))
+    * Note: We can use the MAX17043 ESPHome component because MAX17048 is a drop-in replacement for MAX17043.
+* [ ] [ST25DV04K] Dynamic NFC/RFID tag IC (U6)
+    * Access to user memory, Dynamic registers or Mailbox: 0x53
+    * System configuration area: 0x57
+    * ???: 0x2D
+* [x] [SGP30] Air Quality Sensor (U7, address 0x58, [ESPHome](https://esphome.io/components/sensor/sgp30.html))
+* [ ] [PCF8574] GPIO Expander (U9)
+* [ ] [ATECC608A] Cryptographic Co-Processor with Secure Hardware-Based Key Storage (U11)
+
+[MAX17048]: https://www.analog.com/media/en/technical-documentation/data-sheets/max17048-max17049.pdf
+[MAX17043 ESPHome component]: https://esphome.io/components/sensor/max17043.html
+[ST25DV04K]: https://www.st.com/resource/en/datasheet/st25dv04k.pdf
+[SGP30]: https://sensirion.com/media/documents/984E0DD5/61644B8B/Sensirion_Gas_Sensors_Datasheet_SGP30.pdf
+[PCF8574]: https://esphome.io/components/pcf8574.html
+[ATECC608A]: https://ww1.microchip.com/downloads/aemDocuments/documents/SCBU/ProductDocuments/DataSheets/ATECC608A-CryptoAuthentication-Device-Summary-Data-Sheet-DS40001977B.pdf
+
+SPI Components
+* [CAT25640] 64 Kb EEPROM (U8)
+* [ST7789V] TFT LCD display driver (J7, [ESPHome](https://esphome.io/components/display/ili9xxx#ili9xxx))
+
+<!-- See https://www.jx-wisevision.com/2-40-small-size-240-rgbx320-dots-tft-lcd-display-module-screen-product/ -->
+
+[CAT25640]: https://www.onsemi.com/pdf/datasheet/cat25640-d.pdf
+[ST7789V]: https://newhavendisplay.com/content/datasheets/ST7789V.pdf
 
 Application
-*   [ ] LED control and effects
-*   [ ] IR Transmitter/Receiver
+* Remote Access
+  * [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
+  * [x] [Web Server](https://esphome.io/components/web_server.html) controller
+  * [x] [OTA update](https://esphome.io/components/ota/) support
+* [ ] LED control and effects
+* [ ] IR Transmitter/Receiver
 
 ## Getting Started
 
