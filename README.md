@@ -120,41 +120,41 @@ Contributions are welcome! If you have ideas, bug fixes, or new features, please
 
 Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet and the badge schematic. The "Usage in Badge" column details how the pin is connected in the schematic, and "Availability" indicates if the pin is easily accessible for general use on this specific badge design.
 
-| Pin No. | Pin Name (Datasheet)        | Usage in Badge (Schematic)                         | Availability |
-| :------ | :-------------------------- | :------------------------------------------------- | :----------- |
-| 1       | LNA_IN                      | RF Antenna Input                         | Used         |
-| 2       | VDD3P3                      | +3.3V Power Supply                       | Used (Power) |
-| 3       | VDD3P3                      | +3.3V Power Supply                       | Used (Power) |
-| 4       | XTAL_32K_P / GPIO0          | 32kHz Crystal Input                      | Used         |
-| 5       | XTAL_32K_N / GPIO1          | 32kHz Crystal Output                     | Used         |
-| 6       | GPIO2                       | IR Transmitter Control                   | Used         |
-| 7       | CHIP_EN                     | Chip Enable Control                      | Used         |
-| 8       | GPIO3                       | IR Receiver Input                        | Used         |
-| 9       | MTMS / GPIO4                | SPI Chip Select 1 (SPI_CS1)              | Used         |
-| 10      | MTDI / GPIO5                | SPI Data In (SPI_SDI/MOSI)               | Used         |
-| 11      | VDD3P3_RTC                  | +3.3V RTC Power Supply                   | Used (Power) |
-| 12      | MTCK / GPIO6                | SPI Clock (SPI_SCK)                      | Used         |
-| 13      | MTDO / GPIO7                | TFT Display Data/Command (TFT_DC)        | Used         |
-| 14      | GPIO8                       | RGB LED Data (RGB_DAT)                   | Used         |
-| 15      | GPIO9 / BOOT                | Tactile Switch B Input (TACT_B)          | Used         |
-| 16      | GPIO10                      | Tactile Switch A Input (TACT_A)          | Used         |
-| 17      | VDD3P3_CPU                  | +3.3V CPU Power Supply                   | Used (Power) |
-| 18      | VDD_SPI / GPIO11            | SPI Flash Power Supply              | Used (Power) |
-| 19      | SPIHD / GPIO12              | LED Control (D28)                   | Used         |
-| 20      | SPIWP / GPIO13              | Vibration Motor Control        | Used         |
-| 21      | SPICS0 / GPIO14             | Internal Flash Chip Select               | Used         |
-| 22      | SPICLK / GPIO15             | Internal Flash Clock                     | Used         |
-| 23      | SPID / GPIO16               | Internal Flash Data Out (MOSI)           | Used         |
-| 24      | SPIQ / GPIO17               | Internal Flash Data In (MISO)            | Used         |
-| 25      | GPIO18 / USB_D-             | USB Data Negative (USB-)                 | Used         |
-| 26      | GPIO19 / USB_D+             | USB Data Positive (USB+)                 | Used         |
-| 27      | U0RXD / GPIO20              | UART0 Receive (U0RXD)                    | Used         |
-| 28      | U0TXD / GPIO21              | UART0 Transmit (U0TXD)                   | Used         |
-| 29      | XTAL_N                      | Main Crystal Input                       | Used         |
-| 30      | XTAL_P                      | Main Crystal Output                      | Used         |
-| 31      | VDDA                        | Analog Power Supply                      | Used (Power) |
-| 32      | VDDA                        | Analog Power Supply                      | Used (Power) |
-| 33      | GND                         | Ground                                   | Used (Power) |
+| Pin No. | Pin Name (Datasheet)        | Usage in Badge (Schematic)               |
+| :------ | :-------------------------- | :----------------------------------------|
+| 1       | LNA_IN                      | RF Antenna Input                         |
+| 2       | VDD3P3                      | +3.3V Power Supply                       |
+| 3       | VDD3P3                      | +3.3V Power Supply                       |
+| 4       | XTAL_32K_P / GPIO0          | 32kHz Crystal Input                      |
+| 5       | XTAL_32K_N / GPIO1          | 32kHz Crystal Output                     |
+| 6       | GPIO2                       | IR Transmitter                           |
+| 7       | CHIP_EN                     | Chip Enable Control                      |
+| 8       | GPIO3                       | IR Receiver Input                        |
+| 9       | MTMS / GPIO4                | SPI Chip Select 1 (SPI_CS1)              |
+| 10      | MTDI / GPIO5                | SPI Data In (SPI_SDI/MOSI)               |
+| 11      | VDD3P3_RTC                  | +3.3V RTC Power Supply                   |
+| 12      | MTCK / GPIO6                | SPI Clock (SPI_SCK)                      |
+| 13      | MTDO / GPIO7                | TFT Display Data/Command (TFT_DC)        |
+| 14      | GPIO8                       | RGB LED Data (RGB_DAT)                   |
+| 15      | GPIO9 / BOOT                | Tactile Button 4 (SW2, TACT_B)           | 
+| 16      | GPIO10                      | Tactile Button 3 (SW1, TACT_A)           | 
+| 17      | VDD3P3_CPU                  | +3.3V CPU Power Supply                   |
+| 18      | VDD_SPI / GPIO11            | SPI Flash Power Supply                   |
+| 19      | SPIHD / GPIO12              | Vibration Motor                          |
+| 20      | SPIWP / GPIO13              | LED (D28)                                |
+| 21      | SPICS0 / GPIO14             | Internal Flash Chip Select               |
+| 22      | SPICLK / GPIO15             | Internal Flash Clock                     |
+| 23      | SPID / GPIO16               | Internal Flash Data Out (MOSI)           |
+| 24      | SPIQ / GPIO17               | Internal Flash Data In (MISO)            |
+| 25      | GPIO18 / USB_D-             | Tactile Button 2 (SW4, TACT_D)           |
+| 26      | GPIO19 / USB_D+             | Tactile Button 1 (SW3, TACT_C)           |
+| 27      | U0RXD / GPIO20              | I2C SDA                                  |
+| 28      | U0TXD / GPIO21              | I2C SCL                                  |
+| 29      | XTAL_N                      | Main Crystal Input                       |
+| 30      | XTAL_P                      | Main Crystal Output                      |
+| 31      | VDDA                        | Analog Power Supply                      |
+| 32      | VDDA                        | Analog Power Supply                      |
+| 33      | GND                         | Ground                                   |
 
 **Note:** Based on the schematic analysis, all ESP32-C3 pins are utilized for specific functions within the Hope Badge circuit, and none appear to be readily available as unallocated GPIOs for general user experimentation without modifying the board.
 
