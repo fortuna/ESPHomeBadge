@@ -14,11 +14,14 @@
 
 # This is the file where you can customize the behavior of your badge.
 
+substitutions:
+  name: hope-badge
+
 packages:
-  base: !include ./badge_basic.yaml
+  base: !include ./badge_pro.yaml
 
 esphome:
-  name: hope-badge
+  name: ${name}
   friendly_name: HOPE Badge
   on_boot:
     - then:
