@@ -82,12 +82,25 @@ remote_receiver:
   - id: !extend ir_receiver
     on_nec:
         then:
-          - lambda: |-
-              ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);
           - if:
-              condition: {lambda: return x.address == 0xD880 && x.command == 0xDD22;}
+              condition: {lambda: return id(enable_ir_rx);}
               then:
-                - script.execute: run_blast_effect
+                - lambda: |-
+                    ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);
+                - if:
+                    condition: {lambda: return x.address == 0xD880 && x.command == 0xDD22;}
+                    then:
+                      - script.execute: run_blast_effect
+
+remote_transmitter:
+  - id: !extend ir_transmitter
+    on_transmit:
+      then:
+        - lambda: id(enable_ir_rx) = false;
+    on_complete:
+      then:
+        - delay: 100ms
+        - lambda: id(enable_ir_rx) = true;
 
 light:
   - id: !extend led_strip
@@ -105,7 +118,14 @@ light:
       - addressable_flicker:
           intensity: 40%
 
+globals:
+  # Flag to enable/disable IR RX. This allows the badge to ignore IR commands sent by itself.
+  - id: enable_ir_rx
+    type: bool
+    initial_value: 'true'
+
 script:
+  # Make the LEDs dimmer.
   - id: dim_down
     mode: queued
     then:
@@ -122,6 +142,7 @@ script:
               relative_brightness: -10%
               transition_length: 0s
 
+  # Make the LEDs brighter.
   - id: dim_up
     mode: queued
     then:
@@ -138,6 +159,7 @@ script:
                 brightness: 20%
                 transition_length: 0s
 
+  # Sends the IR blast command.
   - id: ir_blast
     mode: single
     then:
@@ -146,6 +168,7 @@ script:
           address: 0xD880
           command: 0xDD22
 
+  # Changes the color of the LED strip.
   - id: next_color
     mode: single
     then:
