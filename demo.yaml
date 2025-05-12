@@ -195,3 +195,25 @@ script:
       - light.turn_off: {id: led_strip, transition_length: 1s}
       - delay: 500ms
       - switch.turn_off: vibration_motor
+
+lvgl:
+  displays: [tft_display]
+  # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
+  buffer_size: 25%
+  widgets:
+    - spinner:
+        align: center
+        spin_time: 2s
+        arc_length: 60deg
+    - label:
+        id: title
+        align: center
+        text_font: montserrat_40
+        text: 'Hello World!'
+
+text:
+  - id: title_text
+    platform: lvgl
+    widget: title
+    name: Title Text
+    mode: text

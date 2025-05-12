@@ -50,8 +50,8 @@ I2C Components
 [ATECC608A]: https://ww1.microchip.com/downloads/aemDocuments/documents/SCBU/ProductDocuments/DataSheets/ATECC608A-CryptoAuthentication-Device-Summary-Data-Sheet-DS40001977B.pdf
 
 SPI Components
-* [CAT25640] 64 Kb EEPROM (U8)
-* [ST7789V] TFT LCD display driver (J7, [ESPHome](https://esphome.io/components/display/ili9xxx#ili9xxx))
+* [ ] [CAT25640] 64 Kb EEPROM (U8)
+* [x] [ST7789V] TFT LCD display driver (J7, [ESPHome](https://esphome.io/components/display/ili9xxx#ili9xxx))
 
 <!-- See https://www.jx-wisevision.com/2-40-small-size-240-rgbx320-dots-tft-lcd-display-module-screen-product/ -->
 
@@ -125,31 +125,31 @@ Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet an
 | 1       | LNA_IN                      | RF Antenna Input                         |
 | 2       | VDD3P3                      | +3.3V Power Supply                       |
 | 3       | VDD3P3                      | +3.3V Power Supply                       |
-| 4       | XTAL_32K_P / GPIO0          | 32kHz Crystal Input                      |
-| 5       | XTAL_32K_N / GPIO1          | 32kHz Crystal Output                     |
-| 6       | GPIO2                       | IR Transmitter                           |
+| 4       | XTAL_32K_P / GPIO0          | TFT DC (`TFT_DC`)                        |
+| 5       | XTAL_32K_N / GPIO1          | TFT Reset (`SPI_CS2`)                    |
+| 6       | GPIO2                       | IR Transmitter (`IR_TX`)                 |
 | 7       | CHIP_EN                     | Chip Enable Control                      |
-| 8       | GPIO3                       | IR Receiver Input                        |
-| 9       | MTMS / GPIO4                | SPI Chip Select 1 (SPI_CS1)              |
-| 10      | MTDI / GPIO5                | SPI Data In (SPI_SDI/MOSI)               |
+| 8       | GPIO3                       | IR Receiver Input (`IR_RX`)              |
+| 9       | MTMS / GPIO4                | TFT Chip Select (`SPI_CS1`)              |
+| 10      | MTDI / GPIO5                | SPI Data In (`SPI_SDI`)                  |
 | 11      | VDD3P3_RTC                  | +3.3V RTC Power Supply                   |
-| 12      | MTCK / GPIO6                | SPI Clock (SPI_SCK)                      |
-| 13      | MTDO / GPIO7                | TFT Display Data/Command (TFT_DC)        |
-| 14      | GPIO8                       | RGB LED Data (RGB_DAT)                   |
-| 15      | GPIO9 / BOOT                | Tactile Button 4 (SW2, TACT_B)           | 
-| 16      | GPIO10                      | Tactile Button 3 (SW1, TACT_A)           | 
+| 12      | MTCK / GPIO6                | SPI Clock (`SPI_SCK`)                    |
+| 13      | MTDO / GPIO7                | SPI Data Out (`SPI_SDO`)                 |
+| 14      | GPIO8                       | RGB LED Data (`RGB_DAT`)                 |
+| 15      | GPIO9 / BOOT                | Tactile Button 4 (SW2, `TACT_B`)         | 
+| 16      | GPIO10                      | Tactile Button 3 (SW1, `TACT_A`)         | 
 | 17      | VDD3P3_CPU                  | +3.3V CPU Power Supply                   |
 | 18      | VDD_SPI / GPIO11            | SPI Flash Power Supply                   |
-| 19      | SPIHD / GPIO12              | Vibration Motor                          |
-| 20      | SPIWP / GPIO13              | LED (D28)                                |
+| 19      | SPIHD / GPIO12              | Vibration Motor (`VIBRAMOTOR`)           |
+| 20      | SPIWP / GPIO13              | LED (D28) and TFT Backlight              |
 | 21      | SPICS0 / GPIO14             | Internal Flash Chip Select               |
 | 22      | SPICLK / GPIO15             | Internal Flash Clock                     |
 | 23      | SPID / GPIO16               | Internal Flash Data Out (MOSI)           |
 | 24      | SPIQ / GPIO17               | Internal Flash Data In (MISO)            |
-| 25      | GPIO18 / USB_D-             | Tactile Button 2 (SW4, TACT_D)           |
-| 26      | GPIO19 / USB_D+             | Tactile Button 1 (SW3, TACT_C)           |
-| 27      | U0RXD / GPIO20              | I2C SDA                                  |
-| 28      | U0TXD / GPIO21              | I2C SCL                                  |
+| 25      | GPIO18 / USB_D-             | Tactile Button 2 (SW4, `TACT_D`)         |
+| 26      | GPIO19 / USB_D+             | Tactile Button 1 (SW3, `TACT_C`)         |
+| 27      | U0RXD / GPIO20              | I2C SDA (`I2C_SDA`)                      |
+| 28      | U0TXD / GPIO21              | I2C SCL (`I2C_SCL`)                      |
 | 29      | XTAL_N                      | Main Crystal Input                       |
 | 30      | XTAL_P                      | Main Crystal Output                      |
 | 31      | VDDA                        | Analog Power Supply                      |
