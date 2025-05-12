@@ -141,7 +141,7 @@ Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet an
 | 17      | VDD3P3_CPU                  | +3.3V CPU Power Supply                   |
 | 18      | VDD_SPI / GPIO11            | SPI Flash Power Supply                   |
 | 19      | SPIHD / GPIO12              | Vibration Motor (`VIBRAMOTOR`)           |
-| 20      | SPIWP / GPIO13              | LED (D28) and TFT Backlight              |
+| 20      | SPIWP / GPIO13              | LED (D28)                                |
 | 21      | SPICS0 / GPIO14             | Internal Flash Chip Select               |
 | 22      | SPICLK / GPIO15             | Internal Flash Clock                     |
 | 23      | SPID / GPIO16               | Internal Flash Data Out (MOSI)           |
