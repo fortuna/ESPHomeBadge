@@ -25,7 +25,7 @@ GPIO Components
 * [x] [WS2812B] RGB LED strip (D1-D16, GPIO08, [ESPHome](https://esphome.io/components/light/esp32_rmt_led_strip))
 * [x] [IRM-H638] IR receiver (IC1, GPIO03, [ESPhome](https://esphome.io/components/remote_receiver.html))
 * [x] [VSMY1850] IR transmitter (D23, GPIO02, [ESPHome](https://esphome.io/components/remote_transmitter.html))
-* [x] Vibration motor (GPIO13/SPIWP)
+* [x] Vibration motor (GPIO13/SPIWP, [ESPHome](https://esphome.io/components/output/ledc.html))
 
 [WS2812B]: https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf
 [IRM-H638]: https://www.everlight.com/wp-content/plugins/ItemRelationship/product_files/pdf/DMO-0000004-IRM-H6XX-TR2_Series_Datasheet_V4.pdf
@@ -39,14 +39,13 @@ I2C Components
     * System configuration area: 0x57
     * ???: 0x2D
 * [x] [SGP30] Air Quality Sensor (U7, address 0x58, [ESPHome](https://esphome.io/components/sensor/sgp30.html))
-* [ ] [PCF8574] GPIO Expander (U9)
+* [ ] [PCF8574] GPIO Expander (U9, [ESPHome](https://esphome.io/components/pcf8574.html))
 * [ ] [ATECC608A] Cryptographic Co-Processor with Secure Hardware-Based Key Storage (U11)
 
 [MAX17048]: https://www.analog.com/media/en/technical-documentation/data-sheets/max17048-max17049.pdf
-[MAX17043 ESPHome component]: https://esphome.io/components/sensor/max17043.html
 [ST25DV04K]: https://www.st.com/resource/en/datasheet/st25dv04k.pdf
 [SGP30]: https://sensirion.com/media/documents/984E0DD5/61644B8B/Sensirion_Gas_Sensors_Datasheet_SGP30.pdf
-[PCF8574]: https://esphome.io/components/pcf8574.html
+[PCF8574]: https://www.ti.com/lit/ds/symlink/pcf8574.pdf
 [ATECC608A]: https://ww1.microchip.com/downloads/aemDocuments/documents/SCBU/ProductDocuments/DataSheets/ATECC608A-CryptoAuthentication-Device-Summary-Data-Sheet-DS40001977B.pdf
 
 SPI Components
