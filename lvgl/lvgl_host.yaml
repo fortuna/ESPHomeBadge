@@ -1,0 +1,495 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+esphome:
+  name: sdl
+
+web_server:
+  version: 3
+
+host:
+
+logger:
+
+text:
+  - id: badge_name
+    name: Badge Name
+    platform: lvgl
+    widget: name_label
+    mode: text
+  - id: badge_org
+    name: Badge Organization
+    platform: lvgl
+    widget: org_label
+    mode: text
+
+binary_sensor:
+  - {id: key_back,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
+  - {id: key_prev,   platform: sdl, sdl_id: badge_display, key: SDLK_COMMA}
+  - {id: key_next,   platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD}
+  - {id: key_select, platform: sdl, sdl_id: badge_display, key: SDLK_SLASH}
+
+display:
+  - id: badge_display
+    platform: sdl
+    dimensions: {width: 320, height: 200}
+    auto_clear_enabled: false
+    update_interval: 0.015s
+
+lvgl:
+  - id: badge_lvgl
+    displays: [badge_display]
+
+    encoders:
+      enter_button: key_select
+      sensor:
+        left_button: key_prev
+        right_button: key_next
+
+    # keypads:
+    # - esc: key_back
+    # - enter: key_select
+    # - up: key_next
+    # - down: key_prev
+
+    pages:
+      - widgets:
+        - tabview:
+            id: tabview_id
+            position: top
+            size: 40
+            tabs:
+            - !include ./badge_tab.yaml
+
+          # - label:
+          #     id: input_label
+          #     text: Input
+          #     align: TOP_LEFT
+          # - textarea:
+          #     id: input_text
+          #     flex_grow: true
+          #     width: 100%
+          # - keyboard:
+          #     id: input_keyboard
+          #     textarea: input_text
+
+      # - id: badge_page
+      #   # on_load:
+      #   #   - lvgl.textarea.update: {id: badge_name_label, text: '!lambda id(badge_name);'}
+      #   #   - lvgl.textarea.update: {id: badge_org_label, text: '!lambda id(badge_organization);'}
+      #   widgets:
+      #     - obj:
+      #         <<: {x: 0, y: 0}
+      #         <<: {width: 100%, height: 100%}
+      #         layout:
+      #           type: FLEX
+      #           flex_flow: COLUMN
+      #           flex_align_main: CENTER
+      #           flex_align_cross: CENTER
+      #         widgets:
+      #           - label:
+      #               id: badge_name_label
+      #               text: Name
+      #               text_font: montserrat_22
+      #               align: CENTER
+      #               width: 100%
+      #               height: SIZE_CONTENT
+      #               on_click:
+      #                 then:
+      #                   # - lvgl.keyboard.update:
+      #                   #     id: keyboard1
+      #                   #     textarea: name_textarea
+      #                   # - lvgl.widget.show: keyboard1
+      #           - textarea:
+      #               id: name_textarea
+      #               width: 80%
+      #               height: SIZE_CONTENT
+      #               text: !lambda return id(badge_name);
+      #               one_line: true
+      #               on_ready:
+      #                 then:
+      #                   - lambda: |-
+      #                       // id(badge_name) = id(name_textarea).get_value();
+      #                       // id(keyboard1).hide();
+      #                   - lvgl.widget.redraw: badge_name_label # Update label after changing global var
+      #           - label:
+      #               id: badge_org_label
+      #               text: Org
+      #               text_font: montserrat_18
+      #               align: CENTER
+      #               width: 100%
+      #               height: SIZE_CONTENT
+      #               on_click:
+      #                 then:
+      #                   # - lvgl.keyboard.update:
+      #                   #     id: keyboard1
+      #                   #     textarea: org_textarea
+      #                   # - lvgl.widget.show: keyboard1
+      #           - textarea:
+      #               id: org_textarea
+      #               width: 80%
+      #               height: SIZE_CONTENT
+      #               text: !lambda return id(badge_organization);
+      #               one_line: true
+      #               on_ready:
+      #                 then:
+      #                   - lambda: |-
+      #                       // id(badge_organization) = id(org_textarea).get_text();
+      #                       // id(keyboard1).hide();
+      #                   - lvgl.widget.redraw: badge_org_label # Update label after changing global var
+    
+
+    # widgets:
+    # - spinner:
+    #     align: center
+    #     spin_time: 2s
+    #     arc_length: 60deg
+    # - label:
+    #     id: title
+    #     align: center
+    #     text_font: montserrat_40
+    #     text: 'Hello World!'
+
+# Define GPIOs for buttons (adjust pin numbers for your board)
+# binary_sensor:
+#   - platform: gpio
+#     pin: GPIO34 # Example: Back button
+#     name: "Back Button"
+#     id: button_back
+#     on_press:
+#       then:
+#         - lambda: |-
+#             // Hide keyboard if active
+#             if (id(keyboard1).get_is_pressed()) {
+#               id(keyboard1).hide();
+#             } else {
+#               id(badge_tabview).previous();
+#             }
+
+#   - platform: gpio
+#     pin: GPIO35 # Example: Previous tab button
+#     name: "Previous Button"
+#     id: button_previous
+#     on_press:
+#       then:
+#         - lvgl.page.previous:
+#             # id: badge_tabview
+#             animation: MOVE_RIGHT
+#             time: 200ms
+
+#   - platform: gpio
+#     pin: GPIO32 # Example: Next tab button
+#     name: "Next Button"
+#     id: button_next
+#     on_press:
+#       then:
+#         - lvgl.page.next:
+#             # id: badge_tabview
+#             animation: MOVE_LEFT
+#             time: 200ms
+
+#   - platform: gpio
+#     pin: GPIO33 # Example: Select button
+#     name: "Select Button"
+#     id: button_select
+#     # on_press:
+#     #   then:
+#     #     - lambda: |-
+#     #         // Logic for select button within tabs will be handled by LVGL widget interactions
+
+# lvgl:
+#   display: # Link to the display defined above
+#     - id: display_id
+#   keypads: # Map physical buttons to LVGL keys for navigation
+#     - group: default # Apply to the default group for tab navigation
+#       prev: button_previous
+#       next: button_next
+#       enter: button_select
+#       esc: button_back # Use back button to dismiss keyboard or go back
+
+#     - id: wifi_page
+#       on_load:
+#         - lambda: |-
+#             id(wifi_switch_lvgl).checked = id(wifi).is_connected();
+#             id(wifi_switch_lvgl).perform_action(); # Update LVGL switch state from actual WiFi state
+#       widgets:
+#         - obj:
+#             x: 0
+#             y: 0
+#             width: 100%
+#             height: 100%
+#             layout:
+#               type: FLEX
+#               flex_flow: COLUMN
+#               flex_align_main: START
+#               flex_align_cross: STRETCH
+#             widgets:
+#               - label:
+#                   text: "Wi-Fi Control"
+#                   text_font: montserrat_28
+#                   align: CENTER
+#                   width: 100%
+#                   height: SIZE_CONTENT
+#               - switch:
+#                   id: wifi_switch_lvgl
+#                   x: 10%
+#                   y: 10%
+#                   width: 80%
+#                   name: "Wi-Fi Enable"
+#                   on_value:
+#                     then:
+#                       - wifi.set_power: !lambda 'return x;'
+#                       - if:
+#                           condition: !lambda 'return x;' # if turning on WiFi, trigger update
+#                           then:
+#                             - text_sensor.update: wifi_ip_address
+#                             - text_sensor.update: wifi_ssid
+#                             - text_sensor.update: wifi_bssid
+#                       - if:
+#                           condition: !lambda 'return !x;' # if turning off WiFi, clear displayed info
+#                           then:
+#                             - lvgl.label.update:
+#                                 id: ip_label
+#                                 text: "Disconnected"
+#                             - lvgl.label.update:
+#                                 id: ssid_label
+#                                 text: "N/A"
+#                             - lvgl.label.update:
+#                                 id: bssid_label
+#                                 text: "N/A"
+#               - label:
+#                   text: "IP Address:"
+#                   x: 5%
+#                   y: 20%
+#                   text_font: montserrat_16
+#               - label:
+#                   id: ip_label
+#                   text: "N/A"
+#                   x: 5%
+#                   y: 25%
+#                   text_font: montserrat_16
+#               - label:
+#                   text: "SSID:"
+#                   x: 5%
+#                   y: 35%
+#                   text_font: montserrat_16
+#               - label:
+#                   id: ssid_label
+#                   text: "N/A"
+#                   x: 5%
+#                   y: 40%
+#                   text_font: montserrat_16
+#               - label:
+#                   text: "BSSID:"
+#                   x: 5%
+#                   y: 50%
+#                   text_font: montserrat_16
+#               - label:
+#                   id: bssid_label
+#                   text: "N/A"
+#                   x: 5%
+#                   y: 55%
+#                   text_font: montserrat_16
+
+#     - id: light_control_page
+#       widgets:
+#         - obj:
+#             x: 0
+#             y: 0
+#             width: 100%
+#             height: 100%
+#             layout:
+#               type: FLEX
+#               flex_flow: COLUMN
+#               flex_align_main: START
+#               flex_align_cross: STRETCH
+#             widgets:
+#               - label:
+#                   text: "Light Control"
+#                   text_font: montserrat_28
+#                   align: CENTER
+#                   width: 100%
+#                   height: SIZE_CONTENT
+#               - label:
+#                   text: "Brightness:"
+#                   x: 5%
+#                   y: 10%
+#                   text_font: montserrat_16
+#               - slider:
+#                   id: brightness_slider
+#                   x: 5%
+#                   y: 15%
+#                   width: 90%
+#                   height: 20px
+#                   min_value: 0
+#                   max_value: 100
+#                   on_release:
+#                     then:
+#                       - light.turn_on:
+#                           id: led_strip
+#                           brightness: !lambda 'return x / 100.0;'
+#               - label:
+#                   text: "Red:"
+#                   x: 5%
+#                   y: 25%
+#                   text_font: montserrat_16
+#               - slider:
+#                   id: red_slider
+#                   x: 5%
+#                   y: 30%
+#                   width: 90%
+#                   height: 20px
+#                   min_value: 0
+#                   max_value: 100
+#                   on_release:
+#                     then:
+#                       - light.turn_on:
+#                           id: led_strip
+#                           red: !lambda 'return x / 100.0;'
+#               - label:
+#                   text: "Green:"
+#                   x: 5%
+#                   y: 40%
+#                   text_font: montserrat_16
+#               - slider:
+#                   id: green_slider
+#                   x: 5%
+#                   y: 45%
+#                   width: 90%
+#                   height: 20px
+#                   min_value: 0
+#                   max_value: 100
+#                   on_release:
+#                     then:
+#                       - light.turn_on:
+#                           id: led_strip
+#                           green: !lambda 'return x / 100.0;'
+#               - label:
+#                   text: "Blue:"
+#                   x: 5%
+#                   y: 55%
+#                   text_font: montserrat_16
+#               - slider:
+#                   id: blue_slider
+#                   x: 5%
+#                   y: 60%
+#                   width: 90%
+#                   height: 20px
+#                   min_value: 0
+#                   max_value: 100
+#                   on_release:
+#                     then:
+#                       - light.turn_on:
+#                           id: led_strip
+#                           blue: !lambda 'return x / 100.0;'
+
+#   tabview:
+#     id: badge_tabview
+#     x: 0
+#     y: 0
+#     width: 100%
+#     height: 100%
+#     position: top # Tabs at the top
+#     tabs:
+#       - name: "Badge"
+#         id: tab_badge
+#         widgets: # Widgets for the Badge tab are defined under badge_page
+#           - lvgl.obj: # Invisible object to link to badge_page
+#               width: 100%
+#               height: 100%
+#               widgets:
+#                 - lvgl.page.show: badge_page # Show badge page on this tab
+#       - name: "WiFi"
+#         id: tab_wifi
+#         widgets: # Widgets for the WiFi tab are defined under wifi_page
+#           - lvgl.obj: # Invisible object to link to wifi_page
+#               width: 100%
+#               height: 100%
+#               widgets:
+#                 - lvgl.page.show: wifi_page # Show wifi page on this tab
+#       - name: "Lights"
+#         id: tab_lights
+#         widgets: # Widgets for the Light Control tab are defined under light_control_page
+#           - lvgl.obj: # Invisible object to link to light_control_page
+#               width: 100%
+#               height: 100%
+#               widgets:
+#                 - lvgl.page.show: light_control_page # Show light control page on this tab
+
+#   # keyboard:
+#   #   id: keyboard1
+#   #   width: 100%
+#   #   height: 50% # Keyboard takes up bottom half of screen
+#   #   align: BOTTOM_MID
+#   #   hidden: true # Start hidden
+#   #   on_ready:
+#   #     then:
+#   #       - lvgl.widget.hide: keyboard1
+#   #   on_cancel:
+#   #     then:
+#   #       - lvgl.widget.hide: keyboard1
+
+# # WiFi Info Text Sensors for display
+# text_sensor:
+#   - platform: wifi_info
+#     ip_address:
+#       name: "Badge IP Address"
+#       id: wifi_ip_address
+#       on_value:
+#         then:
+#           - lvgl.label.update:
+#               id: ip_label
+#               text: !lambda 'return x.c_str();'
+#   - platform: wifi_info
+#     ssid:
+#       name: "Badge SSID"
+#       id: wifi_ssid
+#       on_value:
+#         then:
+#           - lvgl.label.update:
+#               id: ssid_label
+#               text: !lambda 'return x.c_str();'
+#   - platform: wifi_info
+#     bssid:
+#       name: "Badge BSSID"
+#       id: wifi_bssid
+#       on_value:
+#         then:
+#           - lvgl.label.update:
+#               id: bssid_label
+#               text: !lambda 'return x.c_str();'
+
+# # LED Strip Configuration
+# light:
+#   - platform: esp32_rmt_led_strip
+#     pin: GPIO18 # Adjust to your LED strip data pin
+#     num_leds: 8
+#     rgb_order: GRB # Adjust based on your specific WS2812 strip (GRB or RGB)
+#     chipset: ws2812
+#     name: "LED Strip"
+#     id: led_strip
+#     internal: true # Hide from Home Assistant if you only want to control via UI
+#     initial_state: off # Set initial state to off
+
+# # Ensure any custom fonts are defined if used in text_font properties
+# font:
+#   - file: "fonts/Montserrat-Regular.ttf" # You'll need to place this font file in your ESPHome config directory
+#     id: montserrat_14
+#     size: 14
+#     bpp: 4
+#   - file: "fonts/Montserrat-Regular.ttf"
+#     id: montserrat_16
+#     size: 16
+#     bpp: 4
+#   - file: "fonts/Montserrat-Regular.ttf"
+#     id: montserrat_18
+#     size: 18
+#     bpp: 4
+#   - file: "fonts/Montserrat-Regular.ttf"
+#     id: montserrat_22
+#     size: 22
+#     bpp: 4
+#   - file: "fonts/Montserrat-Regular.ttf"
+#     id: montserrat_28
+#     size: 28
+#     bpp: 4

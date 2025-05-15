@@ -42,6 +42,10 @@ captive_portal:
 web_server:
   local: true
   version: 3
+  sorting_groups:
+    - id: sorting_group_badge
+      name: Badge Settings
+      sorting_weight: -1
 
 # Over-the-Air provisioning.
 ota:
@@ -190,19 +194,60 @@ lvgl:
   # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
   buffer_size: 25%
   widgets:
-    - spinner:
-        align: center
-        spin_time: 2s
-        arc_length: 60deg
-    - label:
-        id: title
-        align: center
-        text_font: montserrat_40
-        text: 'Hello World!'
+  - tabview:
+      id: tabview_id
+      position: top
+      size: 40
+      tabs:
+      - !include ./lvgl/badge_tab.yaml
 
 text:
-  - id: title_text
-    platform: lvgl
-    widget: title
-    name: Title Text
+  - id: badge_title
+    name: Title
+    initial_value: Badge Title
+    platform: template
+    icon: mdi:badge-account-horizontal-outline
+    optimistic: true
     mode: text
+    update_interval: never
+    restore_value: true
+    web_server:
+      sorting_group_id: sorting_group_badge
+      sorting_weight: 1
+    on_value:
+      # Make sure the value is saved to flash
+      # - lambda: esphome::global_preferences->sync();
+      - lvgl.label.update:
+          id: title_label
+          text: !lambda return x;
+      - if:
+          condition: {lambda: return x.length() > 0;}
+          then:
+            - lvgl.widget.show: title_label
+          else:
+            - lvgl.widget.hide: title_label
+
+  - id: badge_subtitle
+    name: Subtitle
+    initial_value: Enable Wi-Fi and configure via local network web server
+    platform: template
+    icon: mdi:badge-account-horizontal-outline
+    optimistic: true
+    mode: text
+    update_interval: never
+    restore_value: true
+    web_server:
+      sorting_group_id: sorting_group_badge
+      sorting_weight: 2
+    on_value:
+      # Make sure the value is saved to flash
+      # - lambda: esphome::global_preferences->sync();
+      - lvgl.label.update:
+          id: subtitle_label
+          text: !lambda return x;
+      - if:
+          condition: {lambda: return x.length() > 0;}
+          then:
+            - lvgl.widget.show: subtitle_label
+          else:
+            - lvgl.widget.hide: subtitle_label
