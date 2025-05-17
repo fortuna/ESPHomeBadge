@@ -33,15 +33,17 @@ sensor:
   - platform: max17043  # U4
     id: battery_sensor
     i2c_id: badge_i2c
-    battery_voltage:
-      name: Battery Voltage
-    battery_level:
-      name: Battery Level
+    battery_voltage: {name: Battery Voltage}
+    battery_level: {name: Battery Level}
   
   - platform: sgp30  # U7
     id: air_sensor
     i2c_id: badge_i2c
-    eco2:
-      name: "CO₂eq"
+    # Estimated CO₂ concentration ("CO₂ equivalent")
+    eco2: {name: CO₂eq}
+    eco2_baseline: {name: CO₂eq Calibration Baseline}
+    # Total Volatile Organic Compounds
     tvoc:
-      name: "TVOC"
+      name: TVOC
+      icon: mdi:air-filter
+    tvoc_baseline: {name: TVOC Calibration Baseline}
