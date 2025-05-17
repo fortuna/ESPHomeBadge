@@ -1,26 +1,25 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
+# Run this firmware on the development machine for more convenient LVGL development.
+
 esphome:
   name: sdl
-
-web_server:
-  version: 3
 
 host:
 
 logger:
 
 text:
-  - id: badge_name
-    name: Badge Name
+  - id: badge_title
+    name: Badge Title
     platform: lvgl
-    widget: name_label
+    widget: title_label
     mode: text
-  - id: badge_org
-    name: Badge Organization
+  - id: badge_subtitle
+    name: Badge Subtitle
     platform: lvgl
-    widget: org_label
+    widget: subtitle_label
     mode: text
 
 binary_sensor:
@@ -32,13 +31,14 @@ binary_sensor:
 display:
   - id: badge_display
     platform: sdl
-    dimensions: {width: 320, height: 200}
+    dimensions: {width: 320, height: 240}
     auto_clear_enabled: false
     update_interval: 0.015s
 
 lvgl:
   - id: badge_lvgl
     displays: [badge_display]
+    log_level: DEBUG
 
     encoders:
       enter_button: key_select
@@ -59,7 +59,8 @@ lvgl:
             position: top
             size: 40
             tabs:
-            - !include ./badge_tab.yaml
+            - !include ./tab_badge.yaml
+            - !include ./tab_air.yaml
 
           # - label:
           #     id: input_label

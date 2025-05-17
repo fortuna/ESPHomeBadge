@@ -1,0 +1,51 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+id: air_tab
+name: Air
+width: 100%
+layout:
+  type: FLEX
+  flex_flow: ROW
+widgets:
+  - obj:
+      flex_grow: 1
+      height: SIZE_CONTENT
+
+      layout:
+        type: FLEX
+        flex_flow: COLUMN
+        flex_align_cross: END
+        flex_align_track: END
+
+      widgets:
+        - label:
+            text: CO2eq
+            text_font: montserrat_26
+        - label:
+            text: ppm
+        - label:
+            id: co2_label
+            text_font: montserrat_48
+            text: '1542'
+            
+  - obj:
+      flex_grow: 1
+      height: SIZE_CONTENT
+
+      layout:
+        type: FLEX
+        flex_flow: COLUMN
+        flex_align_cross: END
+        flex_align_track: END
+
+      widgets:
+        - label:
+            text: TVOC
+            text_font: montserrat_26
+        - label:
+            text: ppb
+        - label:
+            id: tvoc_label
+            text_font: montserrat_48
+            text: '542'

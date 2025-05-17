@@ -1,0 +1,22 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+id: badge_tab
+name: Badge
+layout:
+  type: FLEX
+  flex_flow: COLUMN
+  flex_align_main: CENTER
+  flex_align_cross: CENTER
+text_align: CENTER
+widgets:
+  - label:
+      id: title_label
+      text: !lambda return id(badge_title).state;
+      text_font: montserrat_32
+      width: 100%
+  - label:
+      id: subtitle_label
+      text: !lambda return id(badge_subtitle).state;
+      text_font: montserrat_24
+      width: 100%
