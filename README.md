@@ -62,6 +62,8 @@ Application
   * [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
   * [x] [Web Server](https://esphome.io/components/web_server.html) controller
   * [x] [OTA update](https://esphome.io/components/ota/) support
+* [x] Badge screen
+* [x] Basic air sensor screen
 * [ ] LED control and effects
 * [ ] IR Transmitter/Receiver
 
