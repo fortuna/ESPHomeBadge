@@ -202,6 +202,7 @@ lvgl:
         tabs:
         - !include ./lvgl/tab_badge.yaml
         - !include ./lvgl/tab_air.yaml
+        - !include ./lvgl/tab_qr.yaml
 
 text:
   - id: badge_title
@@ -217,8 +218,6 @@ text:
       sorting_group_id: sorting_group_badge
       sorting_weight: 1
     on_value:
-      # Make sure the value is saved to flash
-      # - lambda: esphome::global_preferences->sync();
       - lvgl.label.update:
           id: title_label
           text: !lambda return x;
@@ -242,8 +241,6 @@ text:
       sorting_group_id: sorting_group_badge
       sorting_weight: 2
     on_value:
-      # Make sure the value is saved to flash
-      # - lambda: esphome::global_preferences->sync();
       - lvgl.label.update:
           id: subtitle_label
           text: !lambda return x;
@@ -253,3 +250,23 @@ text:
             - lvgl.widget.show: subtitle_label
           else:
             - lvgl.widget.hide: subtitle_label
+
+  - name: QR Code Text
+    platform: template
+    icon: mdi:qrcode
+    optimistic: true
+    mode: text
+    update_interval: never
+    restore_value: true
+    on_value:
+      - lvgl.qrcode.update:
+          id: qr_code_image
+          text: !lambda return x;
+      - if:
+          condition: {lambda: return x.length() > 0;}
+          then:
+            - lvgl.widget.show: qr_code_image
+            - lvgl.widget.hide: empty_qr_code_label
+          else:
+            - lvgl.widget.hide: qr_code_image
+            - lvgl.widget.show: empty_qr_code_label

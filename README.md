@@ -64,6 +64,7 @@ Application
   * [x] [OTA update](https://esphome.io/components/ota/) support
 * [x] Badge screen
 * [x] Basic air sensor screen
+* [x] QR Code screen. Use the [MeCard format](https://en.wikipedia.org/wiki/MeCard_(QR_code)) for contact info.
 * [ ] LED control and effects
 * [ ] IR Transmitter/Receiver
 

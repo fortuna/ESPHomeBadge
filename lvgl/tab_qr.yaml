@@ -1,0 +1,18 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+id: qr_tab
+name: QR
+height: 100%
+widgets:
+- qrcode:
+    id: qr_code_image
+    align: CENTER
+    size: 160
+    hidden: true
+- label:
+    id: empty_qr_code_label
+    align: CENTER
+    width: 100%
+    text: Go to the web server to configure the QR code
+    text_align: CENTER
