@@ -1,0 +1,155 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+font:
+  - file: "gfonts://Material+Symbols+Rounded"
+    id: icons_50
+    size: 50
+    glyphs: [
+      "\U0000ea67", # badge
+      "\U0000e29c", # airwave
+      "\U0000e00a", # qr_code_2
+      "\U0000e63e", # wifi
+    ]
+
+lvgl:
+  - id: badge_lvgl
+    log_level: VERBOSE
+    displays: [badge_display]
+    # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
+    buffer_size: 25%
+
+
+    # encoders:
+    #   - enter_button: key_select
+    #     sensor:
+    #       left_button: key_prev
+    #       right_button: key_next
+
+    keypads:
+      - esc: button_1
+        prev: button_2
+        next: button_3
+        enter: button_4
+        # up: key_up
+        # down: key_down
+        # left: key_left
+        # right: key_right
+
+    theme:
+      obj:
+        styles: [debug_border]
+
+    style_definitions:
+      - id: container
+        radius: 0
+        pad_all: 0
+        border_width: 0
+        bg_opa: 0%
+
+      - id: debug_border
+        border_width: 1
+        border_color: 0xFFFF00
+      
+      - id: page
+        width: 100%
+        height: 100%
+
+      - id: surface
+        bg_color: 0xFFFFFF
+        bg_opa: 100%
+
+      - id: switcher_entry
+        radius: 0
+        pad_all: 0
+        border_width: 0
+        bg_opa: 0%
+        text_color: 0xFFFFFF
+        width: SIZE_CONTENT
+        height: SIZE_CONTENT
+
+      - id: switcher_button
+        styles: [red]
+        width: SIZE_CONTENT
+        height: SIZE_CONTENT
+        bg_opa: 0%
+        shadow_width: 0
+        shadow_opa: 0%
+        text_font: icons_50
+        radius: 8    
+
+      - id: switcher_focused
+        bg_opa: 50%
+        bg_color: 0x000000
+        outline_width: 0
+        outline_opa: 0%
+        outline_pad: 0
+
+    # Style the background layer.
+    # bg_color: 0xDDDDDD
+    # bg_opa: 100%
+    # bg_grad_color: 0x333333
+    # bg_grad_dir: VER
+
+    # Style for the root screen.
+    height: 100%
+    width: 100%
+
+    top_layer:
+      widgets:
+        - !include ./page_selector.yaml
+
+    pages:
+      - !include ./page_badge.yaml
+      - !include ./page_air.yaml
+      - !include ./page_qr.yaml
+      - id: page_wifi
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+        widgets:
+          - switch:
+              id: wifi_switch
+          - label:
+              id: wifi_state_label
+          - textarea:
+              one_line: true
+              placeholder_text: SSID
+          - slider:
+              id: test_slider
+              on_press:
+                lvgl.widget.focus:
+                  id: test_slider
+                  editing: true
+              on_cancel:
+                lvgl.widget.focus:
+                  id: test_slider
+                  editing: false
+      - id: page_wifi_2
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+        widgets:
+          - switch:
+              id: wifi_switch2
+          - label:
+              id: wifi_state_label2
+          - textarea:
+              one_line: true
+              placeholder_text: SSID
+          - slider: {}
+
+binary_sensor:
+  - id: !extend button_1
+    on_click: {script.execute: toggle_selector}
+
+script:
+  - id: toggle_selector
+    then:
+      - lvgl.widget.update:
+          id: page_selector
+          hidden: !lambda return !lv_obj_has_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
+
+  - id: hide_selector
+    then:
+      - lambda: lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);

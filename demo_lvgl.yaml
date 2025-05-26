@@ -8,6 +8,7 @@ substitutions:
 
 packages:
   base: !include ./badge_pro.yaml
+  lvgl: !include ./lvgl/lvgl.yaml
 
 esphome:
   name: ${name}
@@ -116,65 +117,6 @@ globals:
     initial_value: 'true'
 
 script:
-#   # Make the LEDs dimmer.
-#   - id: dim_down
-#     mode: queued
-#     then:
-#       - if:
-#           condition:
-#             lambda: 'return id(led_strip).remote_values.get_brightness() <= 0.201f;'
-#           then:
-#             light.turn_off:
-#               id: led_strip
-#               transition_length: 0s
-#           else:
-#             light.dim_relative:
-#               id: led_strip
-#               relative_brightness: -10%
-#               transition_length: 0s
-
-#   # Make the LEDs brighter.
-#   - id: dim_up
-#     mode: queued
-#     then:
-#       - if:
-#           condition: {light.is_on: led_strip}
-#           then:
-#             - light.dim_relative:
-#                 id: led_strip
-#                 relative_brightness: 10%
-#                 transition_length: 0s
-#           else:
-#             - light.turn_on:
-#                 id: led_strip
-#                 brightness: 20%
-#                 transition_length: 0s
-
-#   # Sends the IR blast command.
-#   - id: ir_blast
-#     mode: single
-#     then:
-#       - remote_transmitter.transmit_nec:
-#           transmitter_id: ir_transmitter
-#           address: 0xD880
-#           command: 0xDD22
-
-#   # Changes the color of the LED strip.
-#   - id: next_color
-#     mode: single
-#     then:
-#       - lambda: |-
-#           static int color = 0;
-#           color = (color + 1) % 8;
-#           if (color == 0) {
-#             id(led_strip).turn_off().set_transition_length(0).perform();
-#             return;
-#           }
-#           float red = color & 1 ? 1 : 0;
-#           float green = color & 2 ? 1 : 0;
-#           float blue = color & 4 ? 1 : 0;
-#           id(led_strip).turn_on().set_transition_length(0).set_rgb(red, green, blue).perform();
-
   - id: run_blast_effect
     mode: single
     then:
@@ -183,26 +125,6 @@ script:
       - light.turn_off: {id: led_strip, transition_length: 1s}
       - delay: 500ms
       - switch.turn_off: vibration_motor
-
-lvgl:
-  displays: [tft_display]
-  # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
-  buffer_size: 25%
-  encoders:
-    enter_button: button_4
-    sensor:
-      left_button: button_2
-      right_button: button_3
-
-  widgets:
-    - tabview:
-        id: tabview_id
-        position: top
-        size: 40
-        tabs:
-        - !include ./lvgl/tab_badge.yaml
-        - !include ./lvgl/tab_air.yaml
-        - !include ./lvgl/tab_qr.yaml
 
 text:
   - id: badge_title

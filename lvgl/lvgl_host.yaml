@@ -17,6 +17,10 @@ esphome:
 host:
 
 logger:
+  level: VERBOSE
+
+packages:
+  base: !include ./lvgl.yaml
 
 text:
   - id: badge_title
@@ -53,51 +57,18 @@ text:
             - lvgl.widget.show: empty_qr_code_label
 
 binary_sensor:
-  - {id: key_back,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
-  - {id: key_prev,   platform: sdl, sdl_id: badge_display, key: SDLK_COMMA}
-  - {id: key_next,   platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD}
-  - {id: key_select, platform: sdl, sdl_id: badge_display, key: SDLK_SLASH}
-  - {id: key_up, platform: sdl, sdl_id: badge_display, key: SDLK_u}
-  - {id: key_down, platform: sdl, sdl_id: badge_display, key: SDLK_d}
-  - {id: key_left, platform: sdl, sdl_id: badge_display, key: SDLK_l}
-  - {id: key_right, platform: sdl, sdl_id: badge_display, key: SDLK_r}
+  - { id: button_1,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
+  - { id: button_2,   platform: sdl, sdl_id: badge_display, key: SDLK_COMMA }
+  - { id: button_3,   platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD }
+  - { id: button_4, platform: sdl, sdl_id: badge_display, key: SDLK_SLASH }
+  - { id: key_up,     platform: sdl, sdl_id: badge_display, key: SDLK_u }
+  - { id: key_down,   platform: sdl, sdl_id: badge_display, key: SDLK_d }
+  - { id: key_left,   platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET }
+  - { id: key_right,  platform: sdl, sdl_id: badge_display, key: SDLK_RIGHTBRACKET }
 
 display:
   - id: badge_display
     platform: sdl
     dimensions: {width: 320, height: 240}
     auto_clear_enabled: false
-    update_interval: 0.015s
-
-lvgl:
-  - id: badge_lvgl
-    displays: [badge_display]
-    log_level: DEBUG
-
-    # encoders:
-    #   - enter_button: key_select
-    #     sensor:
-    #       left_button: key_prev
-    #       right_button: key_next
-        # initial_focus: tabview_id
-
-    keypads:
-      - esc: key_back
-        enter: key_select
-        # next: key_next
-        # prev: key_prev
-        # up: key_up
-        # down: key_down
-        left: key_prev
-        right: key_next
-
-    pages:
-      - widgets:
-        - tabview:
-            id: tabview_id
-            position: top
-            size: 40
-            tabs:
-            - !include ./tab_badge.yaml
-            - !include ./tab_air.yaml
-            - !include ./tab_qr.yaml
+    update_interval: never

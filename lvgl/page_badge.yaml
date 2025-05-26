@@ -1,8 +1,9 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-id: badge_tab
-name: Badge
+id: page_badge
+styles: [page, surface]
+
 layout:
   type: FLEX
   flex_flow: COLUMN

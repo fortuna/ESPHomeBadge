@@ -13,7 +13,7 @@ spi:
     mosi_pin: GPIO07  # SPI_SDO
 
 display:
-  - id: tft_display
+  - id: badge_display
     platform: ili9xxx
     model: ST7789V
     dc_pin: GPIO00  # TFT_DC

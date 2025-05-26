@@ -1,9 +1,8 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-id: air_tab
-name: Air
-width: 100%
+id: page_air
+styles: [page]
 layout:
   type: FLEX
   flex_flow: ROW

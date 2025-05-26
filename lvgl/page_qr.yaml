@@ -1,9 +1,8 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-id: qr_tab
-name: QR
-height: 100%
+id: page_qr
+styles: [page, surface]
 widgets:
 - qrcode:
     id: qr_code_image

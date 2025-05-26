@@ -1,0 +1,100 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+obj:
+  id: page_selector
+  styles: [container]
+  height: SIZE_CONTENT
+  width: SIZE_CONTENT
+  align: CENTER
+  layout:
+    type: FLEX
+    flex_flow: ROW
+    flex_align_track: CENTER
+    pad_column: 0
+  hidden: true
+  bg_color: 0x000000
+  bg_opa: 50%
+  radius: 8
+  pad_all: 8
+  widgets:
+    - obj:
+        styles: [container, switcher_entry]
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
+        widgets:
+          - button:
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000ea67"
+              on_press:
+                - script.execute: hide_selector
+                - lvgl.page.show: page_badge
+          - label:
+              text: Badge
+    - obj:
+        styles: [switcher_entry]
+        layout:
+            type: FLEX
+            flex_flow: COLUMN
+            flex_align_cross: CENTER
+        widgets:
+          - button:
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000e29c"
+              on_press:
+                - script.execute: hide_selector
+                - lvgl.page.show: page_air
+          - label:
+              text: Air
+    - obj:
+        styles: [switcher_entry]
+        layout:
+            type: FLEX
+            flex_flow: COLUMN
+            flex_align_cross: CENTER
+        widgets:
+          - button:
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000e00a"
+              on_press:
+                - script.execute: hide_selector
+                - lvgl.page.show: page_qr
+          - label:
+              text: QR
+    - obj:
+        styles: [switcher_entry]
+        layout:
+            type: FLEX
+            flex_flow: COLUMN
+            flex_align_cross: CENTER
+        widgets:
+          - button:
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000e63e"
+              on_press:
+                - script.execute: hide_selector
+                - lvgl.page.show: page_wifi
+          - label:
+              text: Wifi
