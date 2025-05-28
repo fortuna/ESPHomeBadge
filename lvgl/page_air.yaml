@@ -7,7 +7,7 @@ on_boot:
       lv_group_t* group = lv_group_create();
       ESP_LOGD("lvgl", "Initializing page_air: %p, group: %p", id(page_air).obj, group);
       lv_obj_set_user_data(id(page_air).obj, group);
-      recursive_set_group(id(page_air).obj, lv_group_create());
+      recursive_set_group(id(page_air).obj, group);
 styles: [page]
 layout:
   type: FLEX

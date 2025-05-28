@@ -111,7 +111,7 @@ lvgl:
                 lv_group_t* group = lv_group_create();
                 ESP_LOGD("lvgl", "Initializing page_wifi: %p, group: %p", id(page_wifi).obj, group);
                 lv_obj_set_user_data(id(page_wifi).obj, group);
-                recursive_set_group(id(page_wifi).obj, lv_group_create());
+                recursive_set_group(id(page_wifi).obj, group);
         layout:
           type: FLEX
           flex_flow: COLUMN

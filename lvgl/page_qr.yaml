@@ -7,7 +7,7 @@ on_boot:
       lv_group_t* group = lv_group_create();
       ESP_LOGD("lvgl", "Initializing page_qr: %p, group: %p", id(page_qr).obj, group);
       lv_obj_set_user_data(id(page_qr).obj, group);
-      recursive_set_group(id(page_qr).obj, lv_group_create());
+      recursive_set_group(id(page_qr).obj, group);
 styles: [page, surface]
 widgets:
 - qrcode:
