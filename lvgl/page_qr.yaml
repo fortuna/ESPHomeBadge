@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 id: page_qr
+on_boot:
+  - lambda: |-
+      lv_group_t* group = lv_group_create();
+      ESP_LOGD("lvgl", "Initializing page_qr: %p, group: %p", id(page_qr).obj, group);
+      lv_obj_set_user_data(id(page_qr).obj, group);
+      recursive_set_group(id(page_qr).obj, lv_group_create());
 styles: [page, surface]
 widgets:
 - qrcode:

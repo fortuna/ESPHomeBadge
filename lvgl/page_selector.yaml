@@ -3,6 +3,16 @@
 
 obj:
   id: page_selector
+  on_boot:
+  - lambda: |-
+      ESP_LOGD("lvgl", "Default group is: %p", lv_group_get_default());
+      lv_group_t* group = lv_group_create();
+      lv_group_set_focus_cb(group, [](lv_group_t* group) {
+          ESP_LOGD("lvgl", "Group %p focused on: %p", group, lv_group_get_focused(group));
+      });
+      ESP_LOGD("lvgl", "Initializing page_selector: %p, group: %p", id(page_selector), group);
+      lv_obj_set_user_data(id(page_selector), group);
+      recursive_set_group(id(page_selector), group);
   styles: [container]
   height: SIZE_CONTENT
   width: SIZE_CONTENT
@@ -34,8 +44,7 @@ obj:
                 - label:
                     text: "\U0000ea67"
               on_press:
-                - script.execute: hide_selector
-                - lvgl.page.show: page_badge
+                - script.execute: dismiss_selector
           - label:
               text: Badge
     - obj:
@@ -54,8 +63,7 @@ obj:
                 - label:
                     text: "\U0000e29c"
               on_press:
-                - script.execute: hide_selector
-                - lvgl.page.show: page_air
+                - script.execute: dismiss_selector
           - label:
               text: Air
     - obj:
@@ -74,8 +82,7 @@ obj:
                 - label:
                     text: "\U0000e00a"
               on_press:
-                - script.execute: hide_selector
-                - lvgl.page.show: page_qr
+                - script.execute: dismiss_selector
           - label:
               text: QR
     - obj:
@@ -94,7 +101,6 @@ obj:
                 - label:
                     text: "\U0000e63e"
               on_press:
-                - script.execute: hide_selector
-                - lvgl.page.show: page_wifi
+                - script.execute: dismiss_selector
           - label:
               text: Wifi

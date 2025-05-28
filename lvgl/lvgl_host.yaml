@@ -5,6 +5,8 @@
 
 esphome:
   name: sdl
+  includes:
+    - menu.h
   on_boot: 
     then:
       - lvgl.label.update:
@@ -60,7 +62,7 @@ binary_sensor:
   - { id: button_1,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
   - { id: button_2,   platform: sdl, sdl_id: badge_display, key: SDLK_COMMA }
   - { id: button_3,   platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD }
-  - { id: button_4, platform: sdl, sdl_id: badge_display, key: SDLK_SLASH }
+  - { id: button_4,   platform: sdl, sdl_id: badge_display, key: SDLK_SLASH }
   - { id: key_up,     platform: sdl, sdl_id: badge_display, key: SDLK_u }
   - { id: key_down,   platform: sdl, sdl_id: badge_display, key: SDLK_d }
   - { id: key_left,   platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET }

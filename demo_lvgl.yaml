@@ -13,6 +13,8 @@ packages:
 esphome:
   name: ${name}
   friendly_name: HOPE Badge
+  includes:
+    - ./lvgl/menu.h
   on_boot:
     - then:
         logger.log: Hello World

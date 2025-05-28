@@ -2,10 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 id: page_air
+on_boot:
+  - lambda: |-
+      lv_group_t* group = lv_group_create();
+      ESP_LOGD("lvgl", "Initializing page_air: %p, group: %p", id(page_air).obj, group);
+      lv_obj_set_user_data(id(page_air).obj, group);
+      recursive_set_group(id(page_air).obj, lv_group_create());
 styles: [page]
 layout:
   type: FLEX
   flex_flow: ROW
+pad_all: 8
 widgets:
   - obj:
       flex_grow: 1
