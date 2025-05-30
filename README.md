@@ -76,11 +76,12 @@ SPI Components
   * [ ] LED control and effects
   * [ ] IR Transmitter/Receiver
 * Make it easier to add application pages
-  * [x] Encapsulate application pages
+  * [x] Basic encapsulation of application pages
+  * [ ] Create selector entry template
   * [ ] Create page template
-  * [ ] Improve flashing documentation
-  * [ ] Write new page documentation.
-
+  * [ ] Write documentation on how to flash
+  * [ ] Write documentation on how to add a new page
+  
 ## Getting Started
 
 1.  **Prerequisites:**
