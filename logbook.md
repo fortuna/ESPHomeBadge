@@ -5,6 +5,121 @@ In this document I track some thoughts and observations from my development sess
 
 ## Log
 
+### May 29, 2025 - Pluggable Apps
+
+Let's make it easier to plug apps, so others can contribute.
+
+Questions:
+- Will the insertion work as intended?
+- Can we have an app boilerplate instead of app_entry boilerplate?
+- Can substitutions take objects instead of basic types? Probably not, because there's no way to refer to them.
+- Can we remove the need for one group per app? Can leverage hide/unhide. Still needs a separate one for the app selector.
+- Can we somehow enable pure C++ apps?
+  - Perhaps by leveraging [LvglComponent::add_page](https://api-docs.esphome.io/lvgl__esphome_8cpp_source).
+  - Would still need to use YAML for the glyph. But perhaps we can use an image. Could provide an `apps.add_app(lvgl, icon, name, widget)` api.
+
+An app needs:
+- Entry in the app switcher
+  - Name (maybe also for a title bar)
+  - Icon, as a glyph in the Material design font. Font should be shared.
+- A widget, to be used as the app root UI element. Probably inserted as pages.
+- Behavior, which may be pluggable in various parts.
+
+How to encapsulate apps? We want all of that in a single file, but they get inserted in different places.
+We can use [ESPHome Packages]. This makes it easy to include behavior by injecting in the write config
+subtree, including the `lvgl.pages` item. Though we need to know the `lvgl` id.
+
+For the menu entry, we can insert into `lvgl[lvgl_id].top_layer.widgets[selector_id]`, but we need boilerplate.
+The item boilerplate should be in its own file, and we can `!include` with variables for icon and title.
+
+A sample app file could be named `app_ir_blast.yaml` and look like:
+
+```yaml
+font:
+  - !extend app_switcher_font
+    glyphs:
+      - "\U0000ea67"
+
+lgvl:
+  - id: !extend badge_lvgl
+    top_layer:
+      widgets:  # Will this replace the existing widgets field?
+        - id: !extend app_selector
+          widgets:
+            - !include {
+              file: app_entry.yaml,
+              vars: {icon: "\U0000ea67", title: "IR Blast"}
+            }
+
+    pages:
+      - id: page_ir_blast
+        widgets:
+          - button:
+              on_press:
+                - scripts.execute: send_ir_blast
+
+scripts:
+  - id: send_ir_blast
+    then:
+      # Send code.
+```
+
+The app file could look like:
+
+```yaml
+packages:
+  - !include
+      file: app_template.yaml
+      vars: {icon: "\U0000ea67", title: "IR Blast"}
+
+lgvl:
+  - id: !extend badge_lvgl
+    pages:
+      - id: page_ir_blast
+        widgets:
+          - button:
+              on_press:
+                - scripts.execute: send_ir_blast
+
+scripts:
+  - id: send_ir_blast
+    then:
+      # Send code.
+```
+
+We also need boilerplate to create and save an LVGL group for each app.
+Perhaps we can eliminate that by using hide/unhide and having one group for all the apps.
+
+I was able to move the apps to their own files, including the text components, which was nice. But had an
+issue with the air app, because it everrides a complex sensor that is not available for the Host platform,
+and I can't mock it with a template sensor:
+
+```yaml
+sensor:
+  - id: !extend air_sensor
+    eco2:
+      on_value:
+        - lvgl.label.update:
+            id: co2_label
+            text: {format: '%.0f', args: [ 'x' ]}
+    tvoc:
+      on_value:
+        - lvgl.label.update:
+            id: tvoc_label
+            text: {format: '%.0f', args: [ 'x' ]}
+```
+
+I also cannot remove it from the [lvgl_host.yaml](./lvgl/lvgl_host.yaml) file because it doesn't
+see the sensor.
+
+The problem is that the app is depending on the implementation of the air sensor. That cannot happen.
+We can decouple by defining an interface. Let's define scripts `badge_on_eco2_value` and `badge_on_tvoc_value`
+that get called by the sensor. Then we can simply insert into those scripts. Those scripts will be part
+of the badge API.
+
+[ESPHome Package]: https://esphome.io/components/packages.html
+
+
 ### May 27, 2025 - Clean up selector
 
 Need a way to track the current page to select on the page selector when shown. Decided to go with a [Template Select], which allows for tracking state and provides events. It also allows us to easily change pages from the web server for development or automation.

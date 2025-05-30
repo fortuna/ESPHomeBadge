@@ -40,10 +40,31 @@ sensor:
     id: air_sensor
     i2c_id: badge_i2c
     # Estimated CO₂ concentration ("CO₂ equivalent")
-    eco2: {name: CO₂eq}
-    eco2_baseline: {name: CO₂eq Calibration Baseline}
+    eco2:
+      name: CO₂eq
+      on_value:
+        - script.execute:
+            id: badge_on_eco2_value
+            x: !lambda return x;
     # Total Volatile Organic Compounds
     tvoc:
       name: TVOC
-      icon: mdi:air-filter
+      on_value:
+        - script.execute:
+            id: badge_on_tvoc_value
+            x: !lambda 'return x;'
+    # Baseline values for calibration
+    eco2_baseline: {name: CO₂eq Calibration Baseline}
     tvoc_baseline: {name: TVOC Calibration Baseline}
+
+script:
+  # Exposed air sensor API.
+  - id: badge_on_eco2_value
+    parameters:
+      x: float  # Value in ppm
+    then: []
+
+  - id: badge_on_tvoc_value
+    parameters:
+      x: float  # Value in ppb
+    then: []

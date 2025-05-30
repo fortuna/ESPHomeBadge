@@ -9,12 +9,22 @@ esphome:
     - menu.h
   on_boot: 
     then:
-      - lvgl.label.update:
-          id: title_label
-          text: Title
-      - lvgl.label.update:
-          id: subtitle_label
-          text: Subtitle
+      # Set mock values
+      - text.set:
+          id: badge_title
+          value: Title
+      - text.set:
+          id: badge_subtitle
+          value: Subtitle
+      - script.execute:
+          id: badge_on_eco2_value
+          x: 4321.0
+      - script.execute:
+          id: badge_on_tvoc_value
+          x: 123.0
+      - text.set:
+          id: qr_code_text
+          value: 'https://example.com'
 
 host:
 
@@ -24,39 +34,12 @@ logger:
 packages:
   base: !include ./lvgl.yaml
 
-text:
-  - id: badge_title
-    name: Badge Title
-    platform: lvgl
-    widget: title_label
-    mode: text
-
-  - id: badge_subtitle
-    name: Badge Subtitle
-    platform: lvgl
-    widget: subtitle_label
-    mode: text
-
-  - name: QR Code Text
-    initial_value: https://example.com
-    platform: template
-    icon: mdi:qrcode
-    optimistic: true
-    mode: text
+display:
+  - id: badge_display
+    platform: sdl
+    dimensions: {width: 320, height: 240}
+    auto_clear_enabled: false
     update_interval: never
-    restore_value: true
-    on_value:
-      - lvgl.qrcode.update:
-          id: qr_code_image
-          text: !lambda return x;
-      - if:
-          condition: {lambda: return x.length() > 0;}
-          then:
-            - lvgl.widget.show: qr_code_image
-            - lvgl.widget.hide: empty_qr_code_label
-          else:
-            - lvgl.widget.hide: qr_code_image
-            - lvgl.widget.show: empty_qr_code_label
 
 binary_sensor:
   - { id: button_1,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
@@ -68,9 +51,13 @@ binary_sensor:
   - { id: key_left,   platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET }
   - { id: key_right,  platform: sdl, sdl_id: badge_display, key: SDLK_RIGHTBRACKET }
 
-display:
-  - id: badge_display
-    platform: sdl
-    dimensions: {width: 320, height: 240}
-    auto_clear_enabled: false
-    update_interval: never
+script:
+  # Provide fake air sensor API.
+  - id: badge_on_eco2_value
+    parameters:
+      x: float  # Value in ppm
+    then: []
+  - id: badge_on_tvoc_value
+    parameters:
+      x: float  # Value in ppb
+    then: []

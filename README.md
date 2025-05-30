@@ -4,9 +4,13 @@
 
 > **Note:** This project is currently under active development. Expect changes and potential issues.
 
-This repository provides a way to program the [HOPE XV Electronic Badge](https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge) ([archive](https://web.archive.org/web/20241214102029/https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge)) using [ESPHome](https://esphome.io/). ESPHome is a powerful yet simple framework for controlling your ESP32-based devices.
+This repository provides a way to program the [HOPE XV Electronic Badge] ([archive][Badge Archive]) using [ESPHome]. ESPHome is a powerful yet simple framework for controlling your ESP32-based devices.
 
 By [Vinicius Fortuna](https://www.viniciusfortuna.com).
+
+[HOPE XV Electronic Badge]: https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge
+[Badge Archive]: https://web.archive.org/web/20241214102029/https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge
+[ESPHome]: https://esphome.io/
 
 ## Why ESPHome for the HOPE Badge?
 
@@ -18,6 +22,8 @@ By enabling users to program the badge with ESPHome, this project aims to:
 * **Leverage Home Assistant:** Integrate the badge into your Home Assistant setup.
 
 ## Features (Planned/In Development)
+
+### Hardware Definition
 
 GPIO Components
 * [x] Tactile Buttons (SW3/SW4/SW1/SW2, GPIO19/GPIO18/GPIO10/GPIO09, [ESPHome](https://esphome.io/components/binary_sensor.html))
@@ -57,16 +63,21 @@ SPI Components
 [CAT25640]: https://www.onsemi.com/pdf/datasheet/cat25640-d.pdf
 [ST7789V]: https://newhavendisplay.com/content/datasheets/ST7789V.pdf
 
-Application
+### Application
+
 * Remote Access
   * [x] [Wifi provisioning](https://esphome.io/components/wifi.html)
   * [x] [Web Server](https://esphome.io/components/web_server.html) controller
   * [x] [OTA update](https://esphome.io/components/ota/) support
-* [x] Badge screen
-* [x] Basic air sensor screen
-* [x] QR Code screen. Use the [MeCard format](https://en.wikipedia.org/wiki/MeCard_(QR_code)) for contact info.
-* [ ] LED control and effects
-* [ ] IR Transmitter/Receiver
+* Add application pages
+  * [x] Badge screen
+  * [x] Basic air sensor screen
+  * [x] QR Code screen. Use the [MeCard format](https://en.wikipedia.org/wiki/MeCard_(QR_code)) for contact info.
+  * [ ] LED control and effects
+  * [ ] IR Transmitter/Receiver
+* Make it easier to add application pages
+  * [x] Encapsulate application pages
+  * [ ] Create page template
 
 ## Getting Started
 

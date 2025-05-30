@@ -1,7 +1,7 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-# This is the file where you can customize the behavior of your badge.
+# This is the firmware using LVGL for the badge version with a screen.
 
 substitutions:
   name: hope-badge
@@ -84,18 +84,6 @@ sensor:
     type: seconds
     name: Uptime
 
-  - id: !extend air_sensor
-    eco2:
-      on_value:
-        - lvgl.label.update:
-            id: co2_label
-            text: {format: '%.0f', args: [ 'x' ]}
-    tvoc:
-      on_value:
-        - lvgl.label.update:
-            id: tvoc_label
-            text: {format: '%.0f', args: [ 'x' ]}
-
 light:
   - id: !extend led_strip
     effects:
@@ -129,68 +117,12 @@ script:
       - switch.turn_off: vibration_motor
 
 text:
-  - id: badge_title
-    name: Title
-    initial_value: Badge Title
-    platform: template
-    icon: mdi:badge-account-horizontal-outline
-    optimistic: true
-    mode: text
-    update_interval: never
-    restore_value: true
+  - id: !extend badge_title
     web_server:
       sorting_group_id: sorting_group_badge
       sorting_weight: 1
-    on_value:
-      - lvgl.label.update:
-          id: title_label
-          text: !lambda return x;
-      - if:
-          condition: {lambda: return x.length() > 0;}
-          then:
-            - lvgl.widget.show: title_label
-          else:
-            - lvgl.widget.hide: title_label
 
-  - id: badge_subtitle
-    name: Subtitle
-    initial_value: Enable Wi-Fi and configure via local network web server
-    platform: template
-    icon: mdi:badge-account-horizontal-outline
-    optimistic: true
-    mode: text
-    update_interval: never
-    restore_value: true
+  - id: !extend badge_subtitle
     web_server:
       sorting_group_id: sorting_group_badge
       sorting_weight: 2
-    on_value:
-      - lvgl.label.update:
-          id: subtitle_label
-          text: !lambda return x;
-      - if:
-          condition: {lambda: return x.length() > 0;}
-          then:
-            - lvgl.widget.show: subtitle_label
-          else:
-            - lvgl.widget.hide: subtitle_label
-
-  - name: QR Code Text
-    platform: template
-    icon: mdi:qrcode
-    optimistic: true
-    mode: text
-    update_interval: never
-    restore_value: true
-    on_value:
-      - lvgl.qrcode.update:
-          id: qr_code_image
-          text: !lambda return x;
-      - if:
-          condition: {lambda: return x.length() > 0;}
-          then:
-            - lvgl.widget.show: qr_code_image
-            - lvgl.widget.hide: empty_qr_code_label
-          else:
-            - lvgl.widget.hide: qr_code_image
-            - lvgl.widget.show: empty_qr_code_label

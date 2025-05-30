@@ -1,23 +1,48 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-id: page_qr
-on_boot:
-  - lambda: |-
-      lv_group_t* group = lv_group_create();
-      ESP_LOGD("lvgl", "Initializing page_qr: %p, group: %p", id(page_qr).obj, group);
-      lv_obj_set_user_data(id(page_qr).obj, group);
-      recursive_set_group(id(page_qr).obj, group);
-styles: [page, surface]
-widgets:
-- qrcode:
-    id: qr_code_image
-    align: CENTER
-    size: 160
-    hidden: true
-- label:
-    id: empty_qr_code_label
-    align: CENTER
-    width: 100%
-    text: Go to the web server to configure the QR code
-    text_align: CENTER
+lvgl:
+  - id: !extend badge_lvgl
+    pages:
+      - id: page_qr
+        on_boot:
+          - lambda: |-
+              lv_group_t* group = lv_group_create();
+              ESP_LOGD("lvgl", "Initializing page_qr: %p, group: %p", id(page_qr).obj, group);
+              lv_obj_set_user_data(id(page_qr).obj, group);
+              recursive_set_group(id(page_qr).obj, group);
+        styles: [page, surface]
+        widgets:
+        - qrcode:
+            id: qr_code_image
+            align: CENTER
+            size: 160
+            hidden: true
+        - label:
+            id: empty_qr_code_label
+            align: CENTER
+            width: 100%
+            text: Go to the web server to configure the QR code
+            text_align: CENTER
+
+text:
+  - id: qr_code_text
+    name: QR Code Text
+    platform: template
+    icon: mdi:qrcode
+    optimistic: true
+    mode: text
+    update_interval: never
+    restore_value: true
+    on_value:
+      - lvgl.qrcode.update:
+          id: qr_code_image
+          text: !lambda return x;
+      - if:
+          condition: {lambda: return x.length() > 0;}
+          then:
+            - lvgl.widget.show: qr_code_image
+            - lvgl.widget.hide: empty_qr_code_label
+          else:
+            - lvgl.widget.hide: qr_code_image
+            - lvgl.widget.show: empty_qr_code_label

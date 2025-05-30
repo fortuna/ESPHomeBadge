@@ -1,57 +1,77 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
-id: page_air
-on_boot:
-  - lambda: |-
-      lv_group_t* group = lv_group_create();
-      ESP_LOGD("lvgl", "Initializing page_air: %p, group: %p", id(page_air).obj, group);
-      lv_obj_set_user_data(id(page_air).obj, group);
-      recursive_set_group(id(page_air).obj, group);
-styles: [page]
-layout:
-  type: FLEX
-  flex_flow: ROW
-pad_all: 8
-widgets:
-  - obj:
-      flex_grow: 1
-      height: SIZE_CONTENT
+lvgl:
+  - id: !extend badge_lvgl
+    pages:
+      - id: page_air
+        on_boot:
+          - lambda: |-
+              lv_group_t* group = lv_group_create();
+              ESP_LOGD("lvgl", "Initializing page_air: %p, group: %p", id(page_air).obj, group);
+              lv_obj_set_user_data(id(page_air).obj, group);
+              recursive_set_group(id(page_air).obj, group);
+        styles: [page]
+        layout:
+          type: FLEX
+          flex_flow: ROW
+        pad_all: 8
+        widgets:
+          - obj:
+              flex_grow: 1
+              height: SIZE_CONTENT
 
-      layout:
-        type: FLEX
-        flex_flow: COLUMN
-        flex_align_cross: END
-        flex_align_track: END
+              layout:
+                type: FLEX
+                flex_flow: COLUMN
+                flex_align_cross: END
+                flex_align_track: END
 
-      widgets:
-        - label:
-            text: CO2eq
-            text_font: montserrat_26
-        - label:
-            text: ppm
-        - label:
-            id: co2_label
-            text_font: montserrat_48
-            text: '1542'
-            
-  - obj:
-      flex_grow: 1
-      height: SIZE_CONTENT
+              widgets:
+                - label:
+                    text: CO2eq
+                    text_font: montserrat_26
+                - label:
+                    text: ppm
+                - label:
+                    id: co2_label
+                    text_font: montserrat_48
+                    text: '-'
+                    
+          - obj:
+              flex_grow: 1
+              height: SIZE_CONTENT
 
-      layout:
-        type: FLEX
-        flex_flow: COLUMN
-        flex_align_cross: END
-        flex_align_track: END
+              layout:
+                type: FLEX
+                flex_flow: COLUMN
+                flex_align_cross: END
+                flex_align_track: END
 
-      widgets:
-        - label:
-            text: TVOC
-            text_font: montserrat_26
-        - label:
-            text: ppb
-        - label:
-            id: tvoc_label
-            text_font: montserrat_48
-            text: '542'
+              widgets:
+                - label:
+                    text: TVOC
+                    text_font: montserrat_26
+                - label:
+                    text: ppb
+                - label:
+                    id: tvoc_label
+                    text_font: montserrat_48
+                    text: '-'
+
+script:
+  - id: !extend badge_on_eco2_value
+    parameters:
+      x: float  # Value in ppm
+    then:
+      - lvgl.label.update:
+          id: co2_label
+          text: {format: '%.0f', args: [ 'x' ]}
+
+  - id: !extend badge_on_tvoc_value
+    parameters:
+      x: float  # Value in ppb
+    then:
+      - lvgl.label.update:
+          id: tvoc_label
+          text: {format: '%.0f', args: [ 'x' ]}

@@ -1,0 +1,35 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+lvgl:
+  - id: !extend badge_lvgl
+    pages:
+      - id: page_wifi
+        on_boot:
+          - lambda: |-
+              lv_group_t* group = lv_group_create();
+              ESP_LOGD("lvgl", "Initializing page_wifi: %p, group: %p", id(page_wifi).obj, group);
+              lv_obj_set_user_data(id(page_wifi).obj, group);
+              recursive_set_group(id(page_wifi).obj, group);
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+        pad_all: 8
+        widgets:
+          - switch:
+              id: wifi_switch
+          - label:
+              id: wifi_state_label
+          - textarea:
+              one_line: true
+              placeholder_text: SSID
+          - slider:
+              id: test_slider
+              on_press:
+                lvgl.widget.focus:
+                  id: test_slider
+                  editing: true
+              on_cancel:
+                lvgl.widget.focus:
+                  id: test_slider
+                  editing: false
