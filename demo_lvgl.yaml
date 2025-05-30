@@ -7,7 +7,7 @@ substitutions:
   name: hope-badge
 
 packages:
-  base: !include ./badge_pro.yaml
+  hardware: !include './hardware/badge_0.8.15_pro.yaml'
   lvgl: !include ./lvgl/lvgl.yaml
 
 esphome:

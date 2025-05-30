@@ -3,6 +3,9 @@
 
 # Run this firmware on the development machine for more convenient LVGL development.
 
+packages:
+  base: !include ./lvgl.yaml
+
 esphome:
   name: sdl
   includes:
@@ -30,9 +33,6 @@ host:
 
 logger:
   level: VERBOSE
-
-packages:
-  base: !include ./lvgl.yaml
 
 display:
   - id: badge_display

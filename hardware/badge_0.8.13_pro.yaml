@@ -5,7 +5,7 @@
 
 packages:
   # Inherit from the basic model
-  base: !include ./badge_basic.yaml
+  hardware: !include ./badge_0.8.13_basic.yaml
 
 spi:
   - id: spi_bus

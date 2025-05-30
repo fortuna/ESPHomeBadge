@@ -1,0 +1,5 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+packages:
+  hardware: !include ./badge_0.8.13_pro.yaml
