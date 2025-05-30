@@ -116,6 +116,15 @@ script:
       - delay: 500ms
       - switch.turn_off: vibration_motor
 
+  # Sends the IR blast command.
+  - id: on_ir_blast_click
+    mode: single
+    then:
+      - remote_transmitter.transmit_nec:
+          transmitter_id: ir_transmitter
+          address: 0xD880
+          command: 0xDD22
+
 text:
   - id: !extend badge_title
     web_server:

@@ -1,0 +1,22 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+lvgl:
+  - id: !extend badge_lvgl
+    pages:
+      - id: page_ir_blast
+        on_boot:
+          - lambda: |-
+              lv_group_t* group = lv_group_create();
+              ESP_LOGD("lvgl", "Initializing page_ir_blast: %p, group: %p", id(page_ir_blast).obj, group);
+              lv_obj_set_user_data(id(page_ir_blast).obj, group);
+              recursive_set_group(id(page_ir_blast).obj, group);
+        styles: [page, surface]
+        widgets:
+        - button:
+            align: CENTER
+            widgets:
+              - label:
+                  text: "Blast"
+            on_click:
+              - script.execute: on_ir_blast_click

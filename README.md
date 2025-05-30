@@ -73,10 +73,12 @@ SPI Components
   * [x] Badge screen
   * [x] Basic air sensor screen
   * [x] QR Code screen. Use the [MeCard format](https://en.wikipedia.org/wiki/MeCard_(QR_code)) for contact info.
+  * [x] Basic IR Blaster
   * [ ] LED control and effects
   * [ ] IR Transmitter/Receiver
 * Make it easier to add application pages
   * [x] Basic encapsulation of application pages
+  * [ ] Remove need for a focus group per page
   * [ ] Create selector entry template
   * [ ] Create page template
   * [ ] Write documentation on how to flash

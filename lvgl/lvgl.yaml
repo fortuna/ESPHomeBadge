@@ -3,7 +3,8 @@
 
 packages:
   # These must be in reverse order, as they get prepended to the pages list.
-  wifi: !include page_wifi.yaml
+#   wifi: !include page_wifi.yaml
+  ir_blast: !include page_ir_blast.yaml
   qr: !include page_qr.yaml
   air: !include page_air.yaml
   badge: !include page_badge.yaml
@@ -16,6 +17,7 @@ font:
       "\U0000ea67", # badge
       "\U0000e29c", # airwave
       "\U0000e00a", # qr_code_2
+      "\U0000f747", # laser-pointer
       "\U0000e63e", # wifi
     ]
 
@@ -140,6 +142,7 @@ script:
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
           ESP_LOGD("lvgl", "setting indev %p to group %p", indev, page_group);
           lv_indev_set_group(indev, page_group);
+          // TODO(fortuna): Focus on the first item in the page.
           lv_group_focus_next(page_group);
           //   auto obj_to_focus = get_group_item_by_index(page_group, 0);
           //   lv_group_focus_obj(obj_to_focus);
