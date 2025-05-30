@@ -25,7 +25,6 @@ obj:
   hidden: true
   bg_color: 0x333333
   bg_opa: 80%
-  radius: 8
   pad_all: 8
   widgets:
     - obj:
