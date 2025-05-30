@@ -23,8 +23,8 @@ obj:
     flex_align_track: CENTER
     pad_column: 0
   hidden: true
-  bg_color: 0x000000
-  bg_opa: 50%
+  bg_color: 0x333333
+  bg_opa: 80%
   radius: 8
   pad_all: 8
   widgets:
