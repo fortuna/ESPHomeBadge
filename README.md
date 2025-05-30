@@ -78,6 +78,8 @@ SPI Components
 * Make it easier to add application pages
   * [x] Encapsulate application pages
   * [ ] Create page template
+  * [ ] Improve flashing documentation
+  * [ ] Write new page documentation.
 
 ## Getting Started
 
@@ -128,10 +130,14 @@ This is the full recipe for successfully flashing:
 
 Contributions are welcome! If you have ideas, bug fixes, or new features, please open an issue or submit a pull request.
 
-
-## ESP32-C3 Pin Usage on Hope Badge
+<details>
+<summary>
+ESP32-C3 Pin Usage on Hope Badge
+</summary>
 
 Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet and the badge schematic. The "Usage in Badge" column details how the pin is connected in the schematic, and "Availability" indicates if the pin is easily accessible for general use on this specific badge design.
+
+<br>
 
 | Pin No. | Pin Name (Datasheet)        | Usage in Badge (Schematic)               |
 | :------ | :-------------------------- | :----------------------------------------|
@@ -149,8 +155,8 @@ Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet an
 | 12      | MTCK / GPIO6                | SPI Clock (`SPI_SCK`)                    |
 | 13      | MTDO / GPIO7                | SPI Data Out (`SPI_SDO`)                 |
 | 14      | GPIO8                       | RGB LED Data (`RGB_DAT`)                 |
-| 15      | GPIO9 / BOOT                | Tactile Button 4 (SW2, `TACT_B`)         | 
-| 16      | GPIO10                      | Tactile Button 3 (SW1, `TACT_A`)         | 
+| 15      | GPIO9 / BOOT                | Tactile Button 4 (SW2, `TACT_B`)         |
+| 16      | GPIO10                      | Tactile Button 3 (SW1, `TACT_A`)         |
 | 17      | VDD3P3_CPU                  | +3.3V CPU Power Supply                   |
 | 18      | VDD_SPI / GPIO11            | SPI Flash Power Supply                   |
 | 19      | SPIHD / GPIO12              | Vibration Motor (`VIBRAMOTOR`)           |
@@ -172,74 +178,22 @@ Here is a table summarizing the ESP32-C3 pins based on the ESP32-C3 datasheet an
 **Note:** Based on the schematic analysis, all ESP32-C3 pins are utilized for specific functions within the Hope Badge circuit, and none appear to be readily available as unallocated GPIOs for general user experimentation without modifying the board.
 
 *Information derived from `esp32-c3_datasheet_en.pdf` and `hopebadgeschema-0.8.19.pdf`.*
+</details>
 
-## WLED Instructions
+## Alternative Firmwares
 
-If you're more interested in LED effects, you can flash the badge with [WLED](https://kno.wled.ge/) instead ([effects list](https://kno.wled.ge/features/effects/)). Here's how:
+You can find the original Hacking in Parallel Badge firmware in their [official repository](https://gitlab.com/tidklaas/hip-badge).
 
+You can flash [WLED]. See [WLED Instructions].
 
-### Flash the WLED firmware
-1. Plug the badge with a USB cable.
-1. Use the [web installer](https://install.wled.me/) to flash the firmware.
-1. In the process, make sure to configure the wifi.
+You can also flash [MicroPython]. See [MicroPython Instructions].
 
-### Configure the LED strip
-1. Open the web controller
-1. Go to _Config_ -> _LED Preferences_
-1. Under _Hardware Setup_ -> _LED outputs_:
-    - **Type:** WS281x
-    - **Color order:** GRB
-    - **Length:** 16
-    - **Data GPIO:** 8
+For both WLED and MicroPython you can't use buttons 1 and 2 due to the USB conflict.
 
-Now you are ready to use the badge with the web UI!
-
-### Configure Button Actions
-
-You can configure the two rightmost buttons to trigger actions in WLED.
-
-> Note: the first two buttons (GPIO 18 and 19) cannot be configured with WLED because they conflict with the USB connection.
-
-1. Go to _Config_ -> _LED Preferences_
-1. In the buttons section:
-    - **Button 2:** GPIO 10, Pushbutton
-    - **Button 3:** GPIO 9, Pushbutton
-1. In the Home page, create some presets. [Presets](https://kno.wled.ge/features/presets/) can be used to issue commands (e.g. toggle, change brightness) or select a specific effect.
-1. Go to _Config_ -> _Time & Macros_
-    - Under _button actions_, map the configured buttons to the desired Preset IDs.
-
-### Configure IR remote (optional)
-
-If you want to control WLED with an IR remote:
-
-1. Go to _Config_ -> _LED Preferences_
-1. In the IR section:
-    - **IR GPIO:** 3
-    - **Type:** _JSON Remote_
-    - Follow the [documentation](https://kno.wled.ge/interfaces/json-ir/json_infrared/) to configure the remote commands.
-
-Now you're all set to control the badge's LED effects using the web UI, buttons, or an IR remote!
-
-### Configure 2D LED Mapping
-
-<img src=https://github.com/user-attachments/assets/20c955c5-9e6a-46d4-998e-e81c119c059b align=right width=250>
-If you want to use 2D effects, you should map the LEDs so the effects show up correctly.
-
-Follow the [official mapping documention'](https://kno.wled.ge/advanced/mapping/) on how to create the `ledmap.json` file, which should have the content below:
-
-```json
-{
-  "map": [
-    14, 15,  0,  1, 2, 
-    13, -1, -1, -1, 3,
-    12, -1, -1, -1, 4,
-    11, -1, -1, -1, 5,
-    10,  9,  8,  7, 6
-  ],
-  "width":  5,
-  "height": 5
-}
-```
+[WLED]: https://kno.wled.ge/
+[WLED Instructions]: ./docs/wled.md
+[MicroPython]: https://micropython.org/
+[MicroPython Instructions]: https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge#MicroPython
 
 ## References
 
@@ -252,6 +206,3 @@ Follow the [official mapping documention'](https://kno.wled.ge/advanced/mapping/
   * Encoding: `NECext`
   * Address: `0xD880`
   * Command: `0xDD22`
-
-
-
