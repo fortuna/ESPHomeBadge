@@ -1,6 +1,22 @@
 # Copyright 2025 Vinicius Fortuna
 # SPDX-License-Identifier: Apache-2.0
 
+# Implementation of the QR code page for the badge.
+#
+# You can show many data formats in the QR code, such as:
+# - URLs, which can encode many types of information.
+#    - Website: https://example.com
+#    - Email: mailto:john.smith@example.com
+#    - Phone: tel:+14155550123
+# - Contact card: using the MECARD format. Example:
+#   MECARD:N:Smith,John;TEL:+14155550123;EMAIL:john@example.com;URL:https://example.com;NOTE:Met at HOPE XVI;;
+#   You can generate one using https://zxing.appspot.com/generator/, but the escaping of their url output is broken.
+#   vCards don't work well because they need line breaks, which the web server UI doesn't support. They are also longer.
+# - Wi-Fi network credentials. Example:
+#   WIFI:T:WPA;S:mynetwork;P:mypass;;
+#
+# More at https://github.com/zxing/zxing/wiki/Barcode-Contents
+
 lvgl:
   - id: !extend badge_lvgl
     pages:
