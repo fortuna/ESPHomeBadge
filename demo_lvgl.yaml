@@ -13,6 +13,7 @@ packages:
 esphome:
   name: ${name}
   friendly_name: HOPE Badge
+  name_add_mac_suffix: true
   includes:
     - ./lvgl/menu.h
   on_boot:
@@ -21,7 +22,6 @@ esphome:
 
 logger:
   level: DEBUG
-
 
 # Enables Wi-Fi connectivity.
 wifi:
@@ -41,6 +41,9 @@ wifi:
 # To allow for configuring the wifi on a new device.
 captive_portal:
 
+# Go to https://www.improv-wifi.com/ and follow the instructions.
+improv_serial:
+
 # Sets up a local web server for remote control.
 web_server:
   local: true
@@ -54,6 +57,11 @@ web_server:
 ota:
   - platform: esphome
     password: !secret ota_password
+
+button:
+  - platform: factory_reset
+    name: Restore Data to Factory Defaults
+    disabled_by_default: true
 
 remote_receiver:
   - id: !extend ir_receiver

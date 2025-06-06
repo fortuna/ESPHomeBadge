@@ -2,8 +2,70 @@
 
 In this document I track some thoughts and observations from my development sessions.
 
+## To Explore
+
+- Make IR app look nicer. Fix focus issue.
+- Add WiFi page
+- Better Wifi provisioning and web server access. Perhaps simply a factory reset.
 
 ## Log
+
+### June 5, 2025 - Badge not portable
+
+I failed to properly demo the badge today, because I couldn't connect to the web server:
+
+- Badge was configured for my wifi, but moved to another place.
+- The AP mode triggered, but it would send me to the captive portal, not the web server!
+- I configured the wifi to the new network
+- I could no longer access the badge. Theories:
+  - There were separate 2.4GHz and 5GHz networks with the same name
+  - The network prevents communication between devices
+- Once configure for the new network, I could no longer trigger the access point or reconfigure the wifi.
+
+TODO:
+- Next time I should connect to my phone's AP instead, since I can easily disable it.
+- I should have a way to "factory reset" the wifi.
+  - Options: UI or holding some button combination.
+- Remove the captive portal. Alternatives for provisioning:
+  - With a Chrome desktop browser:
+    - Improv serial (needs a cable)
+    - Improv bluetooth (needs a way to start pairing)
+  - Text boxes in the web server. But you still get stuck if you lose access to the web server in the new network.
+    We need a way to clear the wifi credentials or force AP mode no matter what.
+
+I should always be able to enable wifi in access point mode and use the web server (the captive portal should not trigger).
+However, the captive portal always trigger if the wifi is missing. So we cannot add the captive portal.
+
+Idea:
+- Button or combination pressed on boot:
+  - disable station mode
+    - We can clear the hard-coded settings, but it always tries to load from saved preferences.
+  - enable ap mode
+  - disable captive portal
+- Server can have an option to clear wifi credentials for recovery.
+
+Important points:
+- On setup, the wifi component tries to load the saved wifi. Clearing the stations (with `wifi::global_wifi_component::clear_sta()`) doesn't help.
+- We can try to save a bogus wifi, but that overwrites the saved preference.
+
+To prevent the captive portal (if present), we can use:
+
+```c++
+captive_portal::global_captive_portal = nullptr;
+```
+
+And we probably need to call this explicitly:
+
+```c++
+WiFiComponent::setup_ap_config_()
+```
+
+User stories:
+- I want to provision my badge with wifi
+  - Connect to AP. Open Web Server. Enter SSID and Password.
+- I want to access the badge server to play with the settings and features
+- I want to recover from a bad wifi
+  - Call wifi.configure with an empty config.
 
 ### May 29, 2025 - Pluggable Apps
 
