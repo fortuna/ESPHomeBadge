@@ -14,9 +14,22 @@ lvgl:
         styles: [page, surface]
         widgets:
         - button:
+            id: ir_blast_button
             align: CENTER
             widgets:
               - label:
-                  text: "Blast"
+                  text: "Send Blast"
+                  text_font: montserrat_24
             on_click:
               - script.execute: on_ir_blast_click
+              - lvgl.widget.show: ir_blast_status
+              - delay: 1s
+              - lvgl.widget.hide: ir_blast_status
+        - label:
+            id: ir_blast_status
+            align_to:
+              id: ir_blast_button
+              align: OUT_BOTTOM_MID
+              y: 15
+            text: "IR Blast Sent!"
+            hidden: true

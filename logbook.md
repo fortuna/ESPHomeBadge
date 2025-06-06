@@ -4,7 +4,8 @@ In this document I track some thoughts and observations from my development sess
 
 ## To Explore
 
-- Make IR app look nicer. Fix focus issue.
+- Add button combination for factory reset.
+- Fix IR Blast focus issue.
 - Add WiFi page
 - Better Wifi provisioning and web server access. Perhaps simply a factory reset.
 
