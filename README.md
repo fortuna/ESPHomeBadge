@@ -1,5 +1,7 @@
 # ESPHomeBadge
 
+<img src="https://github.com/user-attachments/assets/eb86677c-2066-4c75-a571-058af3f2be2c" width="300px" align="right">
+
 [![Status: Work in Progress](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
 
 > **Note:** This project is currently under active development. Expect changes and potential issues.
@@ -11,6 +13,8 @@ By [Vinicius Fortuna](https://www.viniciusfortuna.com).
 [HOPE XV Electronic Badge]: https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge
 [Badge Archive]: https://web.archive.org/web/20241214102029/https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge
 [ESPHome]: https://esphome.io/
+
+<br clear="right">
 
 ## Why ESPHome for the HOPE Badge?
 
