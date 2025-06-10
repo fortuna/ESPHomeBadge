@@ -3,7 +3,7 @@
 
 packages:
   # These must be in reverse order, as they get prepended to the pages list.
-#   wifi: !include page_wifi.yaml
+  #   wifi: !include page_wifi.yaml
   ir_blast: !include page_ir_blast.yaml
   qr: !include page_qr.yaml
   air: !include page_air.yaml
@@ -14,11 +14,11 @@ font:
     id: icons_50
     size: 50
     glyphs: [
-      "\U0000ea67", # badge
-      "\U0000e29c", # airwave
-      "\U0000e00a", # qr_code_2
-      "\U0000f747", # laser-pointer
-      "\U0000e63e", # wifi
+      "\U0000ea67",  # badge
+      "\U0000e29c",  # airwave
+      "\U0000e00a",  # qr_code_2
+      "\U0000f747",  # laser-pointer
+      "\U0000e63e",  # wifi
     ]
 
 lvgl:
@@ -27,7 +27,6 @@ lvgl:
     displays: [badge_display]
     # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
     buffer_size: 25%
-
 
     # encoders:
     #   - enter_button: key_select
@@ -61,7 +60,7 @@ lvgl:
       - id: debug_border
         border_width: 1
         border_color: 0xFFFF00
-      
+
       - id: page
         width: 100%
         height: 100%
@@ -86,7 +85,7 @@ lvgl:
         shadow_width: 0
         shadow_opa: 0%
         text_font: icons_50
-        radius: 8    
+        radius: 8
 
       - id: switcher_focused
         bg_opa: 70%
@@ -129,7 +128,6 @@ script:
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
           ESP_LOGD("lvgl", "setting indev %p to group %p", indev, selector_group);
           lv_indev_set_group(indev, selector_group);
-
 
   - id: dismiss_selector
     then:

@@ -94,7 +94,6 @@ remote_receiver:
         pullup: true
     rmt_symbols: 86
 
-
 # OUTPUTS
 
 light:

@@ -4,15 +4,15 @@
 obj:
   id: page_selector
   on_boot:
-  - lambda: |-
-      ESP_LOGD("lvgl", "Default group is: %p", lv_group_get_default());
-      lv_group_t* group = lv_group_create();
-      lv_group_set_focus_cb(group, [](lv_group_t* group) {
-          ESP_LOGD("lvgl", "Group %p focused on: %p", group, lv_group_get_focused(group));
-      });
-      ESP_LOGD("lvgl", "Initializing page_selector: %p, group: %p", id(page_selector), group);
-      lv_obj_set_user_data(id(page_selector), group);
-      recursive_set_group(id(page_selector), group);
+    - lambda: |-
+        ESP_LOGD("lvgl", "Default group is: %p", lv_group_get_default());
+        lv_group_t* group = lv_group_create();
+        lv_group_set_focus_cb(group, [](lv_group_t* group) {
+            ESP_LOGD("lvgl", "Group %p focused on: %p", group, lv_group_get_focused(group));
+        });
+        ESP_LOGD("lvgl", "Initializing page_selector: %p, group: %p", id(page_selector), group);
+        lv_obj_set_user_data(id(page_selector), group);
+        recursive_set_group(id(page_selector), group);
   styles: [container]
   height: SIZE_CONTENT
   width: SIZE_CONTENT
@@ -49,9 +49,9 @@ obj:
     - obj:
         styles: [switcher_entry]
         layout:
-            type: FLEX
-            flex_flow: COLUMN
-            flex_align_cross: CENTER
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
         widgets:
           - button:
               scroll_on_focus: true
@@ -68,9 +68,9 @@ obj:
     - obj:
         styles: [switcher_entry]
         layout:
-            type: FLEX
-            flex_flow: COLUMN
-            flex_align_cross: CENTER
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
         widgets:
           - button:
               scroll_on_focus: true
@@ -87,9 +87,9 @@ obj:
     - obj:
         styles: [switcher_entry]
         layout:
-            type: FLEX
-            flex_flow: COLUMN
-            flex_align_cross: CENTER
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
         widgets:
           - button:
               scroll_on_focus: true
@@ -103,22 +103,22 @@ obj:
                 - script.execute: dismiss_selector
           - label:
               text: IR Blast
-      # - obj:
-      #   styles: [switcher_entry]
-      #   layout:
-      #       type: FLEX
-      #       flex_flow: COLUMN
-      #       flex_align_cross: CENTER
-      #   widgets:
-      #     - button:
-      #         scroll_on_focus: true
-      #         styles: [switcher_button]
-      #         focus_key:
-      #           styles: [switcher_focused]
-      #         widgets:
-      #           - label:
-      #               text: "\U0000e63e"
-      #         on_press:
-      #           - script.execute: dismiss_selector
-      #     - label:
-      #         text: Wifi
+#    - obj:
+#      styles: [switcher_entry]
+#      layout:
+#        type: FLEX
+#        flex_flow: COLUMN
+#        flex_align_cross: CENTER
+#      widgets:
+#        - button:
+#            scroll_on_focus: true
+#            styles: [switcher_button]
+#            focus_key:
+#              styles: [switcher_focused]
+#            widgets:
+#              - label:
+#                  text: "\U0000e63e"
+#            on_press:
+#              - script.execute: dismiss_selector
+#        - label:
+#            text: Wifi

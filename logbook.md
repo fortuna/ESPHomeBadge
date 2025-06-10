@@ -11,6 +11,38 @@ In this document I track some thoughts and observations from my development sess
 
 ## Log
 
+### June 9, 2025 - Unique names and automated tests
+
+Note from last session: I was able to get the unique [names with mac address suffixes][unique name].
+However, the esphome and the config don't have the full name anymore.
+In order to use OTA, we need to specify the device address with `--device`, like so:
+
+```sh
+esphome run --device hope-badge-a1b2c3.local demo.yaml
+```
+
+I started adding automated tests to the repo, to prevent breakages.
+But building multiple targets was taking a while, starting from scratch each time!
+
+To cache build artifacts, we can set [`PLATFORMIO_BUILD_CACHE_DIR`]. Like this:
+
+```sh
+PLATFORMIO_BUILD_CACHE_DIR=/tmp/esphome esphome compile demo*.yaml
+```
+
+I'm running into an issue with the test: the `secrets.yaml` file is not found.
+How should I go about it? Does it even make sense to have one?
+- Production builds shouldn't have an OTA password that is public. It probably
+  shouldn't even have support for OTA pushes. Instead, we should set up OTA pulls.
+- OTA pushes are still helpful for development, especially given the USB conflict.
+
+I decided to generate a fake `secrets.yaml` to the automated tests for now.
+But I need to add that to the instructions.
+
+
+[unique name]: https://esphome.io/components/esphome.html#adding-the-mac-address-as-a-suffix-to-the-device-name
+[`PLATFORMIO_BUILD_CACHE_DIR`]: https://docs.platformio.org/en/latest/envvars.html#envvar-PLATFORMIO_BUILD_CACHE_DIR
+
 ### June 5, 2025 - Badge not portable
 
 I failed to properly demo the badge today, because I couldn't connect to the web server:

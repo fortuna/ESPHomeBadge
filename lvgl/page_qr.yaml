@@ -29,17 +29,17 @@ lvgl:
               recursive_set_group(id(page_qr).obj, group);
         styles: [page, surface]
         widgets:
-        - qrcode:
-            id: qr_code_image
-            align: CENTER
-            size: 160
-            hidden: true
-        - label:
-            id: empty_qr_code_label
-            align: CENTER
-            width: 100%
-            text: Go to the web server to configure the QR code
-            text_align: CENTER
+          - qrcode:
+              id: qr_code_image
+              align: CENTER
+              size: 160
+              hidden: true
+          - label:
+              id: empty_qr_code_label
+              align: CENTER
+              width: 100%
+              text: Go to the web server to configure the QR code
+              text_align: CENTER
 
 text:
   - id: qr_code_text

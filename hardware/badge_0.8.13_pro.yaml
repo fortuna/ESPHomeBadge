@@ -35,7 +35,7 @@ sensor:
     i2c_id: badge_i2c
     battery_voltage: {name: Battery Voltage}
     battery_level: {name: Battery Level}
-  
+
   - platform: sgp30  # U7
     id: air_sensor
     i2c_id: badge_i2c

@@ -10,7 +10,7 @@ esphome:
   name: sdl
   includes:
     - menu.h
-  on_boot: 
+  on_boot:
     then:
       # Set mock values
       - text.set:
@@ -42,14 +42,14 @@ display:
     update_interval: never
 
 binary_sensor:
-  - { id: button_1,   platform: sdl, sdl_id: badge_display, key: SDLK_m}
-  - { id: button_2,   platform: sdl, sdl_id: badge_display, key: SDLK_COMMA }
-  - { id: button_3,   platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD }
-  - { id: button_4,   platform: sdl, sdl_id: badge_display, key: SDLK_SLASH }
-  - { id: key_up,     platform: sdl, sdl_id: badge_display, key: SDLK_u }
-  - { id: key_down,   platform: sdl, sdl_id: badge_display, key: SDLK_d }
-  - { id: key_left,   platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET }
-  - { id: key_right,  platform: sdl, sdl_id: badge_display, key: SDLK_RIGHTBRACKET }
+  - {id: button_1, platform: sdl, sdl_id: badge_display, key: SDLK_m}
+  - {id: button_2, platform: sdl, sdl_id: badge_display, key: SDLK_COMMA}
+  - {id: button_3, platform: sdl, sdl_id: badge_display, key: SDLK_PERIOD}
+  - {id: button_4, platform: sdl, sdl_id: badge_display, key: SDLK_SLASH}
+  - {id: key_up, platform: sdl, sdl_id: badge_display, key: SDLK_u}
+  - {id: key_down, platform: sdl, sdl_id: badge_display, key: SDLK_d}
+  - {id: key_left, platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET}
+  - {id: key_right, platform: sdl, sdl_id: badge_display, key: SDLK_RIGHTBRACKET}
 
 script:
   # Provide fake air sensor API.

@@ -66,16 +66,16 @@ button:
 remote_receiver:
   - id: !extend ir_receiver
     on_nec:
-        then:
-          - if:
-              condition: {lambda: return id(enable_ir_rx);}
-              then:
-                - lambda: |-
-                    ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);
-                - if:
-                    condition: {lambda: return x.address == 0xD880 && x.command == 0xDD22;}
-                    then:
-                      - script.execute: run_blast_effect
+      then:
+        - if:
+            condition: {lambda: return id(enable_ir_rx);}
+            then:
+              - lambda: |-
+                  ESP_LOGD("IR", "Received NEC command: address=0x%X, command=0x%X", x.address, x.command);
+              - if:
+                  condition: {lambda: return x.address == 0xD880 && x.command == 0xDD22;}
+                  then:
+                    - script.execute: run_blast_effect
 
 remote_transmitter:
   - id: !extend ir_transmitter

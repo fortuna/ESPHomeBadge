@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "PLATFORMIO_BUILD_CACHE_DIR": "${workspaceFolder}/.esphome/build_cache"
+        }
+    },
+    "tasks": [
+        {
+            "label": "Deploy demo",
+            "type": "process",
+            "command": "esphome",
+            "args": ["run", "demo.yaml"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Lint YAML",
+            "type": "shell",
+            "command": "pipx run yamllint **/*.yaml",
+            "group": "test",
+        }, 
+        {
+            "label": "Build demo",
+            "type": "process",
+            "command": "esphome",
+            "args": ["compile", "demo.yaml"],
+            "group": "test",
+            "problemMatcher": [],
+        }
+    ]
+}
