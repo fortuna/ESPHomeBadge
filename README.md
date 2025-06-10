@@ -3,6 +3,7 @@
 <img src="https://github.com/user-attachments/assets/eb86677c-2066-4c75-a571-058af3f2be2c" width="300px" align="right">
 
 [![Status: Work in Progress](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
+[![Build Status](https://github.com/fortuna/ESPHomeBadge/actions/workflows/test.yml/badge.svg)](https://github.com/fortuna/ESPHomeBadge/actions/workflows/test.yml?query=branch%3Amain)
 
 > **Note:** This project is currently under active development. Expect changes and potential issues.
 
