@@ -7,8 +7,7 @@ on:
   push:
     branches: [ main ]
     paths: &paths
-      - 'demo*.yaml'
-      - '.github/workflows/build-demos.yml'
+      - '**.yaml'
   pull_request:
     branches: [ main ]
     paths: *paths
