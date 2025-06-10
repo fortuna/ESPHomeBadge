@@ -30,7 +30,9 @@ jobs:
       - name: Install ESPHome
         run: pip install esphome
 
-      - name: Compile
+      - name: Compile Firmwares
+        env:
+          PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
         shell: bash
         run: |
           for config in demo*.yaml; do
