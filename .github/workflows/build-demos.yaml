@@ -1,0 +1,45 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+name: Build Demos
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.yaml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.yaml'
+
+jobs:
+  compile-demos:
+    name: Compile Demos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install ESPHome
+        run: pip install esphome
+
+      - name: Compile Firmwares
+        env:
+          PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
+        shell: bash
+        run: |
+          echo "ota_password: example_password" > secrets.yaml
+          for config in demo*.yaml; do
+            esphome compile "$config" || {
+              echo "ERROR: Compilation failed for $config"
+              exit 1
+            }
+          done
+          echo "All found ESPHome demos compiled successfully."
