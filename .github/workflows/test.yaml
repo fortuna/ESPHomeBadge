@@ -39,7 +39,8 @@ jobs:
           PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
         shell: bash
         run: |
-          echo "ota_password: example_password" > secrets.yaml
+          echo "ap_password: example_password" > secrets.yaml
+          echo "ota_password: example_password" >> secrets.yaml
           for config in demo*.yaml; do
             esphome compile "$config" || {
               echo "ERROR: Compilation failed for $config"
