@@ -4,10 +4,10 @@
 packages:
   # These must be in reverse order, as they get prepended to the pages list.
   #   wifi: !include page_wifi.yaml
-  ir_blast: !include page_ir_blast.yaml
-  qr: !include page_qr.yaml
-  air: !include page_air.yaml
-  badge: !include page_badge.yaml
+  ir_blast: !include ./apps/page_ir_blast.yaml
+  qr: !include ./apps/page_qr.yaml
+  air: !include ./apps/page_air.yaml
+  badge: !include ./apps/page_badge.yaml
 
 font:
   - file: "gfonts://Material+Symbols+Rounded"

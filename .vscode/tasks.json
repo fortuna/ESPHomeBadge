@@ -9,27 +9,40 @@
     },
     "tasks": [
         {
-            "label": "Deploy demo",
-            "type": "process",
-            "command": "esphome",
-            "args": ["run", "demo.yaml"],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-        }, 
-        {
             "label": "Lint YAML",
             "type": "shell",
             "command": "pipx run yamllint **/*.yaml",
             "group": "test",
         }, 
         {
-            "label": "Build demo",
+            "label": "Deploy no screen firmware",
             "type": "process",
             "command": "esphome",
-            "args": ["compile", "demo.yaml"],
+            "args": ["run", "firmware_no_screen/main.yaml"],
+            "group": "build",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Build no screen firmware",
+            "type": "process",
+            "command": "esphome",
+            "args": ["compile", "firmware_no_screen/main.yaml"],
+            "group": "test",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Deploy screen firmware",
+            "type": "process",
+            "command": "esphome",
+            "args": ["run", "firmware_screen/main.yaml"],
+            "group": "build",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Build screen firmware",
+            "type": "process",
+            "command": "esphome",
+            "args": ["compile", "firmware_screen/main.yaml"],
             "group": "test",
             "problemMatcher": [],
         }

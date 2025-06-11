@@ -1,0 +1,13 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+# This is a development version of the firmware that bypasses the USB conflict in
+# the deployment version to allow for serial monitoring.
+
+packages:
+  base: !include ./main.yaml
+
+# Over-the-Air provisioning.
+ota:
+  - platform: esphome
+    password: tCYnLp2DKW0&vWx56L&0Z

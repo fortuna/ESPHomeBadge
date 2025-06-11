@@ -96,12 +96,12 @@ SPI Components
     *   A computer with ESPHome installed. (See the [ESPHome Getting Started Guide](https://esphome.io/guides/getting_started_command_line.html))
     *   USB cable to connect the badge to your computer.
 2.  **Customization (Optional):**
-    * Customize the badge to your liking by editing the deployment.yaml configuration file.
+    * Customize the badge to your liking by editing the `firmware_no_screen/main.yaml` or `firmware_screen/main.yaml` configuration file.
 3.  **Flashing:**
     *   Connect the HOPE Badge to your computer.
     *   Use the ESPHome command-line tool to compile and upload your configuration to the badge:
         ```bash
-        esphome run deployment.yaml
+        esphome run firmware_no_screen/main.yaml
         ```
 
 ### Known Flashing Issue

@@ -8,8 +8,70 @@ In this document I track some thoughts and observations from my development sess
 - Fix IR Blast focus issue.
 - Add WiFi page
 - Better Wifi provisioning and web server access. Perhaps simply a factory reset.
+- Revamp documentation. Consider MKDocs or Docusaurus.
+- Write contributing documentation. See:
+  - https://github.com/nayafia/contributing-template/blob/HEAD/CONTRIBUTING-template.md
+  - https://mozillascience.github.io/working-open-workshop/contributing/
+- Introduce build variants (badge0.8.13-pro-v0.0.1)
+- Releases
 
 ## Log
+
+### June 10, 2025 - Docs and files
+
+Let's rethink the documentation.
+
+User journeys:
+- User with the pre-flashed badge. Wants to know its features and how to use it.
+  - What if we have multiple firmwares? Do we document each one?
+- User trying to flash the official firmware to the device. Perhaps tweaking it.
+  - Need the steps to install esphome, clone repo and flash.
+  - Show an example of changing a piece of the code (maybe the name?).
+- User wanting to contribute to the main firmware.
+  - Explain architecture and how to add a new mini app.
+  - Explain how to run the host version of the firmware.
+- User wanting to write a firmware from scratch.
+  - Explain the hardware definition and how to extend it.
+
+We need to define the various firmwares.
+
+Can we have a single firmware for all the boards? We can use [`Component::mark_failed()`](https://github.com/esphome/esphome/blob/7f4d2534aaee92ca3a778ac87e017a192b9bc19a/esphome/core/component.h#L129) if we can detect a device is
+not avilable.
+
+But how do we detect a device is not available?
+- For i2c devices, we can probe the addresses, the way it's done in [I2CBus::i2c_scan_()].
+- What can we do for SPI?
+Does that cover what we need?
+
+The component detection could work if the difference is just components like sensors.
+But the presence or absence of the screen dictates very different user experiences.
+Implement both experiences in the same firmware is counter productive.
+
+Decisions: have two different firmwares for screen and no screen devices. And one for host?
+Firmwares:
+- main_no_screen_dev
+- main_screen
+- main_host
+
+We probably want to put them in separate directories? We need to share code Idea:
+- firmware_no_screen
+  - main.yaml
+- firmware_screen
+  - main.yaml
+  - host_main.yaml
+  - ui
+    - page_*.yaml
+- apps
+  - IR blast
+  - LED effects
+  - ...
+
+Should we separate by badge version?
+- badge_0.8.15_screen
+- badge_0.8.15_no_screen
+
+
+[I2CBus::i2c_scan_()]: https://github.com/esphome/esphome/blob/ad37f103fab9fb16a0d8c1d3a30ee973bb10ece4/esphome/components/i2c/i2c_bus.h#L97
 
 ### June 9, 2025 - Unique names and automated tests
 
