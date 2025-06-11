@@ -99,10 +99,17 @@ SPI Components
     * Customize the badge to your liking by editing the `firmware_no_screen/main.yaml` or `firmware_screen/main.yaml` configuration file.
 3.  **Flashing:**
     *   Connect the HOPE Badge to your computer.
+    *   Make sure to hold button 4 while turning on the badge, to enter Firmware Download mode and to prevent
+        conflicts with the USB (see below).
     *   Use the ESPHome command-line tool to compile and upload your configuration to the badge:
         ```bash
         esphome run firmware_no_screen/main.yaml
         ```
+        or if you have the badge with a screen:
+        ```bash
+        esphome run firmware_screen/main.yaml
+        ```
+    *   Turn off the badge, disconnect from USB, and turn it back on.
 
 ### Known Flashing Issue
 
@@ -118,7 +125,7 @@ To successfully flash, you must put it in flash mode:
 1. Turn on the device
 1. Release the Button
 
-This will enter flashing mode and prevent the firmware from running and breaking the USB connection.
+This will enter firmware download mode and prevent the firmware from running and breaking the USB connection.
 
 Once flashing is complete, you won't see any logs, because as soon as the firmware starts, it breaks USB.
 
@@ -126,17 +133,20 @@ Also, the firmware won't run correctly somehow. You need to reset it (turn it of
 
 If you don't disconnect the USB cable, you will see that buttons 1 and 2 will not work. You must disconnect the cable.
 
-This is the full recipe for successfully flashing:
-1. Turn off the badge
-1. Connect the badge via USB
-1. Turn it on in flash mode
-1. Flash
-1. Disconnect from USB
-1. Turn it off and back on
-
 ## Contributing
 
 Contributions are welcome! If you have ideas, bug fixes, or new features, please open an issue or submit a pull request.
+
+For development, you can set a fixed build cache to speed up builds with:
+```bash
+export PLATFORMIO_BUILD_CACHE_DIR=/tmp/esphome_cache
+```
+
+<!-- It's also helpful to use the `_dev` firmware versions. They enable OTA and disable the conflicting buttons, so you
+can see the serial logs. -->
+
+For development of the screen firmware, use `firmware_screen/main_host.yaml` to run LVGL on your host machine.
+That will significantly accelerate UI development.
 
 <details>
 <summary>
