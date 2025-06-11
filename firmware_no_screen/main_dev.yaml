@@ -10,7 +10,7 @@ packages:
 # Over-the-Air provisioning.
 ota:
   - platform: esphome
-    password: tCYnLp2DKW0&vWx56L&0Z
+    password: !secret ota_password
 
 binary_sensor:
   # Avoids USB conflict for development.
