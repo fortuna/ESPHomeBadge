@@ -9,6 +9,16 @@
     },
     "tasks": [
         {
+            "label": "Build Current File",
+            "type": "process",
+            "command": "esphome",
+            "args": ["compile", "${file}"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
             "label": "Lint YAML",
             "type": "shell",
             "command": "pipx run yamllint **/*.yaml",
