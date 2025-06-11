@@ -33,7 +33,7 @@ wifi:
 
   # Configures a local access point, in case no wifi is available.
   ap:
-    password: fortunaatgithub
+    password: !secret ap_password
 
 # To allow for configuring the wifi on a new device.
 captive_portal:
