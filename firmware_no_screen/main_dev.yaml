@@ -5,7 +5,12 @@
 # the deployment version to allow for serial monitoring.
 
 packages:
-  base: !include ./demo.yaml
+  base: !include ./main.yaml
+
+# Over-the-Air provisioning.
+ota:
+  - platform: esphome
+    password: !secret ota_password
 
 binary_sensor:
   # Avoids USB conflict for development.
