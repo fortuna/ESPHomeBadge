@@ -38,10 +38,12 @@ jobs:
         env:
           PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
         shell: bash
+        # TODO: Need to install SDL on Linux for Host platform:
+        # apt install libsdl2-dev libsodium-dev build-essential git
         run: |
           echo "ap_password: example_password" > secrets.yaml
           echo "ota_password: example_password" >> secrets.yaml
-          for config in firmware*/main*.yaml; do
+          for config in firmware_screen/main_dev.yaml firmware_no_screen/main_dev.yaml; do
             esphome compile "$config" || {
               echo "ERROR: Compilation failed for $config"
               exit 1
