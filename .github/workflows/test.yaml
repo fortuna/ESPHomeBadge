@@ -39,7 +39,7 @@ jobs:
           PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
         shell: bash
         # TODO: Need to install SDL on Linux for Host platform:
-        # apt install libsdl2-dev libsodium-dev build-essential git
+        # sudo apt update && sudo apt install -y libsdl2-dev libsodium-dev build-essential
         run: |
           echo "ap_password: example_password" > secrets.yaml
           echo "ota_password: example_password" >> secrets.yaml
