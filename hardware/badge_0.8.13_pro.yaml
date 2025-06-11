@@ -39,6 +39,12 @@ sensor:
   - platform: sgp30  # U7
     id: air_sensor
     i2c_id: badge_i2c
+    # See https://esphome.io/components/sensor/sgp30.html#calibrating-baseline.
+    # These are values I've observed in my badge after running it for 17 hours.
+    baseline:
+      eco2_baseline: 0x927D
+      tvoc_baseline: 0x9853
+    store_baseline: true
     # Estimated CO₂ concentration ("CO₂ equivalent")
     eco2:
       name: CO₂eq
