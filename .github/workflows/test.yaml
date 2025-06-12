@@ -43,7 +43,7 @@ jobs:
         run: |
           echo "ap_password: example_password" > secrets.yaml
           echo "ota_password: example_password" >> secrets.yaml
-          for config in firmware_screen/main_dev.yaml firmware_no_screen/main_dev.yaml; do
+          for config in firmware_display/main_dev.yaml firmware_nodisplay/main_dev.yaml; do
             esphome compile "$config" || {
               echo "ERROR: Compilation failed for $config"
               exit 1

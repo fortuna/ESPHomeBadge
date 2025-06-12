@@ -17,6 +17,45 @@ In this document I track some thoughts and observations from my development sess
 
 ## Log
 
+### June 11, 2025 - Build variants
+
+I'll be getting the new badge soon. Need to think about how to support the multiple versions.
+
+I've been thinking of build variants (product flavors + build types) and resource qualifiers, like you have on Android.
+
+Build types:
+- development
+- debug
+- release
+
+Resource qualifiers:
+- hardware version (this includes the set of sensors)
+
+Product flavors
+- screen/no screen (this can be added to a badge)
+- badge/host (this could be part of the hardware version, but they have different capabilities
+  -- like no web server or ota on host).
+
+Proposal
+- screen
+  - badge
+    - version + pro/basic  <-- what gets shipped
+  - host
+- noscreen
+  - badge
+  - host?
+
+Build:
+
+```bash
+BADGE_VERSION=0.8.15-pro BUILD_TYPE=dev esphome run ./firmware/screen/main.yaml
+BADGE_VERSION=0.8.15-basic BUILD_TYPE=release esphome run ./firmware/noscreen/main.yaml
+```
+
+How to share common logic between builds?
+
+
+
 ### June 10, 2025 - Docs and files
 
 Let's rethink the documentation.
@@ -54,9 +93,9 @@ Firmwares:
 - main_host
 
 We probably want to put them in separate directories? We need to share code Idea:
-- firmware_no_screen
+- firmware_nodisplay
   - main.yaml
-- firmware_screen
+- firmware_display
   - main.yaml
   - host_main.yaml
   - ui
