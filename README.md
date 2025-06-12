@@ -96,18 +96,18 @@ SPI Components
     *   A computer with ESPHome installed. (See the [ESPHome Getting Started Guide](https://esphome.io/guides/getting_started_command_line.html))
     *   USB cable to connect the badge to your computer.
 2.  **Customization (Optional):**
-    * Customize the badge to your liking by editing the `firmware_no_screen/main.yaml` or `firmware_screen/main.yaml` configuration file.
+    * Customize the badge to your liking by editing the `firmware_nodisplay/main.yaml` or `firmware_display/main.yaml` configuration file.
 3.  **Flashing:**
     *   Connect the HOPE Badge to your computer.
     *   Make sure to hold button 4 while turning on the badge, to enter Firmware Download mode and to prevent
         conflicts with the USB (see below).
     *   Use the ESPHome command-line tool to compile and upload your configuration to the badge:
         ```bash
-        esphome run firmware_no_screen/main.yaml
+        esphome run firmware_nodisplay/main.yaml
         ```
         or if you have the badge with a screen:
         ```bash
-        esphome run firmware_screen/main.yaml
+        esphome run firmware_display/main.yaml
         ```
     *   Turn off the badge, disconnect from USB, and turn it back on.
 
@@ -145,7 +145,7 @@ export PLATFORMIO_BUILD_CACHE_DIR=/tmp/esphome_cache
 <!-- It's also helpful to use the `_dev` firmware versions. They enable OTA and disable the conflicting buttons, so you
 can see the serial logs. -->
 
-For development of the screen firmware, use `firmware_screen/main_host.yaml` to run LVGL on your host machine.
+For development of the screen firmware, use `firmware_display/main_host.yaml` to run LVGL on your host machine.
 That will significantly accelerate UI development.
 
 <details>
