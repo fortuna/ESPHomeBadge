@@ -4,7 +4,7 @@
 # This is the file where you can customize the behavior of your badge.
 
 substitutions:
-  name: hope-badge
+  nadfdfme: hope-badge
 
 packages:
   hardware: !include '../hardware/badge_0.8.15_pro.yaml'
