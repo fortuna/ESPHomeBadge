@@ -9,6 +9,8 @@
 
 This repository provides a way to program the [HOPE XV Electronic Badge] ([archive][Badge Archive]) using [ESPHome]. ESPHome is a powerful yet simple framework for controlling your ESP32-based devices.
 
+This is **NOT** an official ESPHome project.
+
 By [Vinicius Fortuna](https://www.viniciusfortuna.com).
 
 [HOPE XV Electronic Badge]: https://wiki.hope.net/index.php?title=HOPE_XV_Electronic_Badge
