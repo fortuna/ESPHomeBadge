@@ -26,7 +26,7 @@ It turns out the I/O expander wiring is wrong. It will need to be redone.
 The new Air Sensor is SGP40, a change from SGP30. This means the UI will need to change,
 since they provide different measurements.
 
-There's an unindentified component on I2C address 0x55, which seems to be the [NT3H2111] for NFC.
+There's an unidentified component on I2C address 0x55, which seems to be the [NT3H2111] for NFC.
 
 [NT3H2111]: https://www.nxp.com/docs/en/data-sheet/NT3H2111_2211.pdf
 
