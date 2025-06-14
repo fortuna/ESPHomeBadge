@@ -17,6 +17,20 @@ In this document I track some thoughts and observations from my development sess
 
 ## Log
 
+### June 13, 2025 - New badge
+
+I got the HWREL 0.8.20 version of the badge. I need to make the code work on this one.
+
+It turns out the I/O expander wiring is wrong. It will need to be redone.
+
+The new Air Sensor is SGP40, a change from SGP30. This means the UI will need to change,
+since they provide different measurements.
+
+There's an unindentified component on I2C address 0x55, which seems to be the [NT3H2111] for NFC.
+
+[NT3H2111]: https://www.nxp.com/docs/en/data-sheet/NT3H2111_2211.pdf
+
+
 ### June 11, 2025 - Build variants
 
 I'll be getting the new badge soon. Need to think about how to support the multiple versions.
@@ -25,35 +39,34 @@ I've been thinking of build variants (product flavors + build types) and resourc
 
 Build types:
 - development
-- debug
+- debug?
 - release
 
 Resource qualifiers:
 - hardware version (this includes the set of sensors)
 
 Product flavors
-- screen/no screen (this can be added to a badge)
+- display/no display (this can be added to a badge)
 - badge/host (this could be part of the hardware version, but they have different capabilities
   -- like no web server or ota on host).
 
 Proposal
-- screen
+- display
   - badge
     - version + pro/basic  <-- what gets shipped
   - host
-- noscreen
+- nodisplay
   - badge
   - host?
 
 Build:
 
 ```bash
-BADGE_VERSION=0.8.15-pro BUILD_TYPE=dev esphome run ./firmware/screen/main.yaml
-BADGE_VERSION=0.8.15-basic BUILD_TYPE=release esphome run ./firmware/noscreen/main.yaml
+BADGE_VERSION=0.8.15-pro BUILD_TYPE=dev esphome run ./firmware/display/main.yaml
+BADGE_VERSION=0.8.15-basic BUILD_TYPE=release esphome run ./firmware/nodisplay/main.yaml
 ```
 
 How to share common logic between builds?
-
 
 
 ### June 10, 2025 - Docs and files
