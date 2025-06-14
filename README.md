@@ -150,6 +150,12 @@ can see the serial logs. -->
 For development of the screen firmware, use `firmware_display/main_host.yaml` to run LVGL on your host machine.
 That will significantly accelerate UI development.
 
+To lint the Yaml files:
+
+```bash
+pipx run yamllint **/*.yaml
+```
+
 <details>
 <summary>
 ESP32-C3 Pin Usage on Hope Badge
