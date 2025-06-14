@@ -1,0 +1,161 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+# This file defines the hardware of the badge. All functionality
+# should be in your deployment or application configuration that
+# depends on this file.
+
+# Note on RMT symbols:
+# ESP32-C3 has memory for only 192 RMT symbols, only half of which is available to transmitters.
+# We have the following defaults:
+# - esp32_rmt_led_strip: 96
+# - remote_transmitter: 48
+# - remote_receiver: 192
+# We change it to the following allocation:
+# - esp32_rmt_led_strip: 48
+# - remote_transmitter: 48
+# - remote_receiver: 86
+
+# The badge is a custom board, not explicitly supported by PlatformIO.
+# We choose esp32-c3-devkitm-1 as the base board, which is similar enough to work here.
+# However, that board uses flash mode QIO, while the badge uses DIO, so it can free up
+# SPIHD/GPIO12 and SPIWD/GPIO13 for use as GPIO pins. For that reason we override the flash mode in the
+# board definition.
+# Definition for esp32-c3-devkitm-1: https://github.com/platformio/platform-espressif32/blob/master/boards/esp32-c3-devkitm-1.json
+# ESP32 flash modes: https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/spi-flash-modes.html
+esphome:
+  platformio_options:
+    board_build.flash_mode: dio
+
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+i2c:
+  sda: GPIO20
+  scl: GPIO21
+  id: badge_i2c
+  frequency: 400kHz  # Fast mode.
+
+# INPUTS
+
+pcf8574:
+  - id: pcf8574_hub  # U3
+    i2c_id: badge_i2c
+    address: 0x20
+
+binary_sensor:
+  - id: button_1
+    platform: gpio
+    name: Button 1
+    pin:
+      pcf8574: pcf8574_hub
+      number: 1
+      mode:
+        input: true
+      inverted: true
+
+  - id: button_2
+    platform: gpio
+    name: Button 2
+    pin:
+      pcf8574: pcf8574_hub
+      number: 2
+      mode:
+        input: true
+      inverted: true
+
+  - id: button_3
+    platform: gpio
+    name: Button 3
+    pin:
+      number: GPIO10  # SW1
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+
+  - id: button_4  # SW2
+    platform: gpio
+    name: Button 4
+    pin:
+      number: GPIO09  # SW2, Strapping Pin (BOOT)
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+
+remote_receiver:
+  - id: ir_receiver
+    pin:
+      number: GPIO03
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    rmt_symbols: 86
+
+# OUTPUTS
+
+light:
+  - id: board_led
+    name: Board LED
+    platform: monochromatic
+    output: board_led_output
+    initial_state:
+      state: OFF
+
+  - id: led_strip
+    name: LED Strip
+    # restore_mode: RESTORE_DEFAULT_ON
+    platform: esp32_rmt_led_strip
+    rgb_order: GRB
+    pin: GPIO8  # Strapping Pin
+    num_leds: 16
+    chipset: ws2812
+    rmt_symbols: 48
+
+remote_transmitter:
+  - id: ir_transmitter
+    pin: GPIO02
+    # Infrared remotes use a 50% carrier signal.
+    carrier_duty_percent: 50%
+    rmt_symbols: 48
+
+output:
+  - id: board_led_output
+    platform: ledc
+    pin:
+      number: GPIO12
+      ignore_pin_validation_error: true
+
+switch:
+  - id: vibration_motor
+    name: Vibration Motor
+    platform: gpio
+    pin:
+      # The badge uses DIO flash mode instead of QIO, making the SPI pins GPIO12 and GPIO13 free to use.
+      # See https://github.com/esphome/issues/issues/3744.
+      number: GPIO13
+      inverted: true
+      ignore_pin_validation_error: true
+    restore_mode: ALWAYS_OFF
+
+sensor:
+  - platform: max17043  # U4
+    id: battery_sensor
+    i2c_id: badge_i2c
+    address: 0x36
+    battery_voltage: {name: Battery Voltage}
+    battery_level: {name: Battery Level}
+
+  - platform: sgp4x  # SGP40 - U7
+    id: air_sensor
+    i2c_id: badge_i2c
+    address: 0x59
+    store_baseline: true
+    update_interval: 10s
+    voc:
+      name: "VOC Index"
