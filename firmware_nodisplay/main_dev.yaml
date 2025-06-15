@@ -12,7 +12,13 @@ esphome:
   friendly_name: HOPE Badge (Dev)
   name_add_mac_suffix: false
 
-# Over-the-Air provisioning.
+wifi:
+  # Convenience wifi configuration for development.
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+
+# Over-the-Air provisioning, so we don't need to plug the badge to flash it.
 ota:
   - platform: esphome
     password: !secret ota_password
