@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "wifi_ssid: example_ssid" > secrets.yaml
           echo "wifi_password: example_password" >> secrets.yaml
-          echo "ap_password: example_password" > secrets.yaml
+          echo "ap_password: example_password" >> secrets.yaml
           echo "ota_password: example_password" >> secrets.yaml
           for config in firmware_display/main_dev.yaml firmware_nodisplay/main_dev.yaml; do
             esphome compile "$config" || {
