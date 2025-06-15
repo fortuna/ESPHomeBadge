@@ -7,6 +7,11 @@
 packages:
   base: !include ./main.yaml
 
+esphome:
+  name: hope-badge-dev
+  friendly_name: HOPE Badge (Dev)
+  name_add_mac_suffix: false
+
 # Over-the-Air provisioning.
 ota:
   - platform: esphome
