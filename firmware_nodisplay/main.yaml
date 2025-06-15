@@ -7,7 +7,7 @@ substitutions:
   name: hope-badge
 
 packages:
-  hardware: !include '../hardware/badge_0.8.15_pro.yaml'
+  hardware: !include '../hardware/badge_0.8.15.yaml'
 
 esphome:
   name: ${name}
@@ -15,7 +15,22 @@ esphome:
   name_add_mac_suffix: true
   on_boot:
     - then:
-        logger.log: Hello World
+        - logger.log: Hello World
+    - priority: 599  # setup_priority::DATA - 1
+      then:
+        # Examples of feature detection.
+        - logger.log:
+            format: "SGP30 air sensor: found: %d, status_has_warning: %d, is_failed: %d"
+            args:
+              - 'id(badge_i2c).writev(0x58, nullptr, 0, true) == esphome::i2c::ErrorCode::ERROR_OK'
+              - 'id(air_sensor).status_has_warning()'
+              - 'id(air_sensor).is_failed()'
+        - logger.log:
+            format: "MAX17043 battery sensor: found: %d, status_has_warning: %d, is_failed: %d"
+            args:
+              - 'id(badge_i2c).writev(0x36, nullptr, 0, true) == esphome::i2c::ErrorCode::ERROR_OK'
+              - 'id(battery_sensor).status_has_warning()'
+              - 'id(battery_sensor).is_failed()'
 
 logger:
   level: DEBUG
