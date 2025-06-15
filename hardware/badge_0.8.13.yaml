@@ -34,10 +34,15 @@ esp32:
     type: esp-idf
 
 i2c:
-  sda: GPIO20
-  scl: GPIO21
-  id: badge_i2c
-  frequency: 400kHz  # Fast mode.
+  - id: badge_i2c
+    sda: GPIO20
+    scl: GPIO21
+    frequency: 400kHz  # Fast mode.
+
+spi:
+  - id: spi_bus
+    clk_pin: GPIO06  # SPI_SCK
+    mosi_pin: GPIO07  # SPI_SDO
 
 # INPUTS
 
@@ -46,9 +51,9 @@ binary_sensor:
   # See the README.
   - id: button_1
     platform: gpio
-    name: Button 1 (SW3)
+    name: Button 1
     pin:
-      number: GPIO19  # USB_D+
+      number: GPIO19  # SW3, USB_D+
       inverted: true
       mode:
         input: true
@@ -56,9 +61,9 @@ binary_sensor:
 
   - id: button_2
     platform: gpio
-    name: Button 2 (SW4)
+    name: Button 2
     pin:
-      number: GPIO18  # USB_D-
+      number: GPIO18  # SW4, USB_D-
       inverted: true
       mode:
         input: true
@@ -66,9 +71,9 @@ binary_sensor:
 
   - id: button_3
     platform: gpio
-    name: Button 3 (SW1)
+    name: Button 3
     pin:
-      number: GPIO10
+      number: GPIO10  # SW1
       inverted: true
       mode:
         input: true
@@ -76,9 +81,9 @@ binary_sensor:
 
   - id: button_4
     platform: gpio
-    name: Button 4 (SW2)
+    name: Button 4
     pin:
-      number: GPIO09  # Strapping Pin (BOOT)
+      number: GPIO09  # SW2, Strapping Pin (BOOT)
       inverted: true
       mode:
         input: true
@@ -93,6 +98,42 @@ remote_receiver:
         input: true
         pullup: true
     rmt_symbols: 86
+
+sensor:
+  - platform: max17043  # U4
+    id: battery_sensor
+    i2c_id: badge_i2c
+    address: 0x36
+    battery_voltage: {name: Battery Voltage}
+    battery_level: {name: Battery Level}
+
+  - platform: sgp30  # U7
+    id: air_sensor
+    i2c_id: badge_i2c
+    address: 0x58
+    # See https://esphome.io/components/sensor/sgp30.html#calibrating-baseline.
+    # These are values I've observed in my badge after running it for 17 hours.
+    baseline:
+      eco2_baseline: 0x927D
+      tvoc_baseline: 0x9853
+    store_baseline: true
+    # Estimated CO₂ concentration ("CO₂ equivalent")
+    eco2:
+      name: CO₂eq
+      on_value:
+        - script.execute:
+            id: badge_on_eco2_value
+            x: !lambda return x;
+    # Total Volatile Organic Compounds
+    tvoc:
+      name: TVOC
+      on_value:
+        - script.execute:
+            id: badge_on_tvoc_value
+            x: !lambda 'return x;'
+    # Baseline values for calibration
+    eco2_baseline: {name: CO₂eq Calibration Baseline}
+    tvoc_baseline: {name: TVOC Calibration Baseline}
 
 # OUTPUTS
 
@@ -138,3 +179,32 @@ switch:
       number: GPIO12
       ignore_pin_validation_error: true
     restore_mode: ALWAYS_OFF
+
+display:
+  - id: badge_display
+    platform: ili9xxx
+    model: ST7789V
+    dc_pin: GPIO00  # TFT_DC
+    cs_pin: GPIO04  # SPI_CS1
+    reset_pin: GPIO01  # SPI_CS2
+    invert_colors: true
+    # We need PSRAM to use 16 bit, so we reduce the color bit depth.
+    color_palette: 8BIT
+    dimensions:
+      width: 320
+      height: 240
+    transform:
+      swap_xy: true
+      mirror_y: true
+
+script:
+  # Exposed air sensor API.
+  - id: badge_on_eco2_value
+    parameters:
+      x: float  # Value in ppm
+    then: []
+
+  - id: badge_on_tvoc_value
+    parameters:
+      x: float  # Value in ppb
+    then: []

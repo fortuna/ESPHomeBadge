@@ -34,10 +34,15 @@ esp32:
     type: esp-idf
 
 i2c:
-  sda: GPIO20
-  scl: GPIO21
-  id: badge_i2c
-  frequency: 400kHz  # Fast mode.
+  - id: badge_i2c
+    sda: GPIO20
+    scl: GPIO21
+    frequency: 400kHz  # Fast mode.
+
+spi:
+  - id: spi_bus
+    clk_pin: GPIO06  # SPI_SCK
+    mosi_pin: GPIO07  # SPI_SDO
 
 # INPUTS
 
@@ -53,9 +58,9 @@ binary_sensor:
     pin:
       pcf8574: pcf8574_hub
       number: 1
+      inverted: true
       mode:
         input: true
-      inverted: true
 
   - id: button_2
     platform: gpio
@@ -63,9 +68,9 @@ binary_sensor:
     pin:
       pcf8574: pcf8574_hub
       number: 2
+      inverted: true
       mode:
         input: true
-      inverted: true
 
   - id: button_3
     platform: gpio
@@ -77,7 +82,7 @@ binary_sensor:
         input: true
         pullup: true
 
-  - id: button_4  # SW2
+  - id: button_4
     platform: gpio
     name: Button 4
     pin:
@@ -97,6 +102,22 @@ remote_receiver:
         pullup: true
     rmt_symbols: 86
 
+sensor:
+  - platform: max17043  # U4
+    id: battery_sensor
+    i2c_id: badge_i2c
+    address: 0x36
+    battery_voltage: {name: Battery Voltage}
+    battery_level: {name: Battery Level}
+
+  - platform: sgp4x  # SGP40 - U7
+    id: air_sensor
+    i2c_id: badge_i2c
+    address: 0x59
+    store_baseline: true
+    update_interval: 10s
+    voc:
+      name: VOC Index
 # OUTPUTS
 
 light:
@@ -143,19 +164,3 @@ switch:
       ignore_pin_validation_error: true
     restore_mode: ALWAYS_OFF
 
-sensor:
-  - platform: max17043  # U4
-    id: battery_sensor
-    i2c_id: badge_i2c
-    address: 0x36
-    battery_voltage: {name: Battery Voltage}
-    battery_level: {name: Battery Level}
-
-  - platform: sgp4x  # SGP40 - U7
-    id: air_sensor
-    i2c_id: badge_i2c
-    address: 0x59
-    store_baseline: true
-    update_interval: 10s
-    voc:
-      name: "VOC Index"

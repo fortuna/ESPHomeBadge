@@ -14,13 +14,11 @@ https://gitlab.com/tidklaas/hip-badge/-/tree/master/hardware
 
 The hardware definition files in this directory follow a consistent naming pattern:
 
-`badge_${version}_${variant}.yaml`
+`badge_${version}.yaml`
 
-Where:
-*   `${version}`: Represents the hardware version of the badge (e.g., `0.8.13`).
-*   `${variant}`: Indicates the specific variant of the badge, currently `basic` or `pro`.
+Where `${version}` represents the hardware version of the badge (e.g., `0.8.13`). You can find the hardware version on the back of the PCB board (You need to open the enclosure).
 
-For example, `badge_0.8.13_pro.yaml` would be the hardware definition for the version 0.8.13 of the "pro" badge.
+For example, `badge_0.8.13.yaml` would be the hardware definition for the version 0.8.13 of the badge.
 
 ## How to Use These Definitions
 
@@ -31,7 +29,7 @@ These YAML files are designed to be included in your ESPHome firmware configurat
 ```yaml
 packages:
   # Include the base hardware definition
-  hardware: !include badge_0.8.13_pro.yaml
+  hardware: !include badge_0.8.15.yaml
 
 # ... your custom firmware configuration below
 ```
