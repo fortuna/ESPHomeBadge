@@ -35,7 +35,7 @@ jobs:
 
       - name: Lint YAML
         shell: bash
-        # For development, you can use `pipx run yamllint`.
+        # For development, you can use `pipx run yamllint **/*.yaml`.
         run: yamllint **/*.yaml
 
       - name: Install ESPHome
