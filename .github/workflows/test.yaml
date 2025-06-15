@@ -28,6 +28,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Speed up PlatformIO setup. As per https://docs.platformio.org/en/stable/integration/ci/github-actions.html
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
