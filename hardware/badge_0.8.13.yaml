@@ -185,8 +185,8 @@ display:
     platform: ili9xxx
     model: ST7789V
     dc_pin: GPIO00  # TFT_DC
-    cs_pin: GPIO04  # SPI_CS1
-    reset_pin: GPIO01  # SPI_CS2
+    cs_pin: GPIO04  # SPI_CS
+    reset_pin: GPIO01  # TFT_RST
     invert_colors: true
     # We need PSRAM to use 16 bit, so we reduce the color bit depth.
     color_palette: 8BIT
