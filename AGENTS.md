@@ -214,7 +214,7 @@ Use `main_dev.yaml` (in either `firmware_display/` or `firmware_nodisplay/`) dur
 
 ## CI/CD
 
-The GitHub Actions workflow (`.github/workflows/test.yaml`) runs on every push to `main` and on PRs that touch YAML files:
+The GitHub Actions workflow (`.github/workflows/test.yaml`) runs for pushes to `main` and for PRs, but only when YAML files are changed:
 
 1. `yamllint` — validates all `*.yaml` files
 2. ESPHome compile — `firmware_display/main_dev.yaml` and `firmware_nodisplay/main_dev.yaml`
