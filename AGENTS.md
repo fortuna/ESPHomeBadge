@@ -29,7 +29,7 @@ ESPHomeBadge/
 │   └── badge_0.8.20.yaml         # Latest: PCF8574 expander, SGP40, NFC
 ├── firmware_display/             # Firmware for badges WITH a screen
 │   ├── main.yaml                 # Production firmware
-│   ├── main_dev.yaml             # Dev build (OTA enabled, USB buttons removed)
+│   ├── main_dev.yaml             # Dev build (OTA enabled)
 │   ├── main_host.yaml            # PC/SDL host for UI prototyping
 │   ├── lvgl.yaml                 # LVGL UI framework config + styles
 │   ├── page_selector.yaml        # App switcher overlay
@@ -67,23 +67,25 @@ ESPHomeBadge/
 | WS2812B LED strip (16 LEDs) | GPIO08 | RMT, 48 symbols |
 | IR Receiver (IRM-H638) | GPIO03 | RMT, 86 symbols |
 | IR Transmitter (VSMY1850) | GPIO02 | RMT, 48 symbols |
-| Button 1 (SW3) | GPIO19 | **USB D+ conflict** |
-| Button 2 (SW4) | GPIO18 | **USB D- conflict** |
+| Button 1 (SW3) | GPIO19 (v0.8.13–0.8.15) / PCF8574 P0 (v0.8.20) | **USB D+ conflict on v0.8.13–0.8.15 only** |
+| Button 2 (SW4) | GPIO18 (v0.8.13–0.8.15) / PCF8574 P1 (v0.8.20) | **USB D- conflict on v0.8.13–0.8.15 only** |
 | Button 3 (SW1) | GPIO10 | |
 | Button 4 (SW2) | GPIO09 | BOOT pin |
-| Green LED (D28) | GPIO13 | |
+| Green LED (D28) | GPIO13 (≤0.8.15) / GPIO12 (0.8.20) | Version dependent (`board_led`) |
 | Vibration Motor | GPIO12/13 | Version dependent |
 | MAX17048 Battery Sensor | I2C 0x36 | |
 | SGP30 Air Quality (v0.8.13–0.8.15) | I2C 0x58 | eCO2 + TVOC |
 | SGP40 Air Quality (v0.8.20) | I2C 0x59 | VOC Index |
-| PCF8574 GPIO Expander (v0.8.20) | I2C 0x20 | Manages buttons 1 & 2 |
+| PCF8574 GPIO Expander (v0.8.20) | I2C 0x20 | Manages buttons 1 & 2 (no USB conflict) |
 | NFC Tag ST25DV / NT3H2111 (v0.8.20) | I2C 0x55 | Software pending |
 
 ### USB/Button Conflict — Critical Note
 
-Buttons 1 (GPIO19) and 2 (GPIO18) share pins with USB data lines. While the USB cable is connected, these buttons do not function. Firmware must be flashed by holding Button 4 (BOOT) on power-up to enter flash mode.
+On hardware versions **v0.8.13–0.8.15**, Buttons 1 (GPIO19) and 2 (GPIO18) share pins with the USB D+ / D− data lines. While the USB cable is connected on these versions, Buttons 1 and 2 do not function. Firmware must be flashed by holding Button 4 (BOOT) on power-up to enter flash mode.
 
-Development firmware (`main_dev.yaml`) omits buttons 1 and 2 to avoid conflicts during serial monitoring.
+On hardware version **v0.8.20**, Buttons 1 and 2 are routed through the PCF8574 I2C expander instead of GPIO19/GPIO18, so they no longer conflict with the USB data lines. The BOOT/flash procedure using Button 4 (BOOT) remains the same.
+
+Development firmware (`main_dev.yaml`) omits buttons 1 and 2 to avoid conflicts and noise during serial monitoring, with the exact behavior determined by the selected hardware definition YAML.
 
 ### Hardware Versions
 
