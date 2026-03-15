@@ -101,7 +101,7 @@ Development firmware (`main_dev.yaml`) omits buttons 1 and 2 to avoid conflicts 
 
 Configuration is modular using ESPHome's `!include` and `!extend`:
 
-1. **Hardware layer** (`hardware/badge_X.X.X.yaml`) — pure hardware definitions, no app logic. Exposes standardized component IDs used by all firmware variants.
+1. **Hardware layer** (`hardware/badge_X.X.X.yaml`) — hardware definitions plus shared interface scripts/triggers (e.g., sensor `on_value` handlers), but no full app features. Exposes standardized component IDs and related hooks used by all firmware variants.
 2. **Firmware layer** (`firmware_*/main.yaml`) — WiFi, web server, sensors, LED effects, app logic.
 3. **UI layer** (`lvgl.yaml`, `apps/page_*.yaml`) — display, styles, page definitions.
 4. **Dev overrides** (`main_dev.yaml`) — extends the production config with dev-time settings.
@@ -118,20 +118,21 @@ When the hardware YAML exposes components, always use these canonical IDs:
 | `ir_receiver` | `remote_receiver` | IR receiver |
 | `ir_transmitter` | `remote_transmitter` | IR transmitter |
 | `battery_sensor` | `sensor` | Battery % via MAX17048 |
-| `air_sensor` | `sensor` | Air quality (SGP30/40) |
+| `air_sensor` | `sensor` | Air quality sensor (SGP30 or SGP40/`sgp4x`, depending on hardware YAML) |
 | `badge_display` | `display` | ST7789V LCD |
 | `vibration_motor` | `output` | Vibration motor |
 | `badge_i2c` | `i2c` | Shared I2C bus |
 
 ### Sensor Abstraction Pattern
 
-Air quality data is exposed via scripts to decouple sensor hardware from UI:
+The intended pattern is to expose air quality data via scripts to decouple sensor hardware from UI:
 
 - `badge_on_eco2_value` — triggered with eCO2 value
 - `badge_on_tvoc_value` — triggered with TVOC value
 
-App pages hook into these scripts, not directly into the sensor component. This allows SGP30 vs SGP40 substitution across hardware versions.
+On SGP30-based configurations, these scripts can be emitted by the air quality sensor, and app pages should hook into these scripts rather than directly into the sensor component. This enables SGP30 vs SGP40 substitution across hardware versions once a compatibility layer is provided.
 
+**Current status (v0.8.20):** `hardware/badge_0.8.20.yaml` defines an `sgp4x` VOC sensor and does not emit `badge_on_eco2_value` / `badge_on_tvoc_value`. On this hardware version, consumers should bind directly to the `air_sensor` entity (or the underlying `sgp4x` sensor) until the script-based compatibility layer is implemented.
 ### LVGL UI
 
 - **Buffer size:** 25% of RAM (PSRAM unavailable on ESP32-C3)
@@ -198,7 +199,7 @@ PLATFORMIO_BUILD_CACHE_DIR=/tmp/esphome esphome compile ...
 Use `main_dev.yaml` (in either `firmware_display/` or `firmware_nodisplay/`) during active development. It:
 - Enables OTA updates (flash over WiFi after first USB flash)
 - Uses static device naming (no MAC suffix)
-- Removes buttons 1 & 2 to prevent USB conflicts during serial monitoring
+- In the `firmware_nodisplay` variant, removes buttons 1 & 2 to prevent USB conflicts during serial monitoring
 - Reads WiFi credentials from `secrets.yaml`
 
 ### Host/Simulator Build
@@ -282,7 +283,8 @@ App pages should use existing sensor/script interfaces (e.g., `badge_on_eco2_val
 
 | Issue | Details |
 |-------|---------|
-| **Buttons 1 & 2 don't work over USB** | GPIO18/19 are shared with USB. Disconnect USB to use them in production firmware. |
+| **Buttons 1 & 2 don't work over USB (v0.8.13–0.8.15)** | In these hardware versions, GPIO18/19 are shared with USB. Disconnect USB to use them in production firmware. |
+| **Buttons 1 & 2 routing (v0.8.20)** | In v0.8.20, buttons 1 & 2 are routed via a PCF8574 (see `hardware/badge_0.8.20.yaml`), so the USB GPIO18/19 conflict does not apply in the same way. |
 | **LVGL buffer constraint** | No PSRAM → limited to 25% RAM, 8-bit color palette. |
 | **RMT symbol limit** | 192 total; current allocation leaves no headroom. |
 | **ESP32-C3 all GPIOs used** | In v0.8.20, every available GPIO is assigned. New hardware features require expanders. |
