@@ -67,8 +67,8 @@ ESPHomeBadge/
 | WS2812B LED strip (16 LEDs) | GPIO08 | RMT, 48 symbols |
 | IR Receiver (IRM-H638) | GPIO03 | RMT, 86 symbols |
 | IR Transmitter (VSMY1850) | GPIO02 | RMT, 48 symbols |
-| Button 1 (SW3) | GPIO19 (v0.8.13–0.8.15) / PCF8574 P0 (v0.8.20) | **USB D+ conflict on v0.8.13–0.8.15 only** |
-| Button 2 (SW4) | GPIO18 (v0.8.13–0.8.15) / PCF8574 P1 (v0.8.20) | **USB D- conflict on v0.8.13–0.8.15 only** |
+| Button 1 (SW3) | GPIO19 (v0.8.13–0.8.15) / PCF8574 P1 (v0.8.20) | **USB D+ conflict on v0.8.13–0.8.15 only** |
+| Button 2 (SW4) | GPIO18 (v0.8.13–0.8.15) / PCF8574 P2 (v0.8.20) | **USB D- conflict on v0.8.13–0.8.15 only** |
 | Button 3 (SW1) | GPIO10 | |
 | Button 4 (SW2) | GPIO09 | BOOT pin |
 | Green LED (D28) | GPIO13 (≤0.8.15) / GPIO12 (0.8.20) | Version dependent (`board_led`) |
@@ -77,7 +77,7 @@ ESPHomeBadge/
 | SGP30 Air Quality (v0.8.13–0.8.15) | I2C 0x58 | eCO2 + TVOC |
 | SGP40 Air Quality (v0.8.20) | I2C 0x59 | VOC Index |
 | PCF8574 GPIO Expander (v0.8.20) | I2C 0x20 | Manages buttons 1 & 2 (no USB conflict) |
-| NFC Tag ST25DV / NT3H2111 (v0.8.20) | I2C 0x55 | Software pending |
+| NFC Tag (v0.8.20, chip TBD) | I2C 0x55 (unconfirmed, likely NT3H2111; ST25DV04K uses 0x53/0x57) | Software pending; see README + `logbook.md` for details |
 
 ### USB/Button Conflict — Critical Note
 
@@ -85,7 +85,7 @@ On hardware versions **v0.8.13–0.8.15**, Buttons 1 (GPIO19) and 2 (GPIO18) sha
 
 On hardware version **v0.8.20**, Buttons 1 and 2 are routed through the PCF8574 I2C expander instead of GPIO19/GPIO18, so they no longer conflict with the USB data lines. The BOOT/flash procedure using Button 4 (BOOT) remains the same.
 
-Development firmware (`main_dev.yaml`) omits buttons 1 and 2 to avoid conflicts and noise during serial monitoring, with the exact behavior determined by the selected hardware definition YAML.
+The nodisplay development firmware (`firmware_nodisplay/main_dev.yaml`) omits buttons 1 and 2 to avoid conflicts and noise during serial monitoring, with the exact behavior determined by the selected hardware definition YAML.
 
 ### Hardware Versions
 
@@ -120,7 +120,7 @@ When the hardware YAML exposes components, always use these canonical IDs:
 | `battery_sensor` | `sensor` | Battery % via MAX17048 |
 | `air_sensor` | `sensor` | Air quality sensor (SGP30 or SGP40/`sgp4x`, depending on hardware YAML) |
 | `badge_display` | `display` | ST7789V LCD |
-| `vibration_motor` | `output` | Vibration motor |
+| `vibration_motor` | `switch` | Vibration motor |
 | `badge_i2c` | `i2c` | Shared I2C bus |
 
 ### Sensor Abstraction Pattern
@@ -170,7 +170,7 @@ Do not exceed these limits. Changing them requires re-verifying that all three p
 
 ### Secrets File
 
-Each firmware directory has a `secrets.yaml` template. Copy and fill in values before building:
+Create a `secrets.yaml` file at the repository root (alongside `firmware_display/` and `firmware_nodisplay/`) with at least the following keys:
 
 ```yaml
 wifi_ssid: "YourNetwork"
@@ -178,6 +178,8 @@ wifi_password: "YourPassword"
 ap_password: "fallback_ap_password"
 ota_password: "your_ota_password"
 ```
+
+The firmware directories (`firmware_display/secrets.yaml` and `firmware_nodisplay/secrets.yaml`) simply include `../secrets.yaml`, so you normally do not need to edit those files directly.
 
 **Never commit real credentials.** The CI uses generated dummy secrets.
 
