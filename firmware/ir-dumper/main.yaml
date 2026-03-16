@@ -1,0 +1,62 @@
+# Copyright 2025 Vinicius Fortuna
+# SPDX-License-Identifier: Apache-2.0
+
+# This is a firmware the outputs all the recognized IR codes to the serial output.
+# From Pronto format, see https://www.majority.nl/files/prontoirformats.pdf
+# For TV-B-Gone, see https://github.com/maltman23/HiP_Badge_TV-B-Gone/tree/master/Arduino/ESP32_TV-G-Gone
+
+esphome:
+  name: ir-dumper
+  friendly_name: IR Dumper
+  platformio_options:
+    board_build.flash_mode: dio
+  # libraries:
+    # As per https://docs.espressif.com/projects/arduino-esp32/en/latest/esp-idf_component.html
+    # - espressif/arduino-esp32^3.3.0
+    # - framework-arduinoespressif32@3.1.3
+  includes:
+    - tv_b_gone.h
+    - shared.h
+    - WORLDCodes.cpp
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+    # version: latest
+
+logger:
+
+remote_receiver:
+  - id: ir_receiver
+    pin:
+      number: GPIO03
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    dump: all
+    # on_pronto: 
+    #   then:
+    #     - logger.log: "Received IR code"
+
+binary_sensor:
+  - id: button_1
+    platform: gpio
+    name: Button 4
+    pin:
+      number: GPIO10  # SW1
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    on_click: 
+      - lambda: |-
+          ESP_LOGI("ir-dumper", "Staring IR codes...");
+          transmitPowerCodes();
+
+remote_transmitter:
+  - id: ir_transmitter
+    pin: GPIO02
+    # Infrared remotes use a 50% carrier signal.
+    carrier_duty_percent: 50%
