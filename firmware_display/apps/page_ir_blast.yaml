@@ -39,6 +39,8 @@ lvgl:
                     text: SEND BLAST
                     text_font: montserrat_24
                     text_color: 0xFFFFFF
+                    align: CENTER
+                    text_align: CENTER
               on_click:
                 - script.execute: on_ir_blast_click
                 - lvgl.widget.show: ir_blast_status

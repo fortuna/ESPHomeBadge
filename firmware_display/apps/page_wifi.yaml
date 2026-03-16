@@ -66,6 +66,8 @@ lvgl:
                     text: Disable WiFi
                     text_font: montserrat_20
                     text_color: 0xFFFFFF
+                    align: CENTER
+                    text_align: CENTER
 
 script:
   - id: update_wifi_display
