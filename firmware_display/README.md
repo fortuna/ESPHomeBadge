@@ -15,6 +15,12 @@ The UI has four pages selectable via a page switcher overlay. Navigation uses th
 | Button 2 / 3 | Previous / Next item within a page |
 | Button 4 | Select / activate focused item |
 
+### Page Switcher
+
+Hold Button 1 to open the page switcher overlay, then use Button 2/3 to navigate between pages. Release Button 1 to confirm.
+
+![Page selector](screenshots/page_selector.png)
+
 ### Pages
 
 #### Badge
