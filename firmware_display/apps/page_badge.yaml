@@ -5,12 +5,6 @@ lvgl:
   - id: !extend badge_lvgl
     pages:
       - id: page_badge
-        on_boot:
-          - lambda: |-
-              lv_group_t* group = lv_group_create();
-              ESP_LOGD("lvgl", "Initializing page_badge: %p, group: %p", id(page_badge).obj, group);
-              lv_obj_set_user_data(id(page_badge).obj, group);
-              recursive_set_group(id(page_badge).obj, group);
         styles: [page]
         bg_color: 0x1A237E
         bg_opa: 100%

@@ -8,9 +8,8 @@ lvgl:
         on_boot:
           - lambda: |-
               lv_group_t* group = lv_group_create();
-              ESP_LOGD("lvgl", "Initializing page_ir_blast: %p, group: %p", id(page_ir_blast).obj, group);
               lv_obj_set_user_data(id(page_ir_blast).obj, group);
-              recursive_set_group(id(page_ir_blast).obj, group);
+              lv_group_add_obj(group, id(ir_blast_button));
         styles: [page, surface]
         layout:
           type: FLEX

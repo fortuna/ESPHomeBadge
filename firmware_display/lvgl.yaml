@@ -111,30 +111,35 @@ script:
       - lambda: |-
           lv_obj_clear_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
           lv_group_t* selector_group = (lv_group_t*) lv_obj_get_user_data(id(page_selector));
-          ESP_LOGD("lvgl", "selector group: %p", selector_group);
 
-          // Focus on the current page in the selector group.
-          ESP_LOGD("lvgl", "current page: %zu", id(badge_lvgl).get_current_page());
-          auto obj_to_focus = get_group_item_by_index(selector_group, id(badge_lvgl).get_current_page());
-          lv_group_focus_obj(obj_to_focus);
+          // Focus the selector button corresponding to the current page.
+          lv_obj_t* btns[] = {
+            id(sel_btn_badge), id(sel_btn_air), id(sel_btn_qr), id(sel_btn_ir), id(sel_btn_wifi)
+          };
+          int current_page = id(badge_lvgl).get_current_page();
+          lv_group_focus_obj(btns[current_page]);
 
           // Make keypad feed into the selector group.
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          ESP_LOGD("lvgl", "setting indev %p to group %p", indev, selector_group);
           lv_indev_set_group(indev, selector_group);
 
   - id: dismiss_selector
     then:
       - lambda: |-
           lv_group_t* selector_group = (lv_group_t*) lv_obj_get_user_data(id(page_selector));
-          auto page_index = get_focused_item_index_in_group(selector_group);
+          lv_obj_t* focused = lv_group_get_focused(selector_group);
+          int page_index = focused ? (int)(intptr_t) lv_obj_get_user_data(focused) : 0;
+
+          // Look up the target page's group before show_page, since the animation
+          // is async and lv_scr_act() would still return the old screen after the call.
+          lv_obj_t* page_objs[] = {
+            id(page_badge).obj, id(page_air).obj, id(page_qr).obj,
+            id(page_ir_blast).obj, id(page_wifi).obj
+          };
+          lv_group_t* page_group = (lv_group_t*) lv_obj_get_user_data(page_objs[page_index]);
+
           lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
-          id(badge_lvgl).show_page(page_index, LV_SCR_LOAD_ANIM_FADE_OUT, 50);
-          lv_group_t* page_group = (lv_group_t*) lv_obj_get_user_data(lv_scr_act());
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          ESP_LOGD("lvgl", "setting indev %p to group %p", indev, page_group);
           lv_indev_set_group(indev, page_group);
-          // TODO(fortuna): Focus on the first item in the page.
-          lv_group_focus_next(page_group);
-          //   auto obj_to_focus = get_group_item_by_index(page_group, 0);
-          //   lv_group_focus_obj(obj_to_focus);
+          if (page_group) lv_group_focus_next(page_group);
+          id(badge_lvgl).show_page(page_index, LV_SCR_LOAD_ANIM_FADE_OUT, 50);
