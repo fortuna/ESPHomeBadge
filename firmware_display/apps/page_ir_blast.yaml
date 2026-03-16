@@ -23,6 +23,7 @@ lvgl:
               text_font: icons_40
               text_color: 0x2196F3
               text_align: CENTER
+              width: 100%
           - label:
               text: Send IR signal to nearby badges
               text_font: montserrat_16
@@ -43,12 +44,16 @@ lvgl:
                     text_align: CENTER
               on_click:
                 - script.execute: on_ir_blast_click
-                - lvgl.widget.show: ir_blast_status
+                - lvgl.widget.update:
+                    id: ir_blast_status
+                    opa: 100%
                 - delay: 1500ms
-                - lvgl.widget.hide: ir_blast_status
+                - lvgl.widget.update:
+                    id: ir_blast_status
+                    opa: 0%
           - label:
               id: ir_blast_status
               text: "IR Blast Sent!"
               text_color: 0x4CAF50
               text_font: montserrat_18
-              hidden: true
+              opa: 0%

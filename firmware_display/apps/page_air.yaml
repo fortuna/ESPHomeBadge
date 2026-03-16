@@ -65,14 +65,20 @@ lvgl:
                     text: TVOC
                     text_font: montserrat_22
                     text_color: 0x424242
+                    text_align: CENTER
+                    width: 100%
                 - label:
                     text: ppb
                     text_color: 0x9E9E9E
+                    text_align: CENTER
+                    width: 100%
                 - label:
                     id: tvoc_label
                     text_font: montserrat_48
                     text_color: 0x4CAF50
                     text: '-'
+                    text_align: CENTER
+                    width: 100%
 
 script:
   - id: !extend badge_on_eco2_value
