@@ -42,8 +42,6 @@ obj:
               widgets:
                 - label:
                     text: "\U0000ea67"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: Badge
     - obj:
@@ -61,8 +59,6 @@ obj:
               widgets:
                 - label:
                     text: "\U0000e29c"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: Air
     - obj:
@@ -80,8 +76,6 @@ obj:
               widgets:
                 - label:
                     text: "\U0000e00a"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: QR
     - obj:
@@ -99,8 +93,6 @@ obj:
               widgets:
                 - label:
                     text: "\U0000f747"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: IR
     - obj:
@@ -118,7 +110,5 @@ obj:
               widgets:
                 - label:
                     text: "\U0000e63e"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: WiFi

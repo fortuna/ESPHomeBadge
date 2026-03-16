@@ -97,6 +97,14 @@ binary_sensor:
     on_release:
       - script.execute: dismiss_selector
 
+  - id: !extend button_4
+    on_press:
+      - if:
+          condition:
+            lambda: return !lv_obj_has_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
+          then:
+            - script.execute: dismiss_selector
+
 script:
   - id: show_selector
     then:
