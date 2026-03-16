@@ -25,7 +25,7 @@ obj:
   hidden: true
   bg_color: 0x333333
   bg_opa: 80%
-  pad_all: 8
+  pad_all: 6
   widgets:
     - obj:
         styles: [container, switcher_entry]
@@ -47,7 +47,7 @@ obj:
           - label:
               text: Badge
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
@@ -66,7 +66,7 @@ obj:
           - label:
               text: Air
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
@@ -85,7 +85,7 @@ obj:
           - label:
               text: QR
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
@@ -102,23 +102,23 @@ obj:
               on_press:
                 - script.execute: dismiss_selector
           - label:
-              text: IR Blast
-#    - obj:
-#      styles: [switcher_entry]
-#      layout:
-#        type: FLEX
-#        flex_flow: COLUMN
-#        flex_align_cross: CENTER
-#      widgets:
-#        - button:
-#            scroll_on_focus: true
-#            styles: [switcher_button]
-#            focus_key:
-#              styles: [switcher_focused]
-#            widgets:
-#              - label:
-#                  text: "\U0000e63e"
-#            on_press:
-#              - script.execute: dismiss_selector
-#        - label:
-#            text: Wifi
+              text: IR
+    - obj:
+        styles: [container, switcher_entry]
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
+        widgets:
+          - button:
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000e63e"
+              on_press:
+                - script.execute: dismiss_selector
+          - label:
+              text: WiFi
