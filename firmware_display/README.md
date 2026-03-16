@@ -20,22 +20,22 @@ The UI has four pages selectable via a page switcher overlay. Navigation uses th
 #### Badge
 Displays the badge owner's name and subtitle. Configurable via the web server.
 
-![Badge page](../docs/screenshots/page_badge.png)
+![Badge page](screenshots/page_badge.png)
 
 #### Air Quality
 Shows live CO₂eq (ppm) and TVOC (ppb) sensor readings from the onboard air quality sensor.
 
-![Air quality page](../docs/screenshots/page_air.png)
+![Air quality page](screenshots/page_air.png)
 
 #### QR Code
 Displays a configurable QR code. Supports URLs, contact cards (MECARD), Wi-Fi credentials, and more. Configurable via the web server.
 
-![QR code page](../docs/screenshots/page_qr.png)
+![QR code page](screenshots/page_qr.png)
 
 #### IR Blast
 Sends an IR blast command (NEC protocol, address `0xD880`, command `0xDD22`) to nearby badges. Receiving badges flash their LEDs and vibrate.
 
-![IR Blast page](../docs/screenshots/page_ir_blast.png)
+![IR Blast page](screenshots/page_ir_blast.png)
 
 ## Configuration
 
@@ -98,12 +98,12 @@ SIM_PID=$!
 
 # Wait for render, then capture the 320×240 window
 sleep 3
-import -window root -crop 320x240+0+0 ../docs/screenshots/page_badge.png
+import -window root -crop 320x240+0+0 screenshots/page_badge.png
 
 # Navigate to next page and capture
 xdotool key period   # Button 3 (next)
 sleep 0.5
-import -window root -crop 320x240+0+0 ../docs/screenshots/page_air.png
+import -window root -crop 320x240+0+0 screenshots/page_air.png
 
 kill $SIM_PID
 ```
