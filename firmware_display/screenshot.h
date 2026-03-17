@@ -8,11 +8,7 @@
 #include <cstdio>
 
 inline void save_screenshot(const char* path) {
-    SDL_Window* win = SDL_GL_GetCurrentWindow();
-    if (!win) {
-        // Fall back: find the first window
-        win = SDL_GetWindowFromID(1);
-    }
+    SDL_Window* win = SDL_GetWindowFromID(1);
     if (!win) { ESP_LOGE("screenshot", "No SDL window found"); return; }
 
     SDL_Renderer* ren = SDL_GetRenderer(win);
@@ -25,7 +21,11 @@ inline void save_screenshot(const char* path) {
         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
     if (!surf) { ESP_LOGE("screenshot", "SDL_CreateRGBSurface failed: %s", SDL_GetError()); return; }
 
-    SDL_RenderReadPixels(ren, NULL, surf->format->format, surf->pixels, surf->pitch);
+    if (SDL_RenderReadPixels(ren, NULL, surf->format->format, surf->pixels, surf->pitch) != 0) {
+        ESP_LOGE("screenshot", "SDL_RenderReadPixels failed: %s", SDL_GetError());
+        SDL_FreeSurface(surf);
+        return;
+    }
     if (SDL_SaveBMP(surf, path) != 0) {
         ESP_LOGE("screenshot", "SDL_SaveBMP failed: %s", SDL_GetError());
     } else {

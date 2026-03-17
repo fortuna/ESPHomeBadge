@@ -7,6 +7,7 @@ obj:
     - lambda: |-
         lv_group_t* group = lv_group_create();
         lv_obj_set_user_data(id(page_selector), group);
+        // Order must match the package include order in lvgl.yaml.
         register_page(group, id(page_badge).obj,    id(sel_btn_badge));
         register_page(group, id(page_air).obj,      id(sel_btn_air));
         register_page(group, id(page_qr).obj,       id(sel_btn_qr));

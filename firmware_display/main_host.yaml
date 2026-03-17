@@ -124,7 +124,7 @@ script:
       - script.execute: show_selector
       - delay: 200ms
       - lambda: save_screenshot("screenshots/page_selector.bmp");
-      - script.execute: dismiss_selector
+      - lambda: lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
   # Mock WiFi toggle: flips connected state for demo purposes.
   - id: on_wifi_toggle
     mode: single

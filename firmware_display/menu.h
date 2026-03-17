@@ -34,6 +34,10 @@ namespace {
  * Call once per page from page_selector's on_boot, in page order.
  */
 inline void register_page(lv_group_t* selector_group, lv_obj_t* page_obj, lv_obj_t* selector_btn) {
+    if (g_page_count >= (int)(sizeof(g_page_objs) / sizeof(g_page_objs[0]))) {
+        ESP_LOGE("menu", "Too many pages: max %d", (int)(sizeof(g_page_objs) / sizeof(g_page_objs[0])));
+        return;
+    }
     int index = g_page_count;
     g_page_objs[g_page_count++] = page_obj;
     lv_group_add_obj(selector_group, selector_btn);
