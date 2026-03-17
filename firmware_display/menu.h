@@ -5,14 +5,15 @@
 #include <lvgl.h>
 
 /**
- * @brief Finds an input device (lv_indev_t) that uses a specific driver.
+ * Finds an input device (lv_indev_t) that uses a specific driver.
  */
 lv_indev_t* find_indev_by_driver(lv_indev_drv_t* target_driver) {
-    if (target_driver == NULL) return NULL;
-    for (lv_indev_t* indev = lv_indev_get_next(NULL); indev != NULL; indev = lv_indev_get_next(indev)) {
-        if (indev->driver == target_driver) return indev;
-    }
-    return NULL;
+  if (target_driver == nullptr) return nullptr;
+  for (lv_indev_t* indev = lv_indev_get_next(nullptr); indev != nullptr;
+       indev = lv_indev_get_next(indev)) {
+    if (indev->driver == target_driver) return indev;
+  }
+  return nullptr;
 }
 
 /**
@@ -21,9 +22,10 @@ lv_indev_t* find_indev_by_driver(lv_indev_drv_t* target_driver) {
  * hardcoded arrays that must be updated each time a page is added.
  */
 namespace {
-    lv_obj_t* g_page_objs[16] = {};
-    int g_page_count = 0;
-}
+constexpr int kMaxPages = 16;
+lv_obj_t* g_page_objs[kMaxPages] = {};
+int g_page_count = 0;
+}  // namespace
 
 /**
  * Registers a page and its selector button.
@@ -33,22 +35,23 @@ namespace {
  *
  * Call once per page from page_selector's on_boot, in page order.
  */
-inline void register_page(lv_group_t* selector_group, lv_obj_t* page_obj, lv_obj_t* selector_btn) {
-    if (g_page_count >= (int)(sizeof(g_page_objs) / sizeof(g_page_objs[0]))) {
-        ESP_LOGE("menu", "Too many pages: max %d", (int)(sizeof(g_page_objs) / sizeof(g_page_objs[0])));
-        return;
-    }
-    int index = g_page_count;
-    g_page_objs[g_page_count++] = page_obj;
-    lv_group_add_obj(selector_group, selector_btn);
-    lv_obj_set_user_data(selector_btn, (void*)(intptr_t)index);
+inline void register_page(lv_group_t* selector_group, lv_obj_t* page_obj,
+                          lv_obj_t* selector_btn) {
+  if (g_page_count >= kMaxPages) {
+    ESP_LOGE("menu", "Too many pages: max %d", kMaxPages);
+    return;
+  }
+  int index = g_page_count;
+  g_page_objs[g_page_count++] = page_obj;
+  lv_group_add_obj(selector_group, selector_btn);
+  lv_obj_set_user_data(selector_btn, (void*)(intptr_t)index);
 }
 
 /**
- * Returns the focus group for the page at the given index, or NULL if none.
+ * Returns the focus group for the page at the given index, or nullptr if none.
  * The group is stored in the page object's user_data by each page's on_boot.
  */
 inline lv_group_t* get_page_group(int index) {
-    if (index < 0 || index >= g_page_count) return NULL;
-    return (lv_group_t*) lv_obj_get_user_data(g_page_objs[index]);
+  if (index < 0 || index >= g_page_count) return nullptr;
+  return (lv_group_t*)lv_obj_get_user_data(g_page_objs[index]);
 }

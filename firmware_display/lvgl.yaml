@@ -115,12 +115,27 @@ script:
           // Focus the selector button corresponding to the current page.
           // The selector structure is: page_selector > entry[N] > button[0].
           int current_page = id(badge_lvgl).get_current_page();
-          lv_obj_t* entry = lv_obj_get_child(id(page_selector), current_page);
-          lv_group_focus_obj(lv_obj_get_child(entry, 0));
+          uint32_t child_cnt = lv_obj_get_child_cnt(id(page_selector));
+          if ((uint32_t)current_page >= child_cnt) {
+            ESP_LOGE("lvgl", "show_selector: page %d out of bounds (%u entries)",
+                     current_page, child_cnt);
+          } else {
+            lv_obj_t* entry = lv_obj_get_child(id(page_selector), current_page);
+            lv_obj_t* btn = entry ? lv_obj_get_child(entry, 0) : nullptr;
+            if (btn) {
+              lv_group_focus_obj(btn);
+            } else {
+              ESP_LOGE("lvgl", "show_selector: no button in entry %d", current_page);
+            }
+          }
 
           // Make keypad feed into the selector group.
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          lv_indev_set_group(indev, selector_group);
+          if (!indev) {
+            ESP_LOGE("lvgl", "show_selector: keypad indev not found");
+          } else {
+            lv_indev_set_group(indev, selector_group);
+          }
 
   - id: dismiss_selector
     then:
@@ -135,6 +150,10 @@ script:
 
           lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          lv_indev_set_group(indev, page_group);
+          if (!indev) {
+            ESP_LOGE("lvgl", "dismiss_selector: keypad indev not found");
+          } else {
+            lv_indev_set_group(indev, page_group);
+          }
           if (page_group) lv_group_focus_next(page_group);
           id(badge_lvgl).show_page(page_index, LV_SCR_LOAD_ANIM_FADE_OUT, 50);
