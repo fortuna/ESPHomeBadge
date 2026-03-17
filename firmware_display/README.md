@@ -161,28 +161,19 @@ This opens a 320×240 SDL window. Keyboard keys are mapped to badge buttons:
 
 ## Taking Screenshots
 
-To capture screenshots of the SDL simulator:
+Run the simulator and press `s` to automatically capture all pages:
 
 ```bash
-# Start a virtual display (for headless environments)
-Xvfb :99 -screen 0 1024x768x24 &
-export DISPLAY=:99
-
-# Build and run the simulator in the background
+cd firmware_display
 esphome compile main_host.yaml
-.esphome/build/sdl/.pioenvs/sdl/program &
-SIM_PID=$!
+.esphome/build/sdl/.pioenvs/sdl/program
+# Press s in the SDL window
+```
 
-# Wait for render, then capture the 320×240 window
-sleep 3
-import -window root -crop 320x240+0+0 screenshots/page_badge.png
+This cycles through every page, saves each as a BMP in `screenshots/`, then returns to the current page. Convert to PNG with:
 
-# Navigate to next page and capture
-xdotool key period   # Button 3 (next)
-sleep 0.5
-import -window root -crop 320x240+0+0 screenshots/page_air.png
-
-kill $SIM_PID
+```bash
+for f in screenshots/*.bmp; do sips -s format png "$f" --out "${f%.bmp}.png"; rm "$f"; done
 ```
 
 The mock values shown in the simulator are set in `main_host.yaml` under `on_boot`.
