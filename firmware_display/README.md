@@ -170,18 +170,32 @@ esphome compile main_host.yaml
 # Press s in the SDL window
 ```
 
-This cycles through every page, saves each as a BMP in `screenshots/`, then returns to the current page. Convert to PNG with one of the following:
-
-**On macOS (using `sips`):**
+This cycles through every page, saves each as a BMP in `screenshots/`, then returns to the current page. Convert to PNG with:
 
 ```bash
-for f in screenshots/*.bmp; do sips -s format png "$f" --out "${f%.bmp}.png"; rm "$f"; done
-```
-
-**On Linux or other platforms (using ImageMagick `convert`):**
-
-```bash
-for f in screenshots/*.bmp; do convert "$f" "${f%.bmp}.png" && rm "$f"; done
+python3 -c "
+import struct, zlib, os, glob
+def bmp_to_png(src, dst):
+    d = open(src,'rb').read()
+    off = struct.unpack_from('<I',d,10)[0]
+    w,h = struct.unpack_from('<ii',d,18)
+    bpp = struct.unpack_from('<H',d,28)[0]
+    flip,h = h>0,abs(h)
+    rs = ((w*bpp//8+3)//4)*4
+    rows = []
+    for r in range(h):
+        sr = (h-1-r) if flip else r
+        row = bytearray()
+        for x in range(w):
+            p = off+sr*rs+x*(bpp//8)
+            row += bytes([d[p+2],d[p+1],d[p]])
+        rows.append(row)
+    def chunk(t,b): c=t+b; return struct.pack('>I',len(b))+c+struct.pack('>I',zlib.crc32(c)&0xffffffff)
+    raw = b''.join(b'\x00'+r for r in rows)
+    open(dst,'wb').write(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(raw))+chunk(b'IEND',b''))
+    os.remove(src)
+[bmp_to_png(f, f[:-4]+'.png') for f in glob.glob('screenshots/*.bmp')]
+"
 ```
 
 The mock values shown in the simulator are set in `main_host.yaml` under `on_boot`.
