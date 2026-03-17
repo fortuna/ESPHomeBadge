@@ -2,24 +2,23 @@
 # SPDX-License-Identifier: Apache-2.0
 
 packages:
-  # These must be in reverse order, as they get prepended to the pages list.
-  #   wifi: !include page_wifi.yaml
-  ir_blast: !include ./apps/page_ir_blast.yaml
-  qr: !include ./apps/page_qr.yaml
-  air: !include ./apps/page_air.yaml
+  # Order matters: packages are added to the pages list in declaration order.
   badge: !include ./apps/page_badge.yaml
+  air: !include ./apps/page_air.yaml
+  qr: !include ./apps/page_qr.yaml
+  ir_blast: !include ./apps/page_ir_blast.yaml
+  wifi: !include ./apps/page_wifi.yaml
 
 font:
-  - file: "gfonts://Material+Symbols+Rounded"
-    id: icons_50
-    size: 50
-    glyphs: [
-      "\U0000ea67",  # badge
-      "\U0000e29c",  # airwave
-      "\U0000e00a",  # qr_code_2
-      "\U0000f747",  # laser-pointer
-      "\U0000e63e",  # wifi
-    ]
+  - file: "./MaterialSymbolsRounded.ttf"
+    id: icons_40
+    size: 40
+    glyphs:
+      - "\U0000ea67"  # badge
+      - "\U0000e29c"  # airwave
+      - "\U0000e00a"  # qr_code_2
+      - "\U0000f747"  # laser-pointer
+      - "\U0000e63e"  # wifi
 
 lvgl:
   - id: badge_lvgl
@@ -28,12 +27,6 @@ lvgl:
     # Need to reduce due to lack of PSRAM, as per https://esphome.io/components/lvgl/.
     buffer_size: 25%
 
-    # encoders:
-    #   - enter_button: key_select
-    #     sensor:
-    #       left_button: key_prev
-    #       right_button: key_next
-
     keypads:
       - id: lvgl_keypad
         long_press_repeat_time: 65535ms
@@ -41,14 +34,6 @@ lvgl:
         prev: button_2
         next: button_3
         enter: button_4
-        # up: key_up
-        # down: key_down
-        # left: key_left
-        # right: key_right
-
-    # theme:
-    #   obj:
-    #     styles: [debug_border]
 
     style_definitions:
       - id: container
@@ -84,7 +69,8 @@ lvgl:
         bg_opa: 0%
         shadow_width: 0
         shadow_opa: 0%
-        text_font: icons_50
+        text_font: icons_40
+        pad_all: 6
         radius: 8
 
       - id: switcher_focused
@@ -111,36 +97,63 @@ binary_sensor:
     on_release:
       - script.execute: dismiss_selector
 
+  - id: !extend button_4
+    on_press:
+      - if:
+          condition:
+            lambda: return !lv_obj_has_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
+          then:
+            - script.execute: dismiss_selector
+
 script:
   - id: show_selector
     then:
       - lambda: |-
           lv_obj_clear_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
           lv_group_t* selector_group = (lv_group_t*) lv_obj_get_user_data(id(page_selector));
-          ESP_LOGD("lvgl", "selector group: %p", selector_group);
 
-          // Focus on the current page in the selector group.
-          ESP_LOGD("lvgl", "current page: %zu", id(badge_lvgl).get_current_page());
-          auto obj_to_focus = get_group_item_by_index(selector_group, id(badge_lvgl).get_current_page());
-          lv_group_focus_obj(obj_to_focus);
+          // Focus the selector button corresponding to the current page.
+          // The selector structure is: page_selector > entry[N] > button[0].
+          int current_page = id(badge_lvgl).get_current_page();
+          uint32_t child_cnt = lv_obj_get_child_cnt(id(page_selector));
+          if ((uint32_t)current_page >= child_cnt) {
+            ESP_LOGE("lvgl", "show_selector: page %d out of bounds (%u entries)",
+                     current_page, child_cnt);
+          } else {
+            lv_obj_t* entry = lv_obj_get_child(id(page_selector), current_page);
+            lv_obj_t* btn = entry ? lv_obj_get_child(entry, 0) : nullptr;
+            if (btn) {
+              lv_group_focus_obj(btn);
+            } else {
+              ESP_LOGE("lvgl", "show_selector: no button in entry %d", current_page);
+            }
+          }
 
           // Make keypad feed into the selector group.
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          ESP_LOGD("lvgl", "setting indev %p to group %p", indev, selector_group);
-          lv_indev_set_group(indev, selector_group);
+          if (!indev) {
+            ESP_LOGE("lvgl", "show_selector: keypad indev not found");
+          } else {
+            lv_indev_set_group(indev, selector_group);
+          }
 
   - id: dismiss_selector
     then:
       - lambda: |-
           lv_group_t* selector_group = (lv_group_t*) lv_obj_get_user_data(id(page_selector));
-          auto page_index = get_focused_item_index_in_group(selector_group);
+          lv_obj_t* focused = lv_group_get_focused(selector_group);
+          int page_index = focused ? (int)(intptr_t) lv_obj_get_user_data(focused) : 0;
+
+          // Look up the target page's group before show_page, since the animation
+          // is async and lv_scr_act() would still return the old screen after the call.
+          lv_group_t* page_group = get_page_group(page_index);
+
           lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
-          id(badge_lvgl).show_page(page_index, LV_SCR_LOAD_ANIM_FADE_OUT, 50);
-          lv_group_t* page_group = (lv_group_t*) lv_obj_get_user_data(lv_scr_act());
           lv_indev_t* indev = find_indev_by_driver(id(lvgl_keypad).get_drv());
-          ESP_LOGD("lvgl", "setting indev %p to group %p", indev, page_group);
-          lv_indev_set_group(indev, page_group);
-          // TODO(fortuna): Focus on the first item in the page.
-          lv_group_focus_next(page_group);
-          //   auto obj_to_focus = get_group_item_by_index(page_group, 0);
-          //   lv_group_focus_obj(obj_to_focus);
+          if (!indev) {
+            ESP_LOGE("lvgl", "dismiss_selector: keypad indev not found");
+          } else {
+            lv_indev_set_group(indev, page_group);
+          }
+          if (page_group) lv_group_focus_next(page_group);
+          id(badge_lvgl).show_page(page_index, LV_SCR_LOAD_ANIM_FADE_OUT, 50);

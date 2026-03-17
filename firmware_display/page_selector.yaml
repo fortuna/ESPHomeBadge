@@ -5,14 +5,14 @@ obj:
   id: page_selector
   on_boot:
     - lambda: |-
-        ESP_LOGD("lvgl", "Default group is: %p", lv_group_get_default());
         lv_group_t* group = lv_group_create();
-        lv_group_set_focus_cb(group, [](lv_group_t* group) {
-            ESP_LOGD("lvgl", "Group %p focused on: %p", group, lv_group_get_focused(group));
-        });
-        ESP_LOGD("lvgl", "Initializing page_selector: %p, group: %p", id(page_selector), group);
         lv_obj_set_user_data(id(page_selector), group);
-        recursive_set_group(id(page_selector), group);
+        // Order must match the package include order in lvgl.yaml.
+        register_page(group, id(page_badge).obj,    id(sel_btn_badge));
+        register_page(group, id(page_air).obj,      id(sel_btn_air));
+        register_page(group, id(page_qr).obj,       id(sel_btn_qr));
+        register_page(group, id(page_ir_blast).obj, id(sel_btn_ir));
+        register_page(group, id(page_wifi).obj,     id(sel_btn_wifi));
   styles: [container]
   height: SIZE_CONTENT
   width: SIZE_CONTENT
@@ -25,7 +25,7 @@ obj:
   hidden: true
   bg_color: 0x333333
   bg_opa: 80%
-  pad_all: 8
+  pad_all: 6
   widgets:
     - obj:
         styles: [container, switcher_entry]
@@ -35,6 +35,7 @@ obj:
           flex_align_cross: CENTER
         widgets:
           - button:
+              id: sel_btn_badge
               scroll_on_focus: true
               styles: [switcher_button]
               focus_key:
@@ -42,18 +43,17 @@ obj:
               widgets:
                 - label:
                     text: "\U0000ea67"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: Badge
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
           flex_align_cross: CENTER
         widgets:
           - button:
+              id: sel_btn_air
               scroll_on_focus: true
               styles: [switcher_button]
               focus_key:
@@ -61,18 +61,17 @@ obj:
               widgets:
                 - label:
                     text: "\U0000e29c"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: Air
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
           flex_align_cross: CENTER
         widgets:
           - button:
+              id: sel_btn_qr
               scroll_on_focus: true
               styles: [switcher_button]
               focus_key:
@@ -80,18 +79,17 @@ obj:
               widgets:
                 - label:
                     text: "\U0000e00a"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
               text: QR
     - obj:
-        styles: [switcher_entry]
+        styles: [container, switcher_entry]
         layout:
           type: FLEX
           flex_flow: COLUMN
           flex_align_cross: CENTER
         widgets:
           - button:
+              id: sel_btn_ir
               scroll_on_focus: true
               styles: [switcher_button]
               focus_key:
@@ -99,26 +97,23 @@ obj:
               widgets:
                 - label:
                     text: "\U0000f747"
-              on_press:
-                - script.execute: dismiss_selector
           - label:
-              text: IR Blast
-#    - obj:
-#      styles: [switcher_entry]
-#      layout:
-#        type: FLEX
-#        flex_flow: COLUMN
-#        flex_align_cross: CENTER
-#      widgets:
-#        - button:
-#            scroll_on_focus: true
-#            styles: [switcher_button]
-#            focus_key:
-#              styles: [switcher_focused]
-#            widgets:
-#              - label:
-#                  text: "\U0000e63e"
-#            on_press:
-#              - script.execute: dismiss_selector
-#        - label:
-#            text: Wifi
+              text: IR
+    - obj:
+        styles: [container, switcher_entry]
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_cross: CENTER
+        widgets:
+          - button:
+              id: sel_btn_wifi
+              scroll_on_focus: true
+              styles: [switcher_button]
+              focus_key:
+                styles: [switcher_focused]
+              widgets:
+                - label:
+                    text: "\U0000e63e"
+          - label:
+              text: WiFi

@@ -10,6 +10,7 @@ esphome:
   name: sdl
   includes:
     - menu.h
+    - screenshot.h
   on_boot:
     then:
       # Set mock values
@@ -28,6 +29,14 @@ esphome:
       - text.set:
           id: qr_code_text
           value: 'https://example.com'
+      # Set mock WiFi state
+      - text_sensor.template.publish:
+          id: wifi_ip_sensor
+          state: '192.168.1.42'
+      - text_sensor.template.publish:
+          id: wifi_ssid_sensor
+          state: 'MockNetwork'
+      - script.execute: update_wifi_display
 
 host:
 
@@ -50,6 +59,31 @@ binary_sensor:
   - {id: key_down, platform: sdl, sdl_id: badge_display, key: SDLK_d}
   - {id: key_left, platform: sdl, sdl_id: badge_display, key: SDLK_LEFTBRACKET}
   - {id: key_right, platform: sdl, sdl_id: badge_display, key: SDLK_RIGHTBRACKET}
+  - platform: sdl
+    id: screenshot_key
+    sdl_id: badge_display
+    key: SDLK_s
+    internal: true
+    on_press:
+      - script.execute: take_all_screenshots
+
+text_sensor:
+  - platform: template
+    id: wifi_ip_sensor
+    internal: true
+    lambda: return {};
+  - platform: template
+    id: wifi_ssid_sensor
+    internal: true
+    lambda: return {};
+
+globals:
+  - id: wifi_is_enabled
+    type: bool
+    initial_value: 'true'
+  - id: wifi_is_connected
+    type: bool
+    initial_value: 'true'
 
 script:
   # Provide fake air sensor API.
@@ -61,10 +95,45 @@ script:
     parameters:
       x: float  # Value in ppb
     then: []
-  # Sends the Fake IR blast command.
+  # Sends the fake IR blast command.
   - id: on_ir_blast_click
     mode: single
     then:
       - logger.log:
           level: DEBUG
           format: "Fake IR blast command sent with address: 0xD880, command: 0xDD"
+  # Cycles through all pages and saves screenshots to screenshots/.
+  - id: take_all_screenshots
+    mode: single
+    then:
+      - lambda: id(badge_lvgl).show_page(0, LV_SCR_LOAD_ANIM_NONE, 0);
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_badge.bmp");
+      - lambda: id(badge_lvgl).show_page(1, LV_SCR_LOAD_ANIM_NONE, 0);
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_air.bmp");
+      - lambda: id(badge_lvgl).show_page(2, LV_SCR_LOAD_ANIM_NONE, 0);
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_qr.bmp");
+      - lambda: id(badge_lvgl).show_page(3, LV_SCR_LOAD_ANIM_NONE, 0);
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_ir_blast.bmp");
+      - lambda: id(badge_lvgl).show_page(4, LV_SCR_LOAD_ANIM_NONE, 0);
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_wifi.bmp");
+      - script.execute: show_selector
+      - delay: 200ms
+      - lambda: save_screenshot("screenshots/page_selector.bmp");
+      - lambda: lv_obj_add_flag(id(page_selector), LV_OBJ_FLAG_HIDDEN);
+  # Mock WiFi toggle: flips connected state for demo purposes.
+  - id: on_wifi_toggle
+    mode: single
+    then:
+      - lambda: |-
+          id(wifi_is_enabled) = !id(wifi_is_enabled);
+          if (!id(wifi_is_enabled)) {
+            id(wifi_is_connected) = false;
+          } else {
+            id(wifi_is_connected) = true;
+          }
+      - script.execute: update_wifi_display

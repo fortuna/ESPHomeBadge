@@ -28,13 +28,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Speed up PlatformIO setup. As per https://docs.platformio.org/en/stable/integration/ci/github-actions.html
+      # Cache pip packages and the full PlatformIO installation (toolchains, libraries).
+      # Key includes the workflow file so it invalidates when the ESPHome version changes.
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
-            ~/.platformio/.cache
-          key: ${{ runner.os }}-pio
+            ~/.platformio
+          key: ${{ runner.os }}-pio-${{ hashFiles('.github/workflows/test.yaml') }}
+          restore-keys: ${{ runner.os }}-pio-
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -51,7 +53,7 @@ jobs:
 
       - name: Compile Firmwares
         env:
-          PLATFORMIO_BUILD_CACHE_DIR: /tmp/esphome
+          PLATFORMIO_BUILD_CACHE_DIR: ~/.platformio/build_cache
         shell: bash
         # TODO: Need to install SDL on Linux for Host platform:
         # sudo apt update && sudo apt install -y libsdl2-dev libsodium-dev build-essential

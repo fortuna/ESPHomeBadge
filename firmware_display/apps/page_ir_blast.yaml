@@ -8,28 +8,51 @@ lvgl:
         on_boot:
           - lambda: |-
               lv_group_t* group = lv_group_create();
-              ESP_LOGD("lvgl", "Initializing page_ir_blast: %p, group: %p", id(page_ir_blast).obj, group);
               lv_obj_set_user_data(id(page_ir_blast).obj, group);
-              recursive_set_group(id(page_ir_blast).obj, group);
+              lv_group_add_obj(group, id(ir_blast_button));
         styles: [page, surface]
+        layout:
+          type: FLEX
+          flex_flow: COLUMN
+          flex_align_main: CENTER
+          flex_align_cross: CENTER
         widgets:
+          - label:
+              text: "\U0000f747"
+              text_font: icons_40
+              text_color: 0x2196F3
+              text_align: CENTER
+              width: 100%
+          - label:
+              text: Send IR signal to nearby badges
+              text_font: montserrat_16
+              text_color: 0x757575
+              text_align: CENTER
+              width: 240
           - button:
               id: ir_blast_button
-              align: CENTER
+              width: 200
+              height: 52
+              bg_color: 0x2196F3
               widgets:
                 - label:
-                    text: "Send Blast"
+                    text: SEND BLAST
                     text_font: montserrat_24
+                    text_color: 0xFFFFFF
+                    align: CENTER
+                    text_align: CENTER
               on_click:
                 - script.execute: on_ir_blast_click
-                - lvgl.widget.show: ir_blast_status
-                - delay: 1s
-                - lvgl.widget.hide: ir_blast_status
+                - lvgl.widget.update:
+                    id: ir_blast_status
+                    opa: 100%
+                - delay: 1500ms
+                - lvgl.widget.update:
+                    id: ir_blast_status
+                    opa: 0%
           - label:
               id: ir_blast_status
-              align_to:
-                id: ir_blast_button
-                align: OUT_BOTTOM_MID
-                y: 15
               text: "IR Blast Sent!"
-              hidden: true
+              text_color: 0x4CAF50
+              text_font: montserrat_18
+              opa: 0%

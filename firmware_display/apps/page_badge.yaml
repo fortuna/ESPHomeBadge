@@ -5,13 +5,9 @@ lvgl:
   - id: !extend badge_lvgl
     pages:
       - id: page_badge
-        on_boot:
-          - lambda: |-
-              lv_group_t* group = lv_group_create();
-              ESP_LOGD("lvgl", "Initializing page_badge: %p, group: %p", id(page_badge).obj, group);
-              lv_obj_set_user_data(id(page_badge).obj, group);
-              recursive_set_group(id(page_badge).obj, group);
-        styles: [page, surface]
+        styles: [page]
+        bg_color: 0x1A237E
+        bg_opa: 100%
         layout:
           type: FLEX
           flex_flow: COLUMN
@@ -22,12 +18,14 @@ lvgl:
           - label:
               id: title_label
               text: !lambda return id(badge_title).state;
-              text_font: montserrat_32
+              text_font: montserrat_36
+              text_color: 0xFFFFFF
               width: 100%
           - label:
               id: subtitle_label
               text: !lambda return id(badge_subtitle).state;
-              text_font: montserrat_24
+              text_font: montserrat_20
+              text_color: 0xBBDEFB
               width: 100%
 
 text:

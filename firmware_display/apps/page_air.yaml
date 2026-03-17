@@ -5,73 +5,100 @@ lvgl:
   - id: !extend badge_lvgl
     pages:
       - id: page_air
-        on_boot:
-          - lambda: |-
-              lv_group_t* group = lv_group_create();
-              ESP_LOGD("lvgl", "Initializing page_air: %p, group: %p", id(page_air).obj, group);
-              lv_obj_set_user_data(id(page_air).obj, group);
-              recursive_set_group(id(page_air).obj, group);
-        styles: [page]
+        styles: [page, surface]
         layout:
           type: FLEX
           flex_flow: ROW
+          flex_align_cross: STRETCH
         pad_all: 8
         widgets:
           - obj:
               flex_grow: 1
-              height: SIZE_CONTENT
+              height: 100%
+              bg_color: 0xF5F5F5
+              bg_opa: 100%
+              radius: 8
+              border_width: 0
 
               layout:
                 type: FLEX
                 flex_flow: COLUMN
-                flex_align_cross: END
-                flex_align_track: END
+                flex_align_main: CENTER
+                flex_align_cross: CENTER
 
               widgets:
                 - label:
                     text: CO2eq
-                    text_font: montserrat_26
+                    text_font: montserrat_22
+                    text_color: 0x424242
                 - label:
                     text: ppm
+                    text_color: 0x9E9E9E
                 - label:
                     id: co2_label
                     text_font: montserrat_48
+                    text_color: 0x4CAF50
                     text: '-'
 
           - obj:
               flex_grow: 1
-              height: SIZE_CONTENT
+              height: 100%
+              bg_color: 0xF5F5F5
+              bg_opa: 100%
+              radius: 8
+              border_width: 0
 
               layout:
                 type: FLEX
                 flex_flow: COLUMN
-                flex_align_cross: END
-                flex_align_track: END
+                flex_align_main: CENTER
+                flex_align_cross: CENTER
 
               widgets:
                 - label:
                     text: TVOC
-                    text_font: montserrat_26
+                    text_font: montserrat_22
+                    text_color: 0x424242
+                    text_align: CENTER
+                    width: 100%
                 - label:
                     text: ppb
+                    text_color: 0x9E9E9E
+                    text_align: CENTER
+                    width: 100%
                 - label:
                     id: tvoc_label
                     text_font: montserrat_48
+                    text_color: 0x4CAF50
                     text: '-'
+                    text_align: CENTER
+                    width: 100%
 
 script:
   - id: !extend badge_on_eco2_value
     parameters:
       x: float  # Value in ppm
     then:
-      - lvgl.label.update:
-          id: co2_label
-          text: {format: '%.0f', args: ['x']}
+      - lambda: |-
+          lv_color_t color;
+          if (x < 1000.0f) color = lv_color_hex(0x4CAF50);
+          else if (x < 2000.0f) color = lv_color_hex(0xFF9800);
+          else color = lv_color_hex(0xF44336);
+          lv_obj_set_style_text_color(id(co2_label), color, LV_PART_MAIN);
+          char buf[16];
+          snprintf(buf, sizeof(buf), "%.0f", x);
+          lv_label_set_text(id(co2_label), buf);
 
   - id: !extend badge_on_tvoc_value
     parameters:
       x: float  # Value in ppb
     then:
-      - lvgl.label.update:
-          id: tvoc_label
-          text: {format: '%.0f', args: ['x']}
+      - lambda: |-
+          lv_color_t color;
+          if (x < 220.0f) color = lv_color_hex(0x4CAF50);
+          else if (x < 660.0f) color = lv_color_hex(0xFF9800);
+          else color = lv_color_hex(0xF44336);
+          lv_obj_set_style_text_color(id(tvoc_label), color, LV_PART_MAIN);
+          char buf[16];
+          snprintf(buf, sizeof(buf), "%.0f", x);
+          lv_label_set_text(id(tvoc_label), buf);

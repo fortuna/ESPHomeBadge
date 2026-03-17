@@ -38,6 +38,14 @@ wifi:
   ap:
     password: !secret ap_password
 
+  on_connect:
+    - lambda: id(wifi_is_connected) = true;
+    - script.execute: update_wifi_display
+
+  on_disconnect:
+    - lambda: id(wifi_is_connected) = false;
+    - script.execute: update_wifi_display
+
 # To allow for configuring the wifi on a new device.
 captive_portal:
 
@@ -87,6 +95,15 @@ sensor:
     type: seconds
     name: Uptime
 
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      id: wifi_ip_sensor
+      on_value:
+        - script.execute: update_wifi_display
+    ssid:
+      id: wifi_ssid_sensor
+
 light:
   - id: !extend led_strip
     effects:
@@ -109,6 +126,16 @@ globals:
     type: bool
     initial_value: 'true'
 
+  # Tracks whether WiFi is enabled (on/off).
+  - id: wifi_is_enabled
+    type: bool
+    initial_value: 'true'
+
+  # Tracks whether WiFi is currently connected.
+  - id: wifi_is_connected
+    type: bool
+    initial_value: 'false'
+
 script:
   - id: run_blast_effect
     mode: single
@@ -127,6 +154,22 @@ script:
           transmitter_id: ir_transmitter
           address: 0xD880
           command: 0xDD22
+
+  # Toggles WiFi on/off and updates the display.
+  - id: on_wifi_toggle
+    mode: single
+    then:
+      - if:
+          condition:
+            lambda: return id(wifi_is_enabled);
+          then:
+            - lambda: id(wifi_is_enabled) = false;
+            - wifi.disable:
+            - script.execute: update_wifi_display
+          else:
+            - lambda: id(wifi_is_enabled) = true;
+            - wifi.enable:
+            - script.execute: update_wifi_display
 
 text:
   - id: !extend badge_title
