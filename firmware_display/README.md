@@ -170,10 +170,18 @@ esphome compile main_host.yaml
 # Press s in the SDL window
 ```
 
-This cycles through every page, saves each as a BMP in `screenshots/`, then returns to the current page. Convert to PNG with:
+This cycles through every page, saves each as a BMP in `screenshots/`, then returns to the current page. Convert to PNG with one of the following:
+
+**On macOS (using `sips`):**
 
 ```bash
 for f in screenshots/*.bmp; do sips -s format png "$f" --out "${f%.bmp}.png"; rm "$f"; done
+```
+
+**On Linux or other platforms (using ImageMagick `convert`):**
+
+```bash
+for f in screenshots/*.bmp; do convert "$f" "${f%.bmp}.png" && rm "$f"; done
 ```
 
 The mock values shown in the simulator are set in `main_host.yaml` under `on_boot`.
